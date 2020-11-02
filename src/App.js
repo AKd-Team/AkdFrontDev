@@ -20,6 +20,10 @@ function App() {
         <Button variant="contained" color="primary">
           Hello World
         </Button>
+        <Button variant="contained" color="primary">
+          Hello World
+        </Button>
+
 
       </header>
     </div>
