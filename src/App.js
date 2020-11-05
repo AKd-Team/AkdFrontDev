@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import StudentDashboard from "./screens/StudentDashboard/StudentDashboard";
+import StudentDashboard from "./screens/StudentDashboard/ContentComponents/StudentDashboard";
 import TeacherDashboard from "./screens/TeacherDashboard/TeacherDashboard";
 import AdminDashboard from "./screens/AdminDashboard/AdminDashboard";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
