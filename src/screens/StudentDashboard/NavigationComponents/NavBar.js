@@ -1,23 +1,38 @@
 import React,{useState,useEffect} from "react";
 import OrarMenu from "./OrarMenu";
 import ProfesoriMenu from "./ProfesoriMenu";
+import Link from './Link';
 import { Menu } from 'semantic-ui-react'
+import NoteMenu from "./NoteMenu";
+import Button from "@material-ui/core/Button";
 
-const NavBar = () =>{
-
-
+const NavBar = (props) =>{
     return(
         <Menu fluid widths={8} >
-            <Menu.Item >
-                <a href="/">
-                <i className="big home icon"/>
-                </a>
+            <Menu.Item>
+                <Link href="/studentdash/student">
+                    <Button
+                        className="root"
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        color="primary"
+                    >
+                    <i className="big home icon"/>
+                    </Button>
+                </Link>
             </Menu.Item>
             <Menu.Item>
-                <a href="/datepersonale">
+                <Link href="/studentdash/datepersonale">
+                    <Button
+                        className="root"
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        color="primary"
+                    >
                     <i className="big address card icon"/>
                     Date Personale
-                </a>
+                    </Button>
+                </Link>
             </Menu.Item>
             <Menu.Item >
                 <OrarMenu />
@@ -26,16 +41,45 @@ const NavBar = () =>{
                 <ProfesoriMenu />
             </Menu.Item>
             <Menu.Item>
-
+                <NoteMenu/>
             </Menu.Item>
             <Menu.Item>
-
+                <Link href="/studentdash/contract">
+                    <Button
+                        className="root"
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        color="primary"
+                    >
+                        Contracte
+                    </Button>
+                </Link>
             </Menu.Item>
             <Menu.Item>
-
+                <Link href="/studentdash/regulament">
+                <Button
+                    className="root"
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    color="primary"
+                >
+                    Regulament
+                </Button>
+                </Link>
             </Menu.Item>
             <Menu.Item>
-
+                <Link href="/login">
+                    <Button
+                        className="root"
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        color="primary"
+                        variant="contained"
+                        onClick={props.onLogout}
+                    >
+                        Log out
+                    </Button>
+                </Link>
             </Menu.Item>
         </Menu>
     );

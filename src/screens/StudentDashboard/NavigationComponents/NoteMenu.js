@@ -40,7 +40,7 @@ const StyledMenuItem = withStyles((theme) => ({
     },
 }))(MenuItem);
 
-const  OrarMenu = () =>{
+const  NoteMenu = () =>{
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -60,7 +60,7 @@ const  OrarMenu = () =>{
                 color="primary"
                 onClick={handleClick}
             >
-                Orar
+                Note
             </Button>
             <StyledMenu
                 id="customized-menu"
@@ -69,25 +69,25 @@ const  OrarMenu = () =>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <Link href="/studentdash/orar" >
-                <StyledMenuItem >
-                    <ListItemIcon onClick={handleClose}>
-                        <ScheduleIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Orar personal" onClick={handleClose} />
-                </StyledMenuItem>
+                <Link href="/studentdash/note" >
+                    <StyledMenuItem >
+                        <ListItemIcon onClick={handleClose}>
+                            <ScheduleIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Note" onClick={handleClose} />
+                    </StyledMenuItem>
                 </Link>
-                <Link href="/studentdash/orarexamene">
-                <StyledMenuItem>
-                    <ListItemIcon onClick={handleClose}>
-                        <EventNoteIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Orar examene" onClick={handleClose} />
-                </StyledMenuItem>
+                <Link href="/studentdash/statistici">
+                    <StyledMenuItem>
+                        <ListItemIcon onClick={handleClose}>
+                            <EventNoteIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Statistici" onClick={handleClose} />
+                    </StyledMenuItem>
                 </Link>
             </StyledMenu>
         </div>
     );
 }
 
-export default OrarMenu;
+export default NoteMenu;
