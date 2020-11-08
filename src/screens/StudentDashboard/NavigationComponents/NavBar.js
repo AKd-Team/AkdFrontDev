@@ -1,16 +1,16 @@
 import React,{useState,useEffect} from "react";
 import OrarMenu from "./OrarMenu";
 import ProfesoriMenu from "./ProfesoriMenu";
-import Link from './Link';
 import { Menu } from 'semantic-ui-react'
 import NoteMenu from "./NoteMenu";
 import Button from "@material-ui/core/Button";
+import {Link } from 'react-router-dom';
 
 const NavBar = (props) =>{
     return(
         <Menu fluid widths={8} >
             <Menu.Item>
-                <Link href="/studentdash/student">
+                <Link to="/studentdash/student">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -22,7 +22,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/studentdash/datepersonale">
+                <Link to="/studentdash/datepersonale">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -44,31 +44,33 @@ const NavBar = (props) =>{
                 <NoteMenu/>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/studentdash/contract">
+                <Link to="/studentdash/contract">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
                         aria-haspopup="true"
                         color="primary"
                     >
+                        <i className="big file alternate icon"/>
                         Contracte
                     </Button>
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/studentdash/regulament">
+                <Link to="/studentdash/regulament">
                 <Button
                     className="root"
                     aria-controls="customized-menu"
                     aria-haspopup="true"
                     color="primary"
                 >
+                    <i className="big info circle icon"/>
                     Regulament
                 </Button>
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/login">
+                <Link to="/">
                     <Button
                         className="root"
                         aria-controls="customized-menu"

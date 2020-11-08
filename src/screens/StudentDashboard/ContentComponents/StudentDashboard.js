@@ -10,46 +10,45 @@ import OrarPersonalContent from "./OrarPersonalContent";
 import OrarExamene from "./OrarExamene";
 import RegulamentContent from "./RegulamentContent";
 import StatisticiContent from "./StatisticiContent";
-import Route from "../NavigationComponents/Route";
-import GuardedRoute from "../../../GuardedRoute";
+import {Route} from "react-router";
 
 const StudentDashboard = (props) =>{
     useEffect(()=>{
-        window.history.pushState({},'','/studentdash')
+        window.history.pushState({},'','/studentdash/student')
     },[])
     return (
         <div>
             <NavBar onLogout={props.onLogout}/>
-            <GuardedRoute path="/studentdash/student" isAuth={props.isAuth}>
+            <Route path="/studentdash/student">
                 <HomeContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/contract" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/contract">
                 <ContractContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/datepersonale" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/datepersonale">
                 <DatePersonaleContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/evaluariprof" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/evaluariprof">
                 <EvaluariProfesori/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/listaprof" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/listaprof">
                 <ListaProfesoriContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/note" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/note">
                 <NoteContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/orar" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/orar">
                 <OrarPersonalContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/orarexamene" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/orarexamene">
                 <OrarExamene/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/regulament" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/regulament">
                 <RegulamentContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/studentdash/statistici" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/studentdash/statistici">
                 <StatisticiContent/>
-            </GuardedRoute>
+            </Route>
         </div>
 
     );

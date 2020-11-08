@@ -7,7 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import Link from "./Link";
+import {Link} from 'react-router-dom';
 
 const StyledMenu = withStyles({
     paper: {
@@ -69,7 +69,7 @@ const  ProfesoriMenu = () =>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <Link href="/studentdash/listaprof" >
+                <Link to="/studentdash/listaprof" >
                     <StyledMenuItem >
                         <ListItemIcon onClick={handleClose}>
                             <ScheduleIcon fontSize="small" />
@@ -77,7 +77,7 @@ const  ProfesoriMenu = () =>{
                         <ListItemText primary="Lista Profesori" onClick={handleClose} />
                     </StyledMenuItem>
                 </Link>
-                <Link href="/studentdash/evaluariprof">
+                <Link to="/studentdash/evaluariprof">
                     <StyledMenuItem>
                         <ListItemIcon onClick={handleClose}>
                             <EventNoteIcon fontSize="small" />
