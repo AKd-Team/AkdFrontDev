@@ -12,11 +12,12 @@ const App = () =>{
 
    function onLogin() {
         setisAuthenticated(true);
-        setCrtUser('student');
+        //setCrtUser('student');
+        setCrtUser('teacher');
     }
-    function onLogout(){
-       setisAuthenticated(false);
-       setCrtUser('');
+    function onLogout() {
+        setisAuthenticated(false);
+        setCrtUser('');
     }
 
     if(crtUser===''&&isAuthenticated===false){
@@ -24,6 +25,9 @@ const App = () =>{
     }
     if(crtUser==='student'&&isAuthenticated===true){
         return <StudentDashboard onLogout={onLogout} isAuth={isAuthenticated}/>
+    }
+    if(crtUser==='teacher'&&isAuthenticated===true){
+        return <TeacherDashboard onLogout={onLogout} isAuth={isAuthenticated}/>
     }
 
 
