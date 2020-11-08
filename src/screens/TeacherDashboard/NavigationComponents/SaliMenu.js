@@ -7,7 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import {Link} from 'react-router-dom';
+import Link from "./Link";
 
 const StyledMenu = withStyles({
     paper: {
@@ -60,7 +60,7 @@ const  OrarMenu = () =>{
                 color="primary"
                 onClick={handleClick}
             >
-                Orar
+                Sali
             </Button>
             <StyledMenu
                 id="customized-menu"
@@ -69,20 +69,20 @@ const  OrarMenu = () =>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <Link to="/studentdash/orar" >
+                <Link href="/teacherdash/ocupareSali" >
                 <StyledMenuItem >
                     <ListItemIcon onClick={handleClose}>
                         <ScheduleIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText primary="Orar personal" onClick={handleClose} />
+                    <ListItemText primary="Ocupare Sali" onClick={handleClose} />
                 </StyledMenuItem>
                 </Link>
-                <Link to="/studentdash/orarexamene">
+                <Link href="/teacherdash/programareExamen">
                 <StyledMenuItem>
                     <ListItemIcon onClick={handleClose}>
                         <EventNoteIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText primary="Orar examene" onClick={handleClose} />
+                    <ListItemText primary="Programare examen" onClick={handleClose} />
                 </StyledMenuItem>
                 </Link>
             </StyledMenu>

@@ -1,36 +1,23 @@
 import React,{useState,useEffect} from "react";
-import OrarMenu from "./OrarMenu";
-import ProfesoriMenu from "./ProfesoriMenu";
 import { Menu } from 'semantic-ui-react'
-import NoteMenu from "./NoteMenu";
 import Button from "@material-ui/core/Button";
-import {Link } from 'react-router-dom';
+import Link from './Link';
+import OrarMenu from "./OrarMenu";
+import SaliMenu from "./SaliMenu";
+
 
 const NavBar = (props) =>{
     return(
         <Menu fluid widths={8} >
             <Menu.Item>
-                <Link to="/studentdash/student">
+                <Link href="/teacherdash/teacher">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
                         aria-haspopup="true"
                         color="primary"
                     >
-                    <i className="big home icon"/>
-                    </Button>
-                </Link>
-            </Menu.Item>
-            <Menu.Item>
-                <Link to="/studentdash/datepersonale">
-                    <Button
-                        className="root"
-                        aria-controls="customized-menu"
-                        aria-haspopup="true"
-                        color="primary"
-                    >
-                    <i className="big address card icon"/>
-                    Date Personale
+                        <i className="big home icon"/>
                     </Button>
                 </Link>
             </Menu.Item>
@@ -38,39 +25,58 @@ const NavBar = (props) =>{
                 <OrarMenu />
             </Menu.Item>
             <Menu.Item>
-                <ProfesoriMenu />
-            </Menu.Item>
-            <Menu.Item>
-                <NoteMenu/>
-            </Menu.Item>
-            <Menu.Item>
-                <Link to="/studentdash/contract">
+                <Link href="/teacherdash/listaStudenti">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
                         aria-haspopup="true"
                         color="primary"
                     >
-                        <i className="big file alternate icon"/>
-                        Contracte
+                        Lista Studenti
                     </Button>
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link to="/studentdash/regulament">
-                <Button
-                    className="root"
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    color="primary"
-                >
-                    <i className="big info circle icon"/>
-                    Regulament
-                </Button>
+                <SaliMenu/>
+            </Menu.Item>
+            <Menu.Item>
+                <Link href="/teacherdash/adaugareNote">
+                    <Button
+                        className="root"
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        color="primary"
+                    >
+                        Adaugare Note
+                    </Button>
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link to="/">
+                <Link href="/teacherdash/evaluari">
+                    <Button
+                        className="root"
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        color="primary"
+                    >
+                        Evaluari
+                    </Button>
+                </Link>
+            </Menu.Item>
+            <Menu.Item>
+                <Link href="/teacherdash/statistici">
+                    <Button
+                        className="root"
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        color="primary"
+                    >
+                        Statistici
+                    </Button>
+                </Link>
+            </Menu.Item>
+            <Menu.Item>
+                <Link href="/login">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
