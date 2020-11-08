@@ -3,11 +3,11 @@ import StudentDashboard from "./screens/StudentDashboard/ContentComponents/Stude
 import TeacherDashboard from "./screens/TeacherDashboard/TeacherDashboard";
 import AdminDashboard from "./screens/AdminDashboard/AdminDashboard";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
-import {BrowserRouter as Router} from "react-router-dom";
-import {Route,Switch,Link} from "react-router-dom";
+import GuardedRoute from "./GuardedRoute";
+
 
 const App = () =>{
-    const [isAuthenticated,setisAuthenticated]=useState();
+    const [isAuthenticated,setisAuthenticated]=useState(false);
     const [crtUser,setCrtUser]=useState('');
 
    function onLogin() {
@@ -19,18 +19,12 @@ const App = () =>{
        setCrtUser('');
     }
 
-    return(
-        <Router>
-            <Switch>
-                <Route exact path="/">
-                    <LoginScreen onLogin={onLogin}/>
-                </Route>
-                <Route path="/studentdash">
-                    <StudentDashboard onLogout={onLogout} isAuth={isAuthenticated}/>
-                </Route>
-            </Switch>
-        </Router>
-    );
+    if(crtUser===''&&isAuthenticated===false){
+        return <LoginScreen onLogin={onLogin}/>
+    }
+    if(crtUser==='student'&&isAuthenticated===true){
+        return <StudentDashboard onLogout={onLogout} isAuth={isAuthenticated}/>
+    }
 
 
 };
