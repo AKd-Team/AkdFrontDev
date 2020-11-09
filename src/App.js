@@ -1,38 +1,47 @@
 import React, {useEffect, useState} from 'react';
 import StudentDashboard from "./screens/StudentDashboard/ContentComponents/StudentDashboard";
 import TeacherDashboard from "./screens/TeacherDashboard/TeacherDashboard";
-import AdminDashboard from "./screens/AdminDashboard/ContentComponents/AdminDashboard";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
-import GuardedRoute from "./GuardedRoute";
+import AdminDashboard from "./screens/AdminDashboard/ContentComponents/AdminDashboard";
+import {BrowserRouter as Router} from "react-router-dom";
+import {Route,Switch,Link} from "react-router-dom";
+import {SessionContext} from "./SessionManagement/SessionContext";
 
+const App = () => {
+    const [isAuthenticated, setisAuthenticated] = useState(true);
+    const [crtUser, setCrtUser] = useState('');
 
-const App = () =>{
-
-    const [isAuthenticated,setisAuthenticated]=useState(false);
-    const [crtUser,setCrtUser]=useState('');
-
-   function onLogin() {
-        setisAuthenticated(true);
-        setCrtUser('admin');
+    useEffect(()=>{
+        window.history.pushState({},'',"/");
+    },[])
+    function onLogout() {
+       // setisAuthenticated(false);
+        //setCrtUser('');
     }
-    function onLogout(){
-       setisAuthenticated(false);
-       setCrtUser('');
-    }
 
-    if(crtUser===''&&isAuthenticated===false){
-        return <LoginScreen onLogin={onLogin}/>
-    }
-    if(crtUser==='admin'&&isAuthenticated===true){
-        return <AdminDashboard onLogout={onLogout} isAuth={isAuthenticated}/>
-    }
-    if(crtUser==='student'&&isAuthenticated===true){
-        return <StudentDashboard onLogout={onLogout} isAuth={isAuthenticated}/>
-    }
-    return null;
+    return (
+        <Router>
+            <Switch>
+                <Route exact path="/" render={(props) => (
+                    <LoginScreen {...props}  />
+                )}/>
 
+                <Route path="/studentdash" render={(props) => (
+                    <StudentDashboard {...props} onLogout={onLogout} />
+                )} />
 
-};
+                <Route path="/teacherdash" render={(props) => (
+                    <TeacherDashboard {...props} onLogout={onLogout} />
+                )}/>
 
+                <Route path="/admindash" render={(props) => (
+                    <AdminDashboard {...props} onLogout={onLogout} />
+                )}/>
+
+            </Switch>
+        </Router>
+    );
+
+}
 export default App;
 

@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import Route from "./NavigationComponents/Route";
-import GuardedRoute from "./../../GuardedRoute";
+import React from 'react';
 import NavBar from "./NavigationComponents/NavBar";
 import HomeContent from "./ContentComponents/HomeContent";
 import OrarPersonalizatContent from "./ContentComponents/OrarPersonalizat";
@@ -11,47 +9,46 @@ import ProgramareExamen from "./ContentComponents/ProgramareExamen";
 import AdaugareNote from "./ContentComponents/AdaugareNote";
 import Evaluari from "./ContentComponents/Evaluari";
 import Statistici from "./ContentComponents/Statistici";
+import {Route} from "react-router";
 
 const TeacherDashboard = (props) =>{
-    useEffect(()=>{
-        window.history.pushState({},'','/teacherdash')
-    },[])
+
     return (
         <div>
             <NavBar onLogout={props.onLogout}/>
-            <GuardedRoute path="/teacherdash/teacher" isAuth={props.isAuth}>
+            <Route path="/teacherdash/teacher">
                 <HomeContent/>
-            </GuardedRoute>
+            </Route>
 
-            <GuardedRoute path="/teacherdash/orarPersonalizat" isAuth={props.isAuth}>
+            <Route path="/teacherdash/orarPersonalizat" >
                 <OrarPersonalizatContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/teacherdash/orarExamene" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/teacherdash/orarExamene" >
                 <OrarExamene/>
-            </GuardedRoute>
+            </Route>
 
-            <GuardedRoute path="/teacherdash/listaStudenti" isAuth={props.isAuth}>
+            <Route path="/teacherdash/listaStudenti" >
                 <ListaStudenti/>
-            </GuardedRoute>
+            </Route>
 
-            <GuardedRoute path="/teacherdash/ocupareSali" isAuth={props.isAuth}>
+            <Route path="/teacherdash/ocupareSali" >
                 <OcupareSali/>
-            </GuardedRoute>
-            <GuardedRoute path="/teacherdash/programareExamen" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/teacherdash/programareExamen" >
                 <ProgramareExamen/>
-            </GuardedRoute>
+            </Route>
 
-            <GuardedRoute path="/teacherdash/adaugareNote" isAuth={props.isAuth}>
+            <Route path="/teacherdash/adaugareNote" >
                 <AdaugareNote/>
-            </GuardedRoute>
+            </Route>
 
-            <GuardedRoute path="/teacherdash/evaluari" isAuth={props.isAuth}>
+            <Route path="/teacherdash/evaluari" >
                 <Evaluari/>
-            </GuardedRoute>
+            </Route>
 
-            <GuardedRoute path="/teacherdash/statistici" isAuth={props.isAuth}>
+            <Route path="/teacherdash/statistici" >
                <Statistici/>
-            </GuardedRoute>
+            </Route>
         </div>
     );
 };

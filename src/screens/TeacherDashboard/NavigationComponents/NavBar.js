@@ -1,16 +1,16 @@
 import React,{useState,useEffect} from "react";
 import { Menu } from 'semantic-ui-react'
 import Button from "@material-ui/core/Button";
-import Link from './Link';
 import OrarMenu from "./OrarMenu";
 import SaliMenu from "./SaliMenu";
+import {Link} from 'react-router-dom';
 
 
 const NavBar = (props) =>{
     return(
         <Menu fluid widths={8} >
             <Menu.Item>
-                <Link href="/teacherdash/teacher">
+                <Link to="/teacherdash/teacher">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -25,7 +25,7 @@ const NavBar = (props) =>{
                 <OrarMenu />
             </Menu.Item>
             <Menu.Item>
-                <Link href="/teacherdash/listaStudenti">
+                <Link to="/teacherdash/listaStudenti">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -40,7 +40,7 @@ const NavBar = (props) =>{
                 <SaliMenu/>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/teacherdash/adaugareNote">
+                <Link to="/teacherdash/adaugareNote">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -52,7 +52,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/teacherdash/evaluari">
+                <Link to="/teacherdash/evaluari">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -64,7 +64,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/teacherdash/statistici">
+                <Link to="/teacherdash/statistici">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -76,7 +76,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/login">
+                <Link to="/">
                     <Button
                         className="root"
                         aria-controls="customized-menu"

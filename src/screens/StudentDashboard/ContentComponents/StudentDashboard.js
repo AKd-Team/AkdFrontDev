@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import NavBar from "../NavigationComponents/NavBar";
 import HomeContent from "./HomeContent";
 import ContractContent from "./ContractContent";
@@ -13,9 +13,6 @@ import StatisticiContent from "./StatisticiContent";
 import {Route} from "react-router";
 
 const StudentDashboard = (props) =>{
-    useEffect(()=>{
-        window.history.pushState({},'','/studentdash/student')
-    },[])
     return (
         <div>
             <NavBar onLogout={props.onLogout}/>
@@ -50,7 +47,6 @@ const StudentDashboard = (props) =>{
                 <StatisticiContent/>
             </Route>
         </div>
-
     );
 };
 

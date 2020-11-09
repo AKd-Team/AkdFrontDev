@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import {Button} from "semantic-ui-react";
 import LoginForm from "./LoginForm";
 import {makeStyles} from "@material-ui/core/styles";
+import {useHistory} from "react-router";
+
 
 const styles = makeStyles((theme) => ({
     divStyle:{
@@ -26,9 +28,10 @@ const styles = makeStyles((theme) => ({
 }));
 
 const LoginScreen = (props) =>{
+    const history = useHistory();
     const studentUser={
-        username: "ala",
-        password: "bala"
+        username: "teacher",
+        password: "123"
     }
 
     const[user, setUser]= useState({username:""})
@@ -36,29 +39,15 @@ const LoginScreen = (props) =>{
 
     const s=styles();
 
-    const Login = details =>{
-        console.log(details);
-
-        if(details.username == studentUser.username && details.password == studentUser.password)
-        {
-            console.log("logged in");
-            setUser({
-                username:details.username,
-                password: details.password
-            });
-
-        }
-        else
-        {
-            console.log("details do not match")
-        }
+    const  Login =  (details) =>{
+        setUser({
+            username:details.username,
+            password: details.password
+        });
+        history.push(`/${details.username}dash/${details.username}`)
     }
 
 
-
-    useEffect(()=>{
-        window.history.pushState({},'','/login')
-    },[])
 
      return(
          <div className="LoginScreen">
@@ -71,9 +60,6 @@ const LoginScreen = (props) =>{
 
              <LoginForm Login={Login} error={error} />
 
-             <Button variant="contained" size="large"  onClick={props.onLogin}>
-                 login
-             </Button>
              
          </div>
      )

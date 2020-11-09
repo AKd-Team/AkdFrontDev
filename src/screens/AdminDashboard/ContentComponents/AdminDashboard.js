@@ -6,37 +6,33 @@ import CreareContProf from "./CreareContProf";
 import EditareCatalog from "./EditareCatalog";
 import EditareRegulament from "./EditareRegulament";
 import EditareCalendar from "./EditareCalendar";
+import {Route} from "react-router";
 
-import GuardedRoute from "../../../GuardedRoute";
 
 const AdminDashboard = (props) =>{
-    useEffect(()=>{
-        window.history.pushState({},'','/studentdash')
-    },[])
     return (
         <div>
             <NavBar onLogout={props.onLogout}/>
-            <GuardedRoute path="/admindash/admin" isAuth={props.isAuth}>
+            <Route path="/admindash/admin" >
                 <HomeContent/>
-            </GuardedRoute>
-            <GuardedRoute path="/admindash/creare-cont-student" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/admindash/creare-cont-student" >
                 <CreareContStudent />
-            </GuardedRoute>
-            <GuardedRoute path="/admindash/creare-cont-profesor" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/admindash/creare-cont-profesor" >
                 <CreareContProf />
-            </GuardedRoute>
-            <GuardedRoute path="/admindash/editare-catalog" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/admindash/editare-catalog" >
                 <EditareCatalog/>
-            </GuardedRoute>
-            <GuardedRoute path="/admindash/editare-regulament" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/admindash/editare-regulament" >
                 <EditareRegulament/>
-            </GuardedRoute>
-            <GuardedRoute path="/admindash/editare-calendar" isAuth={props.isAuth}>
+            </Route>
+            <Route path="/admindash/editare-calendar" >
                 <EditareCalendar/>
-            </GuardedRoute>
+            </Route>
         </div>
 
     );
 };
-
 export default AdminDashboard;

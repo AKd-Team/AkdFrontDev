@@ -6,9 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import EditIcon from '@material-ui/icons/Edit';
-import EventNoteIcon from '@material-ui/icons/EventNote';
-import Link from "./Link";
-
+import {Link } from 'react-router-dom';
 const StyledMenu = withStyles({
     paper: {
         border: '1px solid #d3d4d5',
@@ -69,7 +67,7 @@ const  CreareContMenu = () =>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <Link href="/admindash/creare-cont-student" >
+                <Link to="/admindash/creare-cont-student" >
                     <StyledMenuItem >
                         <ListItemIcon onClick={handleClose}>
                             <EditIcon fontSize="small" />
@@ -77,7 +75,7 @@ const  CreareContMenu = () =>{
                         <ListItemText primary="Creare cont student" onClick={handleClose} />
                     </StyledMenuItem>
                 </Link>
-                <Link href="/admindash/creare-cont-profesor">
+                <Link to="/admindash/creare-cont-profesor">
                     <StyledMenuItem>
                         <ListItemIcon onClick={handleClose}>
                             <EditIcon fontSize="small" />

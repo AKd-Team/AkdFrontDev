@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 
 const NavBar = (props) =>{
     return(
-        <Menu fluid widths={8} >
+        <Menu fluid widths={6} >
             <Menu.Item>
                 <Link href="/admindash/admin">
                     <Button
@@ -60,7 +60,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/login">
+                <Link href="/">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
