@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 
 
@@ -50,14 +51,44 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-
 function LoginForm({ Login, error }) {
-    const[details, setDetails]=useState({username:"", password:""});
+     const[details, setDetails]=useState({username:"", password:""});
+   // const[username, setUsername]=useState("");
+   // const[password, setPassword]=useState("");
 
     const submitHandler = e =>{
+       // "http://localhost:4000/users/authenticate"
+        //"https://reqres.in/api/login"
+       // console.log("form submitted");
+       /* axios.post("https://reqres.in/api/login", {
+            user:{
+                username: details.username,
+                password: details.password
+            }
+        },
+            {
+                withCredentials: true
+            }).then(response =>{
+                console.log("registration res", response);
+        }).catch(error => {
+            console.log("login error", error);
+        })*/
+
+        fetch("https://reqres.in/api/login", {
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-type':'application/json'
+            },
+            body: JSON.stringify(details)
+        }).then(res => res.json())
+            .then((data) => {
+                console.log("response data", data);
+            }).catch(error =>{
+                console.log("login err", error);
+        })
         e.preventDefault();
-        Login(details);
+
     }
 
     const classes = useStyles();
