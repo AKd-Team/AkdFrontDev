@@ -1,5 +1,4 @@
-import React, { useState} from "react";
-import {Button} from "semantic-ui-react";
+import React, {useEffect} from "react";
 import LoginForm from "./LoginForm";
 import {makeStyles} from "@material-ui/core/styles";
 import {useHistory} from "react-router";
@@ -29,27 +28,14 @@ const styles = makeStyles((theme) => ({
 }));
 
 const LoginScreen = (props) =>{
-    const history = useHistory();
-    const studentUser={
-        username: "teacher",
-        password: "123"
-    }
-
-    const[user, setUser]= useState({username:""})
-    const[error, setError]=useState("");
-
+    const history=useHistory();
+    const User=JSON.parse(localStorage.getItem("user"));
+    useEffect(()=>{
+        if(User!=null){
+            history.push(`/${User.Type}dash/${User.Type}`)
+        }
+    },[]);
     const s=styles();
-
-    const  Login =  (details) =>{
-        setUser({
-            username:details.username,
-            password: details.password
-        });
-        history.push(`/${details.username}dash/${details.username}`)
-    }
-
-
-
      return(
          <div className="LoginScreen">
              <div className={s.divStyle}>
@@ -59,7 +45,7 @@ const LoginScreen = (props) =>{
                  <p className={s.ubbText}>Universitatea Babes-Bolyai</p>
              </div>
 
-             <LoginForm Login={Login} error={error} />
+             <LoginForm onLogin={props.onLogin} history={props.history}/>
 
              
          </div>

@@ -1,43 +1,42 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import StudentDashboard from "./screens/StudentDashboard/ContentComponents/StudentDashboard";
 import TeacherDashboard from "./screens/TeacherDashboard/TeacherDashboard";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import AdminDashboard from "./screens/AdminDashboard/ContentComponents/AdminDashboard";
 import {BrowserRouter as Router} from "react-router-dom";
-import {Route,Switch,Link} from "react-router-dom";
-import {SessionContext} from "./SessionManagement/SessionContext";
+import {Route,Switch} from "react-router-dom";
 
 const App = () => {
-    const [isAuthenticated, setisAuthenticated] = useState(true);
-    const [crtUser, setCrtUser] = useState('');
+    const [isAuthenticated, setisAuthenticated] = useState(false);
 
-    useEffect(()=>{
-        window.history.pushState({},'',"/");
-    },[])
-    function onLogout() {
-       // setisAuthenticated(false);
-        //setCrtUser('');
+
+    const onLogin=()=>{
+        setisAuthenticated(true);
     }
+
+    function onLogout() {
+        localStorage.clear();
+        setisAuthenticated(false);
+    }
+
 
     return (
         <Router>
             <Switch>
                 <Route exact path="/" render={(props) => (
-                    <LoginScreen {...props}  />
+                    <LoginScreen {...props} onLogin={onLogin} />
                 )}/>
-
                 <Route path="/studentdash" render={(props) => (
-                    <StudentDashboard {...props} onLogout={onLogout} />
+                    <StudentDashboard {...props} onLogout={onLogout}/>
                 )} />
 
                 <Route path="/teacherdash" render={(props) => (
-                    <TeacherDashboard {...props} onLogout={onLogout} />
+                    <TeacherDashboard {...props} onLogout={onLogout}/>
                 )}/>
 
                 <Route path="/admindash" render={(props) => (
                     <AdminDashboard {...props} onLogout={onLogout} />
                 )}/>
-
             </Switch>
         </Router>
     );

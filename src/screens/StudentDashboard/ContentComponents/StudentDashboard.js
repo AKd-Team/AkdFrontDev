@@ -10,14 +10,27 @@ import OrarPersonalContent from "./OrarPersonalContent";
 import OrarExamene from "./OrarExamene";
 import RegulamentContent from "./RegulamentContent";
 import StatisticiContent from "./StatisticiContent";
-import {Route} from "react-router";
+import {Route,useHistory} from "react-router";
 
 const StudentDashboard = (props) =>{
+    const history=useHistory();
+    const User=JSON.parse(localStorage.getItem("user"));
+    if(User!=null){
+        if(User.Type==="student"){
+
+        }
+        else {
+            history.push(`/${User.Type}dash/${User.Type}`);
+        }
+    }
+    else{
+        history.push("/");
+    }
     return (
         <div>
             <NavBar onLogout={props.onLogout}/>
             <Route path="/studentdash/student">
-                <HomeContent/>
+                <HomeContent />
             </Route>
             <Route path="/studentdash/contract">
                 <ContractContent/>

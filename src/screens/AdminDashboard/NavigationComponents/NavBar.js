@@ -1,14 +1,13 @@
-import React,{useState,useEffect} from "react";
+import React  from "react";
 import CreareContMenu from "./CreareContMenu";
-import Link from "./Link";
 import { Menu } from 'semantic-ui-react'
 import Button from "@material-ui/core/Button";
-
+import {Link} from 'react-router-dom';
 const NavBar = (props) =>{
     return(
         <Menu fluid widths={6} >
             <Menu.Item>
-                <Link href="/admindash/admin">
+                <Link to="/admindash/admin">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -24,7 +23,7 @@ const NavBar = (props) =>{
             </Menu.Item>
 
             <Menu.Item>
-                <Link href="/admindash/editare-catalog">
+                <Link to="/admindash/editare-catalog">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -36,7 +35,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/admindash/editare-regulament">
+                <Link to="/admindash/editare-regulament">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -48,7 +47,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/admindash/editare-calendar">
+                <Link to="/admindash/editare-calendar">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
@@ -60,7 +59,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item>
-                <Link href="/">
+                <Link to="/">
                     <Button
                         className="root"
                         aria-controls="customized-menu"
