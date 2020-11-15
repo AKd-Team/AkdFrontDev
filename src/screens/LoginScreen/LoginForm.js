@@ -7,6 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import {useHistory} from "react-router";
 
 
 
@@ -52,13 +53,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 function LoginForm({ Login, error }) {
-
+    const history=useHistory();
     const[details, setDetails]=useState({username:"", password:""});
    // const[username, setUsername]=useState("");
    // const[password, setPassword]=useState("");
 
 
-    const submitHandler = e =>{
+    const submitHandler = async e =>{
+        e.preventDefault();
        // "http://localhost:4000/users/authenticate"
         //"https://reqres.in/api/login"
        // console.log("form submitted");
@@ -76,29 +78,29 @@ function LoginForm({ Login, error }) {
             console.log("login error", error);
         })*/
 
-        fetch("https://reqres.in/api/login", {
-            method:'POST',
-            headers:{
-                'Accept':'application/json',
-                'Content-type':'application/json'
-            },
-            body: JSON.stringify(details)
-        }).then(res => res.json())
-            .then((data) => {
-                console.log("response data", data);
-            }).catch(error =>{
-                console.log("login err", error);
-        })
-        e.preventDefault();
+        // fetch("https://reqres.in/api/login", {
+        //     method:'POST',
+        //     headers:{
+        //         'Accept':'application/json',
+        //         'Content-type':'application/json'
+        //     },
+        //     body: JSON.stringify(details)
+        // }).then(res => res.json())
+        //     .then((data) => {
+        //         console.log("response data", data);
+        //     }).catch(error =>{
+        //         console.log("login err", error);
+        // })
+
 
         //adaugat de mine
         let User={
-            user:details.username,
+            username:details.username,
             parola: details.password,
             Type: details.username
         }
-        localStorage.setItem=('user',User)
-
+        localStorage.setItem("user",JSON.stringify(User));
+        history.push(`/${User.Type}dash/${User.Type}`);
     }
 
     const classes = useStyles();
