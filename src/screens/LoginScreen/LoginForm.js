@@ -52,9 +52,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 function LoginForm({ Login, error }) {
-     const[details, setDetails]=useState({username:"", password:""});
+
+    const[details, setDetails]=useState({username:"", password:""});
    // const[username, setUsername]=useState("");
    // const[password, setPassword]=useState("");
+
 
     const submitHandler = e =>{
        // "http://localhost:4000/users/authenticate"
@@ -88,6 +90,14 @@ function LoginForm({ Login, error }) {
                 console.log("login err", error);
         })
         e.preventDefault();
+
+        //adaugat de mine
+        let User={
+            user:details.username,
+            parola: details.password,
+            Type: details.username
+        }
+        localStorage.setItem=('user',User)
 
     }
 
