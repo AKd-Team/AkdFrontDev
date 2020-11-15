@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,Component} from "react";
 import OrarMenu from "./OrarMenu";
 import ProfesoriMenu from "./ProfesoriMenu";
 import { Menu } from 'semantic-ui-react'

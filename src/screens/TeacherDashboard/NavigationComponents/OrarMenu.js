@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import {Link} from 'react-router-dom';
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 const StyledMenu = withStyles({
     paper: {
         border: '1px solid #d3d4d5',
@@ -60,6 +61,7 @@ const  OrarMenu = () =>{
                 onClick={handleClick}
             >
                 Orar
+                <ArrowDropDownIcon fontSize="large"/>
             </Button>
             <StyledMenu
                 id="customized-menu"

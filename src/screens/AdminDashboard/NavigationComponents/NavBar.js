@@ -1,4 +1,4 @@
-import React  from "react";
+import React,{Component}  from "react";
 import CreareContMenu from "./CreareContMenu";
 import { Menu } from 'semantic-ui-react'
 import Button from "@material-ui/core/Button";
@@ -30,7 +30,8 @@ const NavBar = (props) =>{
                         aria-haspopup="true"
                         color="primary"
                     >
-                        Editare catalog
+                        <i className="big edit icon"/>
+                        <p>Editare catalog</p>
                     </Button>
                 </Link>
             </Menu.Item>
@@ -42,7 +43,8 @@ const NavBar = (props) =>{
                         aria-haspopup="true"
                         color="primary"
                     >
-                        Editare regulament
+                        <i className="big info circle icon"/>
+                        <p>Editare regulament</p>
                     </Button>
                 </Link>
             </Menu.Item>
@@ -54,6 +56,7 @@ const NavBar = (props) =>{
                         aria-haspopup="true"
                         color="primary"
                     >
+                        <i className="big calendar alternate icon"></i>
                         Editare calendar
                     </Button>
                 </Link>

@@ -32,6 +32,7 @@ const NavBar = (props) =>{
                         aria-haspopup="true"
                         color="primary"
                     >
+                        <i className="big list ul icon"></i>
                         Lista Studenti
                     </Button>
                 </Link>
@@ -47,6 +48,7 @@ const NavBar = (props) =>{
                         aria-haspopup="true"
                         color="primary"
                     >
+                        <i className="big pencil alternate icon"></i>
                         Adaugare Note
                     </Button>
                 </Link>
@@ -59,6 +61,7 @@ const NavBar = (props) =>{
                         aria-haspopup="true"
                         color="primary"
                     >
+                        <i className="big file alternate icon"></i>
                         Evaluari
                     </Button>
                 </Link>
@@ -71,6 +74,7 @@ const NavBar = (props) =>{
                         aria-haspopup="true"
                         color="primary"
                     >
+                        <i className="big chart line icon"></i>
                         Statistici
                     </Button>
                 </Link>
