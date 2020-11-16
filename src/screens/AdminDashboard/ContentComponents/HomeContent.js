@@ -7,7 +7,7 @@ const HomeContent = () =>{
     var HomeText;
     if(User!=null){
         if(User.Type==="admin"){
-            HomeText=`This is home for ${User.username}`;
+            HomeText=`This is home for ${User.username} with first name ${User.firstname} and last name ${User.lastname}`;
         }
         else {
             history.push(`/${User.Type}dash/${User.Type}`);
