@@ -5,7 +5,6 @@ import OrarMenu from "./OrarMenu";
 import SaliMenu from "./SaliMenu";
 import {Link} from 'react-router-dom';
 
-
 const NavBar = (props) =>{
     return(
         <Menu fluid widths={8} >

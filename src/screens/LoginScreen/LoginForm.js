@@ -58,7 +58,6 @@ function LoginForm({ Login, error }) {
    // const[username, setUsername]=useState("");
    // const[password, setPassword]=useState("");
 
-
     const submitHandler = async e =>{
         e.preventDefault();
         axios.post('http://localhost:4000/users/login', {
@@ -129,7 +128,8 @@ function LoginForm({ Login, error }) {
                     <InputBase
                         className={classes.input}
                         placeholder="Username"
-                        onChange={e => setDetails({...details, username: e.target.value})} value={details.username}/>
+                        onChange={e => setDetails({...details, username: e.target.value})}
+                        value={details.username}/>
                 </Paper>
 
                 <Paper component="form" className={classes.root}>
@@ -139,7 +139,8 @@ function LoginForm({ Login, error }) {
                         className={classes.input}
                         placeholder="Password"
                         type={"password"}
-                        onChange={e => setDetails({...details, password: e.target.value})} value={details.password}/>
+                        onChange={e => setDetails({...details, password: e.target.value})}
+                        value={details.password}/>
 
                 </Paper>
                 <div>

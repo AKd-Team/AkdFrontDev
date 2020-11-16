@@ -73,7 +73,7 @@ const  OrarMenu = () =>{
                 <Link to="/teacherdash/orarPersonalizat" >
                 <StyledMenuItem >
                     <ListItemIcon onClick={handleClose}>
-                        <ScheduleIcon fontSize="small" />
+                        <ScheduleIcon fontSize="default" />
                     </ListItemIcon>
                     <ListItemText primary="Orar personalizat" onClick={handleClose} />
                 </StyledMenuItem>
@@ -81,7 +81,7 @@ const  OrarMenu = () =>{
                 <Link to="/teacherdash/orarExamene">
                 <StyledMenuItem>
                     <ListItemIcon onClick={handleClose}>
-                        <EventNoteIcon fontSize="small" />
+                        <EventNoteIcon fontSize="default" />
                     </ListItemIcon>
                     <ListItemText primary="Orar examene" onClick={handleClose} />
                 </StyledMenuItem>
