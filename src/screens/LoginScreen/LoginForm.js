@@ -60,6 +60,25 @@ function LoginForm({ Login, error }) {
 
     const submitHandler = async e =>{
         e.preventDefault();
+        axios.post('http://localhost:4000/users/login', {
+            username: details.username,
+            password: details.password,
+        })
+            .then(function (response) {
+                let User={
+                    username:details.username,
+                    firstname:response.data.firstName,
+                    lastname:response.data.lastName,
+                    Type: response.data.tipUtilizator,
+                    token:response.data.token,
+                }
+                localStorage.setItem("user",JSON.stringify(User));
+                history.push(`/${User.Type}dash/${User.Type}`);
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
        // "http://localhost:4000/users/authenticate"
         //"https://reqres.in/api/login"
        // console.log("form submitted");
@@ -93,13 +112,8 @@ function LoginForm({ Login, error }) {
 
 
         //adaugat de mine
-        let User={
-            username:details.username,
-            parola: details.password,
-            Type: details.username
-        }
-        localStorage.setItem("user",JSON.stringify(User));
-        history.push(`/${User.Type}dash/${User.Type}`);
+
+
     }
 
     const classes = useStyles();
