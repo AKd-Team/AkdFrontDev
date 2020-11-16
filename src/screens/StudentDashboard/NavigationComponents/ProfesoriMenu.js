@@ -5,10 +5,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import EventNoteIcon from '@material-ui/icons/EventNote';
 import {Link} from 'react-router-dom';
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 
 const StyledMenu = withStyles({
     paper: {
@@ -61,6 +61,7 @@ const  ProfesoriMenu = () =>{
                 color="primary"
                 onClick={handleClick}
             >
+                <i className="big users icon"/>
                 Profesori
                 <ArrowDropDownIcon fontSize="large"/>
             </Button>
@@ -74,7 +75,7 @@ const  ProfesoriMenu = () =>{
                 <Link to="/studentdash/listaprof" >
                     <StyledMenuItem >
                         <ListItemIcon onClick={handleClose}>
-                            <ScheduleIcon fontSize="small" />
+                            <FormatListBulletedIcon fontSize="default" />
                         </ListItemIcon>
                         <ListItemText primary="Lista Profesori" onClick={handleClose} />
                     </StyledMenuItem>
@@ -82,7 +83,7 @@ const  ProfesoriMenu = () =>{
                 <Link to="/studentdash/evaluariprof">
                     <StyledMenuItem>
                         <ListItemIcon onClick={handleClose}>
-                            <EventNoteIcon fontSize="small" />
+                            <DoneOutlineIcon  fontSize="default" />
                         </ListItemIcon>
                         <ListItemText primary="Evaluari" onClick={handleClose} />
                     </StyledMenuItem>

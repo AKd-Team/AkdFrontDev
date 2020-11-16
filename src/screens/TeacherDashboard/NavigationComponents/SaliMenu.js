@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import EventNoteIcon from '@material-ui/icons/EventNote';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 import {Link} from 'react-router-dom';
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 const StyledMenu = withStyles({
@@ -73,7 +73,7 @@ const  OrarMenu = () =>{
                 <Link to="/teacherdash/ocupareSali" >
                 <StyledMenuItem >
                     <ListItemIcon onClick={handleClose}>
-                        <ScheduleIcon fontSize="small" />
+                        <ScheduleIcon fontSize="default" />
                     </ListItemIcon>
                     <ListItemText primary="Ocupare Sali" onClick={handleClose} />
                 </StyledMenuItem>
@@ -81,7 +81,7 @@ const  OrarMenu = () =>{
                 <Link to="/teacherdash/programareExamen">
                 <StyledMenuItem>
                     <ListItemIcon onClick={handleClose}>
-                        <EventNoteIcon fontSize="small" />
+                        <PostAddIcon fontSize="default" />
                     </ListItemIcon>
                     <ListItemText primary="Programare examen" onClick={handleClose} />
                 </StyledMenuItem>

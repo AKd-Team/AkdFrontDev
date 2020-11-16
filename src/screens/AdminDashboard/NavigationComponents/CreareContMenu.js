@@ -59,6 +59,7 @@ const  CreareContMenu = () =>{
                 color="primary"
                 onClick={handleClick}
             >
+                <i className="big plus circle icon"></i>
                 Creare cont
                 <ArrowDropDownIcon fontSize="large"/>
             </Button>
@@ -72,7 +73,7 @@ const  CreareContMenu = () =>{
                 <Link to="/admindash/creare-cont-student" >
                     <StyledMenuItem >
                         <ListItemIcon onClick={handleClose}>
-                            <EditIcon fontSize="small" />
+                            <EditIcon fontSize="default" />
                         </ListItemIcon>
                         <ListItemText primary="Creare cont student" onClick={handleClose} />
                     </StyledMenuItem>
@@ -80,7 +81,7 @@ const  CreareContMenu = () =>{
                 <Link to="/admindash/creare-cont-profesor">
                     <StyledMenuItem>
                         <ListItemIcon onClick={handleClose}>
-                            <EditIcon fontSize="small" />
+                            <EditIcon fontSize="default" />
                         </ListItemIcon>
                         <ListItemText primary="Creare cont profesor" onClick={handleClose} />
                     </StyledMenuItem>

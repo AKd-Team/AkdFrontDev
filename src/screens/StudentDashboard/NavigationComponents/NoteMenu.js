@@ -5,10 +5,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import EventNoteIcon from '@material-ui/icons/EventNote';
 import {Link} from 'react-router-dom';
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 const StyledMenu = withStyles({
     paper: {
@@ -74,7 +74,7 @@ const  NoteMenu = () =>{
                 <Link to="/studentdash/note" >
                     <StyledMenuItem >
                         <ListItemIcon onClick={handleClose}>
-                            <ScheduleIcon fontSize="small" />
+                            <EmojiEventsIcon  fontSize="default" />
                         </ListItemIcon>
                         <ListItemText primary="Note" onClick={handleClose} />
                     </StyledMenuItem>
@@ -82,7 +82,7 @@ const  NoteMenu = () =>{
                 <Link to="/studentdash/statistici">
                     <StyledMenuItem>
                         <ListItemIcon onClick={handleClose}>
-                            <EventNoteIcon fontSize="small" />
+                            <EqualizerIcon fontSize="default" />
                         </ListItemIcon>
                         <ListItemText primary="Statistici" onClick={handleClose} />
                     </StyledMenuItem>
