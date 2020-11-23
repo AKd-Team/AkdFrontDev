@@ -8,24 +8,42 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import {useHistory} from "react-router";
-
-
-
-
+import {LoginUrl} from "./URL";
+import { green } from '@material-ui/core/colors';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Shake from 'react-reveal/Shake';
 const useStyles = makeStyles((theme) => ({
     center:{
         margin: 'auto',
-        width: '26%'
-
+        width: '30%'
     },
     root: {
         padding: '2px 4px',
         borderRadius: 35,
         display: 'flex',
         alignItems:'center',
-        width: 400,
+        width: '100%',
         marginBottom: '5%',
         border: '2px solid #004276',
+    },
+    loading:{
+        margin: 'auto',
+        width: '30%',
+        padding: '2px 4px',
+        display: 'flex',
+        alignItems:'center',
+        marginBottom: '5%',
+    },
+    errorText:{
+        color : "red",
+    },
+    error : {
+        padding: '3px 4px',
+        alignItems:'center',
+        display: 'flex',
+        width: '100%',
+        marginBottom: '5%',
+        marginTop: '5%',
     },
     input: {
         marginLeft: theme.spacing(1),
@@ -38,29 +56,49 @@ const useStyles = makeStyles((theme) => ({
         height: 28,
         margin: 4,
     },
+    buttonProgress: {
+        color: green[500],
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
     loginButton: {
-        borderRadius: 35,
-        marginLeft: '40%',
+        borderRadius: 50,
+        marginLeft: '35%',
         color: '#004276',
         display: 'flex',
         alignItems:'center',
+        width: '30%',
     },
     loginBtnText:{
         color:'white',
         fontWeight: 'bold'
-    }
+    },
+
 }));
 
 
-function LoginForm({ Login, error }) {
+function LoginForm() {
     const history=useHistory();
-    const[details, setDetails]=useState({username:"", password:""});
-   // const[username, setUsername]=useState("");
-   // const[password, setPassword]=useState("");
+    const [details, setDetails]=useState({username:"", password:""});
+    const [loading,setLoading]=useState(false);
+    const [Error,setError]=useState(false);
+    const [success, setSuccess] = useState(false);
+    const timer = React.useRef();
+
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
 
     const submitHandler = async e =>{
         e.preventDefault();
-        axios.post('http://localhost:4000/users/login', {
+        setSuccess(false);
+        setLoading(true);
+        axios.post(LoginUrl, {
             username: details.username,
             password: details.password,
         })
@@ -72,56 +110,73 @@ function LoginForm({ Login, error }) {
                     Type: response.data.tipUtilizator,
                     token:response.data.token,
                 }
-                localStorage.setItem("user",JSON.stringify(User));
-                history.push(`/${User.Type}dash/${User.Type}`);
+                 timer.current = window.setTimeout(() => {
+                    setSuccess(true);
+                    setLoading(false);
+                    localStorage.setItem("user",JSON.stringify(User));
+                    history.push(`/${User.Type}dash/${User.Type}`);
+                }, 1500);
+                // localStorage.setItem("user",JSON.stringify(User));
+                // history.push(`/${User.Type}dash/${User.Type}`);
                 console.log(response);
             })
             .catch(function (error) {
+                timer.current=window.setTimeout(()=>{
+                    setError(true);
+                    setSuccess(false);
+                    setLoading(false);
+                },1000);
+
                 console.log(error);
             });
-       // "http://localhost:4000/users/authenticate"
-        //"https://reqres.in/api/login"
-       // console.log("form submitted");
-       /* axios.post("https://reqres.in/api/login", {
-            user:{
-                username: details.username,
-                password: details.password
-            }
-        },
-            {
-                withCredentials: true
-            }).then(response =>{
-                console.log("registration res", response);
-        }).catch(error => {
-            console.log("login error", error);
-        })*/
-
-        // fetch("https://reqres.in/api/login", {
-        //     method:'POST',
-        //     headers:{
-        //         'Accept':'application/json',
-        //         'Content-type':'application/json'
-        //     },
-        //     body: JSON.stringify(details)
-        // }).then(res => res.json())
-        //     .then((data) => {
-        //         console.log("response data", data);
-        //     }).catch(error =>{
-        //         console.log("login err", error);
-        // })
-
-
-        //adaugat de mine
-
-
     }
+    const EnterPress = async e =>{
+        if(e.keyCode===13){
+            //e.preventDefault();
+            setSuccess(false);
+            setLoading(true);
+            axios.post(LoginUrl, {
+                username: details.username,
+                password: details.password,
+            })
+                .then(function (response) {
+                    let User={
+                        username:details.username,
+                        firstname:response.data.firstName,
+                        lastname:response.data.lastName,
+                        Type: response.data.tipUtilizator,
+                        token:response.data.token,
+                    }
+                    timer.current = window.setTimeout(() => {
+                        setSuccess(true);
+                        setLoading(false);
+                        localStorage.setItem("user",JSON.stringify(User));
+                        history.push(`/${User.Type}dash/${User.Type}`);
+                    }, 1500);
+                    // localStorage.setItem("user",JSON.stringify(User));
+                    // history.push(`/${User.Type}dash/${User.Type}`);
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    timer.current=window.setTimeout(()=>{
+                        setError(true);
+                        setSuccess(false);
+                        setLoading(false);
+                    },1000);
 
+                    console.log(error);
+                });
+        }
+    };
     const classes = useStyles();
 
-    return(
-<form onSubmit={submitHandler}>
+    if(Error)
+        return(
+            <form
+            onSubmit={submitHandler}
+            onKeyDown={EnterPress}
+        >
             <div className={classes.center} >
-                {/*error*/}
                 <Paper component="form"  className={classes.root} >
                     <PersonIcon />
                     <Divider className={classes.divider} orientation="vertical" />
@@ -129,7 +184,8 @@ function LoginForm({ Login, error }) {
                         className={classes.input}
                         placeholder="Username"
                         onChange={e => setDetails({...details, username: e.target.value})}
-                        value={details.username}/>
+                        value={details.username}
+                    />
                 </Paper>
 
                 <Paper component="form" className={classes.root}>
@@ -140,19 +196,74 @@ function LoginForm({ Login, error }) {
                         placeholder="Password"
                         type={"password"}
                         onChange={e => setDetails({...details, password: e.target.value})}
-                        value={details.password}/>
+                        value={details.password}
+                    />
+                </Paper>
+                <div className={classes.error}>
+                    <Shake>
+                    <h4 className={classes.errorText}>Wrong username or password </h4>
+                    </Shake>
+                </div>
+                <div>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        color="primary"
+                        className={classes.loginButton}
+                        type={"submit"}
+                        disabled={loading}
+                    >
+                        <text className={classes.loginBtnText}>login</text>
+                        {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    </Button>
+                </div>
+            </div>
+        </form>
+        );
+    return(
+        <form
+            onSubmit={submitHandler}
+            onKeyPress={EnterPress}
+        >
+            <div className={classes.center} >
+
+                <Paper component="form"  className={classes.root} >
+                    <PersonIcon />
+                    <Divider className={classes.divider} orientation="vertical" />
+                    <InputBase
+                        className={classes.input}
+                        placeholder="Username"
+                        onChange={e => setDetails({...details, username: e.target.value})}
+                        value={details.username}
+                        />
+                </Paper>
+
+                <Paper component="form" className={classes.root}>
+                    <LockIcon />
+                    <Divider className={classes.divider} orientation="vertical" />
+                    <InputBase
+                        className={classes.input}
+                        placeholder="Password"
+                        type={"password"}
+                        onChange={e => setDetails({...details, password: e.target.value})}
+                        value={details.password}
+                        />
 
                 </Paper>
                 <div>
-                    <Button variant="contained" size="large" color="primary" className={classes.loginButton} type={"submit"}  >
+                    <Button
+                        variant="contained"
+                        size="large"
+                        color="primary"
+                        className={classes.loginButton}
+                        disabled={loading}
+                        type={"submit"}  >
                        <text className={classes.loginBtnText}>login</text>
+                        {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
                     </Button>
                 </div>
             </div>
 </form>
-
-
     );
 }
-
 export default LoginForm;

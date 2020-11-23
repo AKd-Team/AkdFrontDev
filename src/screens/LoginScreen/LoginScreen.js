@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import LoginForm from "./LoginForm";
 import {makeStyles} from "@material-ui/core/styles";
 import {useHistory} from "react-router";
-import axios from 'axios';
 
 
 const styles = makeStyles((theme) => ({
@@ -10,7 +9,7 @@ const styles = makeStyles((theme) => ({
         marginTop: '10%',
         marginBottom: '5%',
         margin: 'auto',
-        width: '27%'
+        width: '30%'
     },
     academicText: {
         fontSize: '70px',
@@ -44,10 +43,7 @@ const LoginScreen = (props) =>{
                  </text>
                  <p className={s.ubbText}>Universitatea Babes-Bolyai</p>
              </div>
-
              <LoginForm onLogin={props.onLogin} history={props.history}/>
-
-             
          </div>
      )
 };

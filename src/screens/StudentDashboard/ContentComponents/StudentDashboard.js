@@ -11,7 +11,8 @@ import OrarExamene from "./OrarExamene";
 import RegulamentContent from "./RegulamentContent";
 import StatisticiContent from "./StatisticiContent";
 import {Route,useHistory} from "react-router";
-
+import Fade from 'react-reveal';
+import Slide from 'react-reveal';
 const StudentDashboard = (props) =>{
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
@@ -29,8 +30,8 @@ const StudentDashboard = (props) =>{
     return (
         <div>
             <NavBar onLogout={props.onLogout}/>
-            <Route path="/studentdash/student">
-                <HomeContent />
+            <Route path="/studentdash/student" >
+                    <HomeContent/>
             </Route>
             <Route path="/studentdash/contract">
                 <ContractContent/>

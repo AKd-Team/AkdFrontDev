@@ -5,9 +5,11 @@ import { Menu } from 'semantic-ui-react'
 import NoteMenu from "./NoteMenu";
 import Button from "@material-ui/core/Button";
 import {Link } from 'react-router-dom';
+import Slide from 'react-reveal';
 
 const NavBar = (props) =>{
     return(
+        <Slide top>
         <Menu fluid widths={8} >
             <Menu.Item>
                 <Link to="/studentdash/student">
@@ -84,6 +86,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
         </Menu>
+        </Slide>
     );
 };
 

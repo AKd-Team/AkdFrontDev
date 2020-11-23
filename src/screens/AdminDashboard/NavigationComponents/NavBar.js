@@ -3,8 +3,10 @@ import CreareContMenu from "./CreareContMenu";
 import { Menu } from 'semantic-ui-react'
 import Button from "@material-ui/core/Button";
 import {Link} from 'react-router-dom';
+import Slide from 'react-reveal';
 const NavBar = (props) =>{
     return(
+        <Slide top>
         <Menu fluid widths={6} >
             <Menu.Item>
                 <Link to="/admindash/admin">
@@ -76,6 +78,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
         </Menu>
+        </Slide>
     );
 };
 

@@ -4,9 +4,10 @@ import Button from "@material-ui/core/Button";
 import OrarMenu from "./OrarMenu";
 import SaliMenu from "./SaliMenu";
 import {Link} from 'react-router-dom';
-
+import Slide from 'react-reveal';
 const NavBar = (props) =>{
     return(
+        <Slide top>
         <Menu fluid widths={8} >
             <Menu.Item>
                 <Link to="/teacherdash/teacher">
@@ -93,6 +94,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
         </Menu>
+        </Slide>
     );
 };
 
