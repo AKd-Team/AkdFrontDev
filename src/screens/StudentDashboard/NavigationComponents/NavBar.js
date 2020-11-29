@@ -8,6 +8,8 @@ import {Link } from 'react-router-dom';
 import Slide from 'react-reveal';
 
 const NavBar = (props) =>{
+
+
     return(
         <Slide top>
         <Menu fluid widths={8} >
@@ -37,7 +39,7 @@ const NavBar = (props) =>{
                 </Link>
             </Menu.Item>
             <Menu.Item >
-                <OrarMenu />
+                    <OrarMenu />
             </Menu.Item>
             <Menu.Item>
                 <ProfesoriMenu />

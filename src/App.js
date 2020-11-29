@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import StudentDashboard from "./screens/StudentDashboard/ContentComponents/StudentDashboard";
 import TeacherDashboard from "./screens/TeacherDashboard/TeacherDashboard";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
@@ -8,7 +8,6 @@ import {Route,Switch} from "react-router-dom";
 
 const App = () => {
     const [isAuthenticated, setisAuthenticated] = useState(false);
-
 
     const onLogin=()=>{
         setisAuthenticated(true);

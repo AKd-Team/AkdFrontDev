@@ -8,8 +8,6 @@ import EditareRegulament from "./EditareRegulament";
 import EditareCalendar from "./EditareCalendar";
 import {Route} from "react-router";
 
-
-
 const AdminDashboard = (props) =>{
     return (
         <div>
