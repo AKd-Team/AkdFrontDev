@@ -136,8 +136,14 @@ function LoginForm() {
             lastname:details.username,
             Type:details.username,
         }
-        localStorage.setItem("user",JSON.stringify(User));
-        history.push(`/${User.Type}dash/${User.Type}`);
+        if(User.Type==='student'||User.Type==='admin'||User.Type==='teacher'){
+            localStorage.setItem("user",JSON.stringify(User));
+            history.push(`/${User.Type}dash/${User.Type}`);
+        }
+        else {setError(true);
+                setLoading(false);
+        }
+
     }
     const EnterPress = async e =>{
         if(e.keyCode===13){
