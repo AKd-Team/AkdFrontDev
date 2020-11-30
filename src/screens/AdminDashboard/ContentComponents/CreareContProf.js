@@ -1,9 +1,17 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router";
-import Zoom from 'react-reveal/Zoom';
 import {Button, Divider, Form} from "semantic-ui-react";
 import * as Transition from "react-reveal";
 import {makeStyles} from "@material-ui/core/styles";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
+const TransitionDialog = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
 const useStyles = makeStyles((theme) => ({
     root:{
         justifyContent:'center',
@@ -25,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }));
+
 const CreareContProf = () =>{
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
@@ -41,13 +50,23 @@ const CreareContProf = () =>{
     const [departament,setDepartament]=useState('');
     const [departamente,setDepartamente]=useState([]);
     const grad = [
-        {key:1,text:'Lector universitar/şef de lucrări',value: 'lector'},
-        {key:2,text:'Conferenţiar universitar',value: 'conferentiar'},
-        {key:3,text:'Profesor universitar',value: 'profesor'},
+        {key:1,text:'Lector universitar/şef de lucrări',value: 'Lector univeristar'},
+        {key:2,text:'Conferenţiar universitar',value: 'Conferentiar universitar'},
+        {key:3,text:'Profesor universitar',value: 'Profesor univeristar'},
         ]
-    //states care sunt dropdown
 
 
+    const [profesorNou,setProfesorNou]=useState({
+        Username:username,
+        Pass: password,
+        FirstName:firstName,
+        LastName:lastName,
+        Cnp:CNP,
+        Email:email,
+        Site:urlsite,
+        Grad:Grad,
+        Departament:departament,
+    });
     const [showPassword,setShowPassword]=useState(false);
 
     const classes = useStyles();
@@ -61,6 +80,41 @@ const CreareContProf = () =>{
     }
     else{
         history.push("/");
+    }
+    const handleSubmit = (e)=>{
+        let Profesor = {
+            Username:username,
+            Pass: password,
+            FirstName:firstName,
+            LastName:lastName,
+            Cnp:CNP,
+            Email:email,
+            Site:urlsite,
+            Grad:Grad,
+            Departament:departament,
+        }
+        if(Profesor.Username!==''
+            &&Profesor.Pass!==''
+            &&Profesor.FirstName!==''
+            &&Profesor.LastName!==''
+            &&Profesor.Site!==''
+            &&Profesor.Cnp!==''
+            &&Profesor.Email!==''
+            &&Profesor.Grad!==''
+        ){
+            setProfesorNou(Profesor);
+            setOpen(true);
+        }
+    }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleConfirm= ()=>{
+        console.log(profesorNou);
+        setOpen(false);
     }
     const onChangeUsername= (e) =>{
         setUsername(e.target.value);
@@ -200,10 +254,43 @@ const CreareContProf = () =>{
                         </Form.Group>
                     </div>
                     <div className={classes.bttnGroup}>
-                        <Button>Submit</Button>
+                        <Button onClick={handleSubmit}>Submit</Button>
                     </div>
                 </Transition.Fade>
             </Form>
+            <div>
+                <Dialog
+                    open={open}
+                    TransitionComponent={TransitionDialog}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">{"Please confirm that the teacher\'s  information is correct"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            <h3>Username: {profesorNou.Username} </h3>
+                            <h3>Password: {profesorNou.Pass}</h3>
+                            <h3>First Name: {profesorNou.FirstName}</h3>
+                            <h3>Last Name: {profesorNou.LastName}</h3>
+                            <h3>Cod numeric personal : {profesorNou.Cnp}</h3>
+                            <h3>Email: {profesorNou.Email}</h3>
+                            <h3>Site: {profesorNou.Site}</h3>
+                            <h3>Gradul: {profesorNou.Grad}</h3>
+                            <h3>Departamentul {profesorNou.Departament}</h3>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleConfirm} color="primary">
+                            Confirm
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
         </div>
 
     );

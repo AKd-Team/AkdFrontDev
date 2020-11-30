@@ -1,8 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {forwardRef, useEffect, useRef, useState} from "react";
 import {useHistory} from "react-router";
 import {Button, Divider, Form} from 'semantic-ui-react';
 import {makeStyles} from "@material-ui/core/styles";
 import * as Transition from 'react-reveal';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
 const useStyles = makeStyles((theme) => ({
     root:{
         justifyContent:'center',
@@ -24,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }));
+const TransitionDialog = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
 const CreareContStudent = () =>{
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
@@ -47,6 +56,18 @@ const CreareContStudent = () =>{
         {key:'2',value:'2',text:'Anul 2'},
         {key:'3',value:'3',text:'Anul 3'},
     ];
+    const [studentNou,setStudentNou]=useState({
+        username:'',
+        pass: '',
+        FirstName:'',
+        LastName:'',
+        cup:'',
+        cnp:'',
+        Email:'',
+        Grupa:'',
+        an:'',
+        semigrupa:'',
+    });
 
 
     //states care sunt checbox
@@ -99,6 +120,47 @@ const CreareContStudent = () =>{
     const onChangeEmail = (e) =>{
         setEmail(e.target.value);
     }
+
+    const handleSubmit = (e)=>{
+        let Student = {
+            username:username,
+            pass: password,
+            FirstName:firstName,
+            LastName:lastName,
+            cup:CUP,
+            cnp:CNP,
+            Email:email,
+            Grupa:grupa,
+            an:anStudiu,
+            semigrupa:semiGrupa,
+        }
+        if(Student.username!==''
+            &&Student.pass!==''
+            &&Student.FirstName!==''
+            &&Student.LastName!==''
+            &&Student.cup!==''
+            &&Student.cnp!==''
+            && Student.Email!==''
+            &&Student.an!==''
+            &&Student.semigrupa!==''
+        ){
+            setStudentNou(Student);
+            setOpen(true);
+        }
+    }
+
+    const [open, setOpen] = React.useState(false);
+
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleConfirm= ()=>{
+        console.log(studentNou);
+        setOpen(false);
+    }
+
+
     return(
         <div className={classes.root}>
         <Form className={classes.form}>
@@ -218,10 +280,44 @@ const CreareContStudent = () =>{
                 </Form.Group>
                 </div>
                     <div className={classes.bttnGroup}>
-                        <Button>Submit</Button>
+                        <Button onClick={handleSubmit}>Submit</Button>
                     </div>
             </Transition.Fade>
         </Form>
+            <div>
+                <Dialog
+                    open={open}
+                    TransitionComponent={TransitionDialog}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">{"Please confirm that the student\'s  information is correct"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            <h3>Username: {studentNou.username} </h3>
+                            <h3>Password: {studentNou.pass}</h3>
+                            <h3>First Name: {studentNou.FirstName}</h3>
+                            <h3>Last Name: {studentNou.LastName}</h3>
+                            <h3>Cod unic personal: {studentNou.cup}</h3>
+                            <h3>Cod numeric personal : {studentNou.cnp}</h3>
+                            <h3>Email: {studentNou.Email}</h3>
+                            <h3>Grupa: {studentNou.Grupa}</h3>
+                            <h3>Anul de studiu: {studentNou.an}</h3>
+                            <h3>Semigrupa:{studentNou.semigrupa}</h3>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleConfirm} color="primary">
+                            Confirm
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
         </div>
 
     );
