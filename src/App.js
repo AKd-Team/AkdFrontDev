@@ -5,6 +5,7 @@ import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import AdminDashboard from "./screens/AdminDashboard/ContentComponents/AdminDashboard";
 import {BrowserRouter as Router} from "react-router-dom";
 import {Route,Switch} from "react-router-dom";
+import Footer from './Footer';
 
 const App = () => {
     const [isAuthenticated, setisAuthenticated] = useState(false);
@@ -37,7 +38,9 @@ const App = () => {
                     <AdminDashboard {...props} onLogout={onLogout} />
                 )}/>
             </Switch>
+            <Footer />
         </Router>
+
     );
 
 }
