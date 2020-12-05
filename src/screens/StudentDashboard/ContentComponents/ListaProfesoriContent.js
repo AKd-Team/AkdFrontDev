@@ -35,7 +35,7 @@ const columns: Columns = [
     { field: 'nume', headerName: 'Nume', width: 170, headerClassName: 'theme-header' },
     { field: 'prenume', headerName: 'Prenume', width: 180, headerClassName: 'theme-header' },
     { field: 'grad', headerName: 'Grad', width: 230,headerClassName: 'theme-header' },
-    { field: 'departament', headerName: 'Departament', width: 130 , headerClassName: 'theme-header'},
+    { field: 'departament', headerName: 'Departament', width: 150 , headerClassName: 'theme-header'},
     {
         field: 'mail',
         headerName: 'E-mail',
@@ -124,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
     tabel:{
         minHeight: ((rows.length-1)*52.5),
         width: '90%',
-        maxWidth: 1502,
+        maxWidth: 1522,
         marginLeft:'auto',
         marginRight:'auto'
     }
