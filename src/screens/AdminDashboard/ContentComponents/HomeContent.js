@@ -1,6 +1,6 @@
 import React from "react";
 import {useHistory} from "react-router";
-
+import Fade from 'react-reveal';
 const HomeContent = () =>{
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
@@ -18,7 +18,9 @@ const HomeContent = () =>{
     }
     return(
         <div>
+            <Fade bottom>
             <h1>{HomeText}</h1>
+            </Fade>
         </div>
     );
 };

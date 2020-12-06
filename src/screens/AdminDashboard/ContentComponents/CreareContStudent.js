@@ -296,16 +296,16 @@ const CreareContStudent = () =>{
                     <DialogTitle id="alert-dialog-slide-title">{"Please confirm that the student\'s  information is correct"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            <h3>Username: {studentNou.username} </h3>
-                            <h3>Password: {studentNou.pass}</h3>
-                            <h3>First Name: {studentNou.FirstName}</h3>
-                            <h3>Last Name: {studentNou.LastName}</h3>
-                            <h3>Cod unic personal: {studentNou.cup}</h3>
-                            <h3>Cod numeric personal : {studentNou.cnp}</h3>
-                            <h3>Email: {studentNou.Email}</h3>
-                            <h3>Grupa: {studentNou.Grupa}</h3>
-                            <h3>Anul de studiu: {studentNou.an}</h3>
-                            <h3>Semigrupa:{studentNou.semigrupa}</h3>
+                            <h4>Username: {studentNou.username} </h4>
+                            <h4>Password: {studentNou.pass}</h4>
+                            <h4>First Name: {studentNou.FirstName}</h4>
+                            <h4>Last Name: {studentNou.LastName}</h4>
+                            <h4>Cod unic personal: {studentNou.cup}</h4>
+                            <h4>Cod numeric personal : {studentNou.cnp}</h4>
+                            <h4>Email: {studentNou.Email}</h4>
+                            <h4>Grupa: {studentNou.Grupa}</h4>
+                            <h4>Anul de studiu: {studentNou.an}</h4>
+                            <h4>Semigrupa:{studentNou.semigrupa}</h4>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

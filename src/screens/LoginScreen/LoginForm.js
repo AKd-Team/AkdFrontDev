@@ -98,51 +98,51 @@ function LoginForm() {
         e.preventDefault();
         setSuccess(false);
         setLoading(true);
-        // axios.post(LoginUrl, {
-        //     username: details.username,
-        //     password: details.password,
-        // })
-        //     .then(function (response) {
-        //         let User={
-        //             username:details.username,
-        //             firstname:response.data.firstName,
-        //             lastname:response.data.lastName,
-        //             Type: response.data.tipUtilizator,
-        //             token:response.data.token,
-        //         }
-        //         console.log(response);
-        //          timer.current = window.setTimeout(() => {
-        //             setSuccess(true);
-        //             setLoading(false);
-        //             localStorage.setItem("user",JSON.stringify(User));
-        //             history.push(`/${User.Type}dash/${User.Type}`);
-        //         }, 1500);
-        //         // localStorage.setItem("user",JSON.stringify(User));
-        //         // history.push(`/${User.Type}dash/${User.Type}`);
-        //         console.log(response);
-        //     })
-        //     .catch(function (error) {
-        //         timer.current=window.setTimeout(()=>{
-        //             setError(true);
-        //             setSuccess(false);
-        //             setLoading(false);
-        //         },1000);
-        //
-        //         console.log(error);
-        //     });
-        let User={
-            username:details.username,
-            firstname:details.username,
-            lastname:details.username,
-            Type:details.username,
-        }
-        if(User.Type==='student'||User.Type==='admin'||User.Type==='teacher'){
-            localStorage.setItem("user",JSON.stringify(User));
-            history.push(`/${User.Type}dash/${User.Type}`);
-        }
-        else {setError(true);
-                setLoading(false);
-        }
+        axios.post(LoginUrl, {
+            username: details.username,
+            password: details.password,
+        })
+            .then(function (response) {
+                let User={
+                    username:details.username,
+                    firstname:response.data.prenume,
+                    lastname:response.data.nume,
+                    Type: response.data.tipUtilizator,
+                    token:response.data.token,
+                }
+                console.log(response);
+                 timer.current = window.setTimeout(() => {
+                    setSuccess(true);
+                    setLoading(false);
+                    localStorage.setItem("user",JSON.stringify(User));
+                    history.push(`/${User.Type}dash/${User.Type}`);
+                }, 1500);
+                // localStorage.setItem("user",JSON.stringify(User));
+                // history.push(`/${User.Type}dash/${User.Type}`);
+                console.log(response);
+            })
+            .catch(function (error) {
+                timer.current=window.setTimeout(()=>{
+                    setError(true);
+                    setSuccess(false);
+                    setLoading(false);
+                },1000);
+
+                console.log(error);
+            });
+        // let User={
+        //     username:details.username,
+        //     firstname:details.username,
+        //     lastname:details.username,
+        //     Type:details.username,
+        // }
+        // if(User.Type==='student'||User.Type==='admin'||User.Type==='teacher'){
+        //     localStorage.setItem("user",JSON.stringify(User));
+        //     history.push(`/${User.Type}dash/${User.Type}`);
+        // }
+        // else {setError(true);
+        //         setLoading(false);
+        // }
 
     }
     const EnterPress = async e =>{

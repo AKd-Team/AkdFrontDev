@@ -218,7 +218,7 @@ const ListaProfesoriContent = ( ) =>{
                             placeholder='Alegeti departamentul'
                             required={false}
                         />
-                        <Button className={classes.bttnGroup}/*onClick={handleSubmit}*/>Filter</Button>
+                        <Button className={classes.bttnGroup} /*onClick={handleSubmit}*/>Filter</Button>
                     </Form.Group>
 
                 </Form>

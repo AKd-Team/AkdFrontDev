@@ -5,7 +5,7 @@ const Evaluari=()=>{
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
     if(User!=null){
-        if(User.Type==="teacher"){
+        if(User.Type==="profesor"){
 
         }
         else {
