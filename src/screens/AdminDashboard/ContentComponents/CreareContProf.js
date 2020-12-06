@@ -270,15 +270,15 @@ const CreareContProf = () =>{
                     <DialogTitle id="alert-dialog-slide-title">{"Please confirm that the teacher\'s  information is correct"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            <h3>Username: {profesorNou.Username} </h3>
-                            <h3>Password: {profesorNou.Pass}</h3>
-                            <h3>First Name: {profesorNou.FirstName}</h3>
-                            <h3>Last Name: {profesorNou.LastName}</h3>
-                            <h3>Cod numeric personal : {profesorNou.Cnp}</h3>
-                            <h3>Email: {profesorNou.Email}</h3>
-                            <h3>Site: {profesorNou.Site}</h3>
-                            <h3>Gradul: {profesorNou.Grad}</h3>
-                            <h3>Departamentul {profesorNou.Departament}</h3>
+                            <h4>Username: {profesorNou.Username} </h4>
+                            <h4>Password: {profesorNou.Pass}</h4>
+                            <h4>First Name: {profesorNou.FirstName}</h4>
+                            <h4>Last Name: {profesorNou.LastName}</h4>
+                            <h4>Cod numeric personal : {profesorNou.Cnp}</h4>
+                            <h4>Email: {profesorNou.Email}</h4>
+                            <h4>Site: {profesorNou.Site}</h4>
+                            <h4>Gradul: {profesorNou.Grad}</h4>
+                            <h4>Departamentul {profesorNou.Departament}</h4>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

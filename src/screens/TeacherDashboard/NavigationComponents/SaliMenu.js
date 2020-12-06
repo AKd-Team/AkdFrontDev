@@ -70,7 +70,7 @@ const  OrarMenu = () =>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <Link to="/teacherdash/ocupareSali" >
+                <Link to="/profesordash/ocupareSali" >
                 <StyledMenuItem >
                     <ListItemIcon onClick={handleClose}>
                         <ScheduleIcon fontSize="default" />
@@ -78,7 +78,7 @@ const  OrarMenu = () =>{
                     <ListItemText primary="Ocupare Sali" onClick={handleClose} />
                 </StyledMenuItem>
                 </Link>
-                <Link to="/teacherdash/programareExamen">
+                <Link to="/profesordash/programareExamen">
                 <StyledMenuItem>
                     <ListItemIcon onClick={handleClose}>
                         <PostAddIcon fontSize="default" />

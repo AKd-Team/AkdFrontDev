@@ -9,7 +9,9 @@ import Footer from './Footer';
 
 const App = () => {
     const [isAuthenticated, setisAuthenticated] = useState(false);
-
+    // useEffect(()=>{
+    //     localStorage.clear();
+    // },[])
     const onLogin=()=>{
         setisAuthenticated(true);
     }
@@ -30,7 +32,7 @@ const App = () => {
                     <StudentDashboard {...props} onLogout={onLogout}/>
                 )} />
 
-                <Route path="/teacherdash" render={(props) => (
+                <Route path="/profesordash" render={(props) => (
                     <TeacherDashboard {...props} onLogout={onLogout}/>
                 )}/>
 

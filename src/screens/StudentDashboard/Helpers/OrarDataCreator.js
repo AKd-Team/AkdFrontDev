@@ -13,7 +13,7 @@ let initialData=[
     {title:'Ecuatii derivate partiale Seminar',startDate:'18:00',endDate:'19:50',formatie: '332',profesor:'Nush',ziua:'Marti'},
     {title:'RPA Curs',startDate:'08:00',endDate:'09:50',formatie: 'MI',profesor: 'Camelia',ziua: 'Miercuri'},
     {title:'Statistica Seminar',startDate:'10:00',endDate:'11:50',formatie: '332',profesor: 'Natalia',ziua:'Miercuri'},
-    {title:'Proiect Colectiv',startDate:'10:00',endDate:'11:00',formatie: '332',profesor: 'Eugen',ziua:'Joi'},
+    {title:'Proiect Colectiv',startDate:'10:00',endDate:'11:00',formatie: '332',profesor: 'Adrian',ziua:'Joi'},
     {title:'Astronomie Curs',startDate:'08:00',endDate:'09:50',formatie: 'MI',profesor: 'Blaga',ziua:'Vineri'},
     {title:'Astronomie Laborator',startDate:'16:00',endDate:'18:00',formatie: 'MI',profesor: 'Blaga',ziua:'Vineri'},
 ];
