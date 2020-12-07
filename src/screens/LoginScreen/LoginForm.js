@@ -104,6 +104,7 @@ function LoginForm() {
         })
             .then(function (response) {
                 let User={
+                    userId:response.data.id,
                     username:details.username,
                     firstname:response.data.prenume,
                     lastname:response.data.nume,

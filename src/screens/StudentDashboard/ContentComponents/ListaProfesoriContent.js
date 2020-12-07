@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import {DataGrid, getCellElementFromIndexes, GridOverlay} from '@material-ui/data-grid';
 import {useHistory} from "react-router"
 import {Button, Divider, Form} from "semantic-ui-react";
@@ -142,6 +142,7 @@ function CustomLoadingOverlay() {
 
 
 const ListaProfesoriContent = ( ) =>{
+    const timer = React.useRef();
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
     const [departament,setDepartament]=useState('');
@@ -150,7 +151,16 @@ const ListaProfesoriContent = ( ) =>{
     const [departamente,setDepartamente]=useState([]);
     const [facultati,setFacultati]=useState([]);
     const [tipPersonalDidactic,setTipPersonalDidactic]=useState([]);
+    const [loading,setLoading]=useState(true);
 
+    useEffect(()=>{
+        timer.current = window.setTimeout(() => {
+            setLoading(false);
+        }, 2100);
+        return () => {
+            clearTimeout(timer.current);
+        };
+    })
     const classes = useStyles();
     if(User!=null){
         if(User.Type==="student"){
@@ -224,11 +234,11 @@ const ListaProfesoriContent = ( ) =>{
                 </Form>
                 <div className={classes.tabel}>
                     <DataGrid
-                        /*animatie la loading dar trebuie oprita
+                        //animatie la loading dar trebuie oprita
                         components={{
                             loadingOverlay: CustomLoadingOverlay,
                         }}
-                        loading*/
+                        loading={loading}
                         hideFooterPagination={true}
                         hideFooterSelectedRowCount={true}
                         hideFooterRowCount={true}
