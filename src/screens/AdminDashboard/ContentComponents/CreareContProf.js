@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import {useHistory} from "react-router";
 import {Button, Divider, Form} from "semantic-ui-react";
 import * as Transition from "react-reveal";
@@ -8,6 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+import axios from 'axios';
 import Slide from "@material-ui/core/Slide";
 const TransitionDialog = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -35,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreareContProf = () =>{
+    const DepartamenteURL="http://localhost:4000/admin/departamente/1";
+    const CreareContURL="http://localhost:4000/admin/registerProfesor"
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
 
@@ -47,25 +50,45 @@ const CreareContProf = () =>{
     const [urlsite,setUrlSite]=useState('');
     const [CNP,setCNP]=useState('');
     const [Grad,SetGrad]=useState('');
-    const [departament,setDepartament]=useState('');
+    const [departament,setDepartament]=useState();
     const [departamente,setDepartamente]=useState([]);
     const grad = [
         {key:1,text:'Lector universitar/şef de lucrări',value: 'Lector univeristar'},
         {key:2,text:'Conferenţiar universitar',value: 'Conferentiar universitar'},
         {key:3,text:'Profesor universitar',value: 'Profesor univeristar'},
         ]
-
-
+    const  getDepartamente = async e  =>{
+        const config = {
+            headers: { Authorization: `Bearer ${User.token}` }
+        };
+        await axios.get(DepartamenteURL,config)
+            .then(function (response) {
+                const depArray=[];
+                for(let i=1;i<=response.data.length;i++){
+                    depArray.push({
+                        key:i,text:response.data[i-1].nume,value:response.data[i-1].idDepartament
+                    })
+                }
+                setDepartamente(depArray);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    useEffect(()=>{
+        getDepartamente();
+    },[])
     const [profesorNou,setProfesorNou]=useState({
         Username:username,
-        Pass: password,
-        FirstName:firstName,
-        LastName:lastName,
+        Nume:lastName,
+        Prenume:firstName,
         Cnp:CNP,
-        Email:email,
-        Site:urlsite,
+        TipUtilizator:"profesor",
+        Mail:email,
+        Password:password,
         Grad:Grad,
-        Departament:departament,
+        IdDepartament:departament,
+        Site:urlsite,
     });
     const [showPassword,setShowPassword]=useState(false);
 
@@ -84,22 +107,23 @@ const CreareContProf = () =>{
     const handleSubmit = (e)=>{
         let Profesor = {
             Username:username,
-            Pass: password,
-            FirstName:firstName,
-            LastName:lastName,
+            Nume:lastName,
+            Prenume:firstName,
             Cnp:CNP,
-            Email:email,
-            Site:urlsite,
+            TipUtilizator:"profesor",
+            Mail:email,
+            Password:password,
             Grad:Grad,
-            Departament:departament,
+            IdDepartament:departament,
+            Site:urlsite,
         }
         if(Profesor.Username!==''
-            &&Profesor.Pass!==''
+            &&Profesor.Password!==''
             &&Profesor.FirstName!==''
             &&Profesor.LastName!==''
             &&Profesor.Site!==''
             &&Profesor.Cnp!==''
-            &&Profesor.Email!==''
+            &&Profesor.Mail!==''
             &&Profesor.Grad!==''
         ){
             setProfesorNou(Profesor);
@@ -112,8 +136,66 @@ const CreareContProf = () =>{
     const handleClose = () => {
         setOpen(false);
     };
-    const handleConfirm= ()=>{
-        console.log(profesorNou);
+    const handleConfirm= async ()=>{
+        var data1=JSON.stringify({
+            "Username":profesorNou.Username.toString(),
+            "Nume":profesorNou.Nume.toString(),
+            "Prenume":profesorNou.Prenume.toString(),
+            "Cnp":profesorNou.Cnp.toString(),
+            "TipUtilizator":"profesor",
+            "Mail":profesorNou.Mail.toString(),
+            "Password":profesorNou.Password.toString(),
+            "Grad":profesorNou.Grad.toString(),
+            "IdDepartament":profesorNou.IdDepartament,
+            "Site":profesorNou.Site.toString(),
+        });
+
+        var axios = require('axios');
+        var data2 = JSON.stringify({
+            "Username":"andreica23",
+            "Prenume":"profesor",
+            "Nume":"profesor",
+            "TipUtilizator":"profesor",
+            "Mail":"anca@math.ro",
+            "Password":"profesor",
+            "Grad":"profesor",
+            "Cnp":"1299291391213",
+            "IdDepartament":1,
+            "Site":"ancagrad.com"
+        });
+        console.log(data1)
+        console.log(data2);
+        var config = {
+            method: 'post',
+            url: 'http://localhost:4000/admin/registerProfesor',
+            headers: {
+                'Authorization': `Bearer ${User.token}`,
+                'Content-Type': 'application/json'
+            },
+            data : data1
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
+
+
+        //const Token=`Bearer ${User.token}`;
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': Token,
+        //     },
+        //     body: JSON.stringify(data),
+        // };
+        // fetch(CreareContURL, requestOptions)
+        //     .then(response => response.json())
+        //     .then(data => console.log(data));
         setOpen(false);
     }
     const onChangeUsername= (e) =>{
@@ -228,7 +310,6 @@ const CreareContProf = () =>{
                     </div>
                     <div>
                         <Form.Group widths='equal'>
-
                             <Form.Dropdown
                                 label='Gradul'
                                 clearable
@@ -267,18 +348,18 @@ const CreareContProf = () =>{
                     aria-labelledby="alert-dialog-slide-title"
                     aria-describedby="alert-dialog-slide-description"
                 >
-                    <DialogTitle id="alert-dialog-slide-title">{"Please confirm that the teacher\'s  information is correct"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-slide-title">{"Please confirm that the teacher's  information is correct"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             <h4>Username: {profesorNou.Username} </h4>
-                            <h4>Password: {profesorNou.Pass}</h4>
-                            <h4>First Name: {profesorNou.FirstName}</h4>
-                            <h4>Last Name: {profesorNou.LastName}</h4>
+                            <h4>Password: {profesorNou.Password}</h4>
+                            <h4>First Name: {profesorNou.Prenume}</h4>
+                            <h4>Last Name: {profesorNou.Nume}</h4>
                             <h4>Cod numeric personal : {profesorNou.Cnp}</h4>
-                            <h4>Email: {profesorNou.Email}</h4>
+                            <h4>Email: {profesorNou.Mail}</h4>
                             <h4>Site: {profesorNou.Site}</h4>
                             <h4>Gradul: {profesorNou.Grad}</h4>
-                            <h4>Departamentul {profesorNou.Departament}</h4>
+                            <h4>Departamentul {profesorNou.IdDepartament}</h4>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
