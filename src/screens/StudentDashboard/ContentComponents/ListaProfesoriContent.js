@@ -90,7 +90,7 @@ const ListaProfesoriContent = ( ) => {
     const [profesori, setProfesori] = useState([]);
     const [date,setDate]=useState([]);
 
-    const [profesoriFiltrati,setProfesoriFiltrati]= useState(profesori);
+    const [profesoriFiltrati,setProfesoriFiltrati]= useState([]);
     const [departamentSelectat, setDepartament] = useState('');
     const [facultateSelectata, setFacultate] = useState('');
 
@@ -133,11 +133,6 @@ const ListaProfesoriContent = ( ) => {
                     listaFacultati.push({ key: facultate.numeFacultate, text: facultate.numeFacultate, value:facultate.numeFacultate })
                 });
                 setFacultati(listaFacultati);
-
-                //incercare de facultate default
-                /*let facultateDefault:{}={ key: response.data[0].numeFacultate, text: response.data[0].numeFacultate, value:response.data[0].numeFacultate };
-                console.log(facultateDefault);
-                onChangeFacultate(facultateDefault);*/
             })
             .catch((error) => {
                 console.log(error);
@@ -226,19 +221,19 @@ const ListaProfesoriContent = ( ) => {
                 <Form className={classes.form}>
                     <Form.Group widths='equal'>
                         <Form.Dropdown
-                        label='Facultatea'
-                        clearable
-                        fluid
-                        upward
-                        selection
-                        options={facultati}
-                        placeholder='Alegeti facultatea'
-                        required={true}
-                        onChange={onChangeFacultate}
+                            label='Facultatea'
+                            clearable
+                            fluid
+                            upward
+                            selection
+                            options={facultati}
+                            placeholder='Alegeti facultatea'
+                            required={true}
+                            onChange={onChangeFacultate}
                         />
                         <Form.Dropdown
                             label='Departament'
-                            clearable
+                            clearable={true}
                             fluid
                             upward
                             selection
