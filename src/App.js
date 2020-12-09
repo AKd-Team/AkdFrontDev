@@ -40,7 +40,6 @@ const App = () => {
                     <AdminDashboard {...props} onLogout={onLogout} />
                 )}/>
             </Switch>
-            <Footer />
         </Router>
 
     );
