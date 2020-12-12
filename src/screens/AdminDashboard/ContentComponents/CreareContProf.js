@@ -114,11 +114,11 @@ const CreareContProf = () =>{
 
     const classes = useStyles();
     if(User!=null){
-        if(User.Type==="admin"){
+        if(User.tipUtilizator==="admin"){
 
         }
         else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     }
     else{

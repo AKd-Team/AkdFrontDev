@@ -5,11 +5,11 @@ const EditareRegulament = () =>{
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
     if(User!=null){
-        if(User.Type==="admin"){
+        if(User.tipUtilizator==="admin"){
 
         }
         else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     }
     else{

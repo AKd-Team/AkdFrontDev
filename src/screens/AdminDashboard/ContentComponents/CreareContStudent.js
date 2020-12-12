@@ -9,6 +9,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Slide from "@material-ui/core/Slide";
+import axios from "axios";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {green} from "@material-ui/core/colors";
 const useStyles = makeStyles((theme) => ({
     root:{
         justifyContent:'center',
@@ -28,6 +31,16 @@ const useStyles = makeStyles((theme) => ({
         marginRight:'auto',
         justifyContent:'center',
         alignItems: 'center'
+    },
+    buttonProgress: {
+        color: green[500],
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width:20,
+        height:20,
+        marginTop: -12,
+        marginLeft: -12,
     }
 }));
 const TransitionDialog = React.forwardRef(function Transition(props, ref) {
@@ -35,8 +48,9 @@ const TransitionDialog = React.forwardRef(function Transition(props, ref) {
 });
 const CreareContStudent = () =>{
     const history=useHistory();
+    const timer = React.useRef();
     const User=JSON.parse(localStorage.getItem("user"));
-
+    const FormSpecURL=`http://localhost:4000/admin/formSpec/${User.idfacultate}`;
 
     //States care sunt input field
     const [username,setUsername]=useState('');
@@ -46,16 +60,63 @@ const CreareContStudent = () =>{
     const [CUP,setCUP]=useState('');
     const [CNP,setCNP]=useState('');
     const [email,setEmail]=useState('');
+    const [nrMatricol,setNrMatricol]=useState('');
+    const [specializari,setSpecializari]=useState([]);
+    const [loading,setLoading]=useState(false);
 
+    const [loadingSpec,setLoadingSpec]=useState(false);
+    const [succes,setSucces]=useState();
+    const [confirmDialog,setConfirmDialog]=useState(false);
+    const [errorMsg,setErrorMsg]=useState('');
+    const [responsedata,setResponsedata]=useState();
     //states care sunt dropdown
     const [grupe,setGrupe]=useState([]);
     const [grupa,setGrupa]=useState('');
-    const [anStudiu,setAnStudiu]=useState('');
-    const ani=[
-        {key:'1',value:'1',text:'Anul 1'},
-        {key:'2',value:'2',text:'Anul 2'},
-        {key:'3',value:'3',text:'Anul 3'},
-    ];
+    const [disableGrupe,setDisableGrupe]=useState(true);
+    const [specializare,setSpecializare]=useState('');
+
+    const getFormSpec=async ()=>{
+        setLoadingSpec(true);
+        const config = {
+            headers: { Authorization: `Bearer ${User.token}` }
+        };
+        await axios.get(FormSpecURL,config)
+            .then(function (response) {
+                setResponsedata(response.data);
+                const Array=[];
+                for(let i=1;i<=response.data.length;i++){
+                    Array.push({
+                        key:i,text:response.data[i-1].specializare,value:response.data[i-1].specializare
+                    })
+                }
+                setSpecializari(Array);
+                setLoadingSpec(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    useEffect(()=>{
+        getFormSpec()
+    },[])
+    useEffect(()=>{
+        console.log(specializare);
+        if(specializare!==''){
+            const findSpecializare = (element => element.specializare === specializare)
+            const found = responsedata.findIndex(findSpecializare);
+            var listagrupe=[]
+            for (let i = 0; i < responsedata[found].grupe.length; i++) {
+                listagrupe.push({key: i, text: responsedata[found].grupe[i], value: responsedata[found].grupe[i]})
+            }
+            setDisableGrupe(false);
+            setGrupe(listagrupe);
+        }
+        else {
+            setDisableGrupe(true);
+            setGrupe([]);
+            setGrupa('');
+        }
+    },[specializare])
     const [studentNou,setStudentNou]=useState({
         username:'',
         pass: '',
@@ -67,6 +128,8 @@ const CreareContStudent = () =>{
         Grupa:'',
         an:'',
         semigrupa:'',
+        nrMatricol:'',
+        specializare:'',
     });
 
 
@@ -77,11 +140,11 @@ const CreareContStudent = () =>{
 
     const classes = useStyles();
     if(User!=null){
-        if(User.Type==="admin"){
+        if(User.tipUtilizator==="admin"){
 
         }
         else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     }
     else{
@@ -102,14 +165,17 @@ const CreareContStudent = () =>{
     const onChangeCNP = (e)=>{
         setCNP(e.target.value);
     }
+    const onChangeNrMatricol = (e)=>{
+        setNrMatricol(e.target.value);
+    }
     const togglePassword = (e) =>{
         setShowPassword(!showPassword);
     }
     const onChangeCUP = (e) =>{
         setCUP(e.target.value);
     }
-    const onChangeAn = (e,{value})=>{
-        setAnStudiu(value);
+    const onChangeSpecializare = (e,{value})=>{
+        setSpecializare(value);
     }
     const onChangeGrupa = (e,{value})=>{
         setGrupa(value);
@@ -131,8 +197,9 @@ const CreareContStudent = () =>{
             cnp:CNP,
             Email:email,
             Grupa:grupa,
-            an:anStudiu,
-            semigrupa:semiGrupa,
+            specializare:specializare,
+            nrMatricol:nrMatricol,
+            semigrupa:`${grupa}/${semiGrupa}`,
         }
         if(Student.username!==''
             &&Student.pass!==''
@@ -140,8 +207,9 @@ const CreareContStudent = () =>{
             &&Student.LastName!==''
             &&Student.cup!==''
             &&Student.cnp!==''
-            && Student.Email!==''
-            &&Student.an!==''
+            &&Student.Email!==''
+            &&Student.nrMatricol!==''
+            &&Student.specializare!==''
             &&Student.semigrupa!==''
         ){
             setStudentNou(Student);
@@ -157,7 +225,56 @@ const CreareContStudent = () =>{
     };
     const handleConfirm= ()=>{
         console.log(studentNou);
+        var data1=JSON.stringify({
+            "Username": studentNou.username,
+            "Nume": studentNou.LastName,
+            "Prenume": studentNou.FirstName,
+            "Cnp": studentNou.cnp,
+            "TipUtilizator": "student",
+            "Mail": studentNou.Email,
+            "Password": studentNou.pass,
+            "NrMatricol": studentNou.nrMatricol,
+            "Cup": studentNou.cup,
+            "Semigrupa": studentNou.semigrupa,
+            "Specializare": studentNou.specializare
+        })
+        setLoading(true);
+        var axios = require('axios');
+        var config = {
+            method: 'post',
+            url: 'http://localhost:4000/admin/registerStudent',
+            headers: {
+                'Authorization': `Bearer ${User.token}`,
+                'Content-Type': 'application/json'
+            },
+            data : data1
+        };
+
+        axios(config)
+            .then(function (response) {
+                timer.current = window.setTimeout(() => {
+                    setLoading(false);
+                    setOpen(false);
+                    setConfirmDialog(true)
+                    setSucces(true);
+                }, 1500);
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                timer.current=window.setTimeout(()=>{
+                    setLoading(false);
+                    setOpen(false);
+                    setConfirmDialog(true)
+                    setSucces(false);
+                    setErrorMsg(error.response.statusText);
+                },1000);
+                console.log(error.response);
+            });
+
         setOpen(false);
+    }
+    const handleCloseResponse=()=>{
+        setConfirmDialog(false)
     }
 
 
@@ -236,22 +353,31 @@ const CreareContStudent = () =>{
                             onChange={onChangeCNP}
                             required={true}
                         />
+                        <Form.Input
+                            label="Numar matricol"
+                            placeholder="Numar matricol"
+                            value={nrMatricol}
+                            onChange={onChangeNrMatricol}
+                            required={true}
+                        />
                     </Form.Group>
                 </div>
                 <div>
                 <Form.Group widths='equal'>
                     <Form.Dropdown
-                        label='Anul de studiu'
+                        loading={loadingSpec}
+                        label='Specializarea'
                         clearable
                         fluid
                         upward
                         selection
-                        options={ani}
-                        onChange={onChangeAn}
-                        placeholder='Alegeti anul de studiu'
+                        options={specializari}
+                        onChange={onChangeSpecializare}
+                        placeholder='Alegeti specialziarea'
                         required={true}
                     />
                     <Form.Dropdown
+                        disabled={disableGrupe}
                         label='Grupa'
                         clearable
                         fluid
@@ -293,7 +419,7 @@ const CreareContStudent = () =>{
                     aria-labelledby="alert-dialog-slide-title"
                     aria-describedby="alert-dialog-slide-description"
                 >
-                    <DialogTitle id="alert-dialog-slide-title">{"Please confirm that the student\'s  information is correct"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-slide-title">{"Verifica-ti daca datele studentului sunt bune"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             <h4>Username: {studentNou.username} </h4>
@@ -304,7 +430,8 @@ const CreareContStudent = () =>{
                             <h4>Cod numeric personal : {studentNou.cnp}</h4>
                             <h4>Email: {studentNou.Email}</h4>
                             <h4>Grupa: {studentNou.Grupa}</h4>
-                            <h4>Anul de studiu: {studentNou.an}</h4>
+                            <h4>Nr. Matricol: {studentNou.nrMatricol}</h4>
+                            <h4>Specializare: {studentNou.specializare}</h4>
                             <h4>Semigrupa:{studentNou.semigrupa}</h4>
                         </DialogContentText>
                     </DialogContent>
@@ -312,8 +439,40 @@ const CreareContStudent = () =>{
                         <Button onClick={handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={handleConfirm} color="primary">
-                            Confirm
+                        <div>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                color="primary"
+                                disabled={loading}
+                                onClick={handleConfirm}
+                            >
+                                <text>Confirm</text>
+                                {loading && <CircularProgress size={30} className={classes.buttonProgress} />}
+                            </Button>
+                        </div>
+                    </DialogActions>
+                </Dialog>
+            </div>
+            <div>
+                <Dialog
+                    open={confirmDialog}
+                    TransitionComponent={TransitionDialog}
+                    keepMounted
+                    onClose={handleCloseResponse}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">{"Message"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            {succes && <h2>Cont creat cu succes</h2>}
+                            {!succes && <h2>{errorMsg}</h2>}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseResponse} color="primary">
+                            Cancel
                         </Button>
                     </DialogActions>
                 </Dialog>

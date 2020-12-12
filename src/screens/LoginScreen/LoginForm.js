@@ -103,23 +103,14 @@ function LoginForm() {
             password: details.password,
         })
             .then(function (response) {
-                let User={
-                    userId:response.data.id,
-                    username:details.username,
-                    firstname:response.data.prenume,
-                    lastname:response.data.nume,
-                    Type: response.data.tipUtilizator,
-                    token:response.data.token,
-                }
+
                 console.log(response);
                  timer.current = window.setTimeout(() => {
                     setSuccess(true);
                     setLoading(false);
-                    localStorage.setItem("user",JSON.stringify(User));
-                    history.push(`/${User.Type}dash/${User.Type}`);
+                    localStorage.setItem("user",JSON.stringify(response.data));
+                    history.push(`/${response.data.tipUtilizator}dash/${response.data.tipUtilizator}`);
                 }, 1500);
-                // localStorage.setItem("user",JSON.stringify(User));
-                // history.push(`/${User.Type}dash/${User.Type}`);
                 console.log(response);
             })
             .catch(function (error) {

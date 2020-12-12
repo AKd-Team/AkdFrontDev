@@ -98,24 +98,15 @@ const ListaProfesoriContent = () => {
     const classes = useStyles();
 
     if (User != null) {
-        if (User.Type === "student") {
+        if (User.tipUtilizator === "student") {
 
         } else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     } else {
         history.push("/");
     }
 
-    //loading useEffect
-    useEffect(() => {
-        timer.current = window.setTimeout(() => {
-            setLoading(false);
-        }, 2100);
-        return () => {
-            clearTimeout(timer.current);
-        };
-    })
 
     //request facultati si departamente
     useEffect(() => {
@@ -143,35 +134,43 @@ const ListaProfesoriContent = () => {
 
     //request profesori
     useEffect(() => {
-        axios.get("http://localhost:4000/student/profesor/", {
-            headers: {
-                'Authorization': `token ${User.token}`
-            }
-        })
-            .then((response) => {
-                let listaProfesori = [];
-                response.data.forEach((profesor) => {
-                    listaProfesori.push(
-                        {
-                            id: profesor.id,
-                            username: profesor.username,
-                            nume: profesor.nume,
-                            prenume: profesor.prenume,
-                            cnp: profesor.cnp,
-                            tipUtilizator: profesor.tipUtilizator,
-                            mail: profesor.mail,
-                            grad: profesor.grad,
-                            departament: profesor.departament,
-                            facultate: profesor.facultate,
-                            site: profesor.site
-                        });
-                });
-                setProfesori(listaProfesori);
-                setProfesoriFiltrati(listaProfesori);
+        timer.current = window.setTimeout(async () => {
+            await axios.get("http://localhost:4000/student/profesor/", {
+                headers: {
+                    'Authorization': `token ${User.token}`
+                }
             })
-            .catch((error) => {
-                console.log(error);
-            });
+                .then((response) => {
+                    let listaProfesori = [];
+                    response.data.forEach((profesor) => {
+                        listaProfesori.push(
+                            {
+                                id: profesor.id,
+                                username: profesor.username,
+                                nume: profesor.nume,
+                                prenume: profesor.prenume,
+                                cnp: profesor.cnp,
+                                tipUtilizator: profesor.tipUtilizator,
+                                mail: profesor.mail,
+                                grad: profesor.grad,
+                                departament: profesor.departament,
+                                facultate: profesor.facultate,
+                                site: profesor.site
+                            });
+                    });
+                    setProfesori(listaProfesori);
+                    setProfesoriFiltrati(listaProfesori);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+        }, 2100);
+        return () => {
+            clearTimeout(timer.current);
+        };
+
     }, [])
 
     //lista departamente la alegerea facultatii

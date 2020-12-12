@@ -47,11 +47,11 @@ const StudentDashboard = (props) =>{
     },[])
 
     if(User!=null){
-        if(User.Type==="student"){
+        if(User.tipUtilizator==="student"){
 
         }
         else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     }
     else{

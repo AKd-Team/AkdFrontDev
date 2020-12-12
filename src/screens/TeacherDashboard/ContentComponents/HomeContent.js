@@ -6,11 +6,11 @@ const HomeContent = () =>{
     const User=JSON.parse(localStorage.getItem("user"));
     var HomeText;
     if(User!=null){
-        if(User.Type==="profesor"){
-            HomeText=`This is home for ${User.username} with first name ${User.firstname} and last name ${User.lastname}`;
+        if(User.tipUtilizator==="profesor"){
+            HomeText=`This is home for ${User.username} with first name ${User.prenume} and last name ${User.prenume}`;
         }
         else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     }
     else{

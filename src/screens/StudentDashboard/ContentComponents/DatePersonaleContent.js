@@ -50,7 +50,7 @@ const DatePersonaleContent=()=>{
 
         });
 
-        const id=User.userId;
+        const id=User.id;
         const styles=useStyles();
 
         useEffect(()=>{
@@ -83,11 +83,11 @@ const DatePersonaleContent=()=>{
     },[])
 
     if(User!=null){
-        if(User.Type==="student"){
+        if(User.tipUtilizator==="student"){
 
         }
         else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     }
     else{

@@ -15,16 +15,13 @@ const HomeContent = () =>{
     const history=useHistory();
     const [crtAnunt,setCrtAnunt]=useState(1);
     const User=JSON.parse(localStorage.getItem("user"));
-    useEffect(()=>{
-       getAnunturi()
-    },[])
     var HomeText;
     if(User!=null){
-        if(User.Type==="student"){
-            HomeText=`This is home for ${User.username} with first name ${User.firstname} and last name ${User.lastname}`;
+        if(User.tipUtilizator==="student"){
+            HomeText=`This is home for ${User.username} with first name ${User.prenume} and last name ${User.nume}`;
         }
         else {
-            history.push(`/${User.Type}dash/${User.Type}`);
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
         }
     }
     else{
