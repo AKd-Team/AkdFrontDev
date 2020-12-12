@@ -10,6 +10,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import axios from 'axios';
 import Slide from "@material-ui/core/Slide";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {green} from "@material-ui/core/colors";
 const TransitionDialog = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
 });
@@ -32,7 +34,17 @@ const useStyles = makeStyles((theme) => ({
         marginRight:'auto',
         justifyContent:'center',
         alignItems: 'center'
-    }
+    },
+    buttonProgress: {
+        color: green[500],
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width:20,
+        height:20,
+        marginTop: -12,
+        marginLeft: -12,
+    },
 }));
 
 const CreareContProf = () =>{
@@ -40,6 +52,7 @@ const CreareContProf = () =>{
     const CreareContURL="http://localhost:4000/admin/registerProfesor"
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
+    const timer = React.useRef();
 
     //States care sunt input field
     const [username,setUsername]=useState('');
@@ -52,6 +65,10 @@ const CreareContProf = () =>{
     const [Grad,SetGrad]=useState('');
     const [departament,setDepartament]=useState();
     const [departamente,setDepartamente]=useState([]);
+    const [loading,setLoading]=useState(false);
+    const [succes,setSucces]=useState();
+    const [confirmDialog,setConfirmDialog]=useState(false);
+    const [errorMsg,setErrorMsg]=useState('');
     const grad = [
         {key:1,text:'Lector universitar/şef de lucrări',value: 'Lector univeristar'},
         {key:2,text:'Conferenţiar universitar',value: 'Conferentiar universitar'},
@@ -78,6 +95,9 @@ const CreareContProf = () =>{
     useEffect(()=>{
         getDepartamente();
     },[])
+    useEffect(()=>{
+        console.log("S a modificat gradul")
+    },[Grad,departament,username])
     const [profesorNou,setProfesorNou]=useState({
         Username:username,
         Nume:lastName,
@@ -136,35 +156,24 @@ const CreareContProf = () =>{
     const handleClose = () => {
         setOpen(false);
     };
+    const handleCloseResponse=()=>{
+        setConfirmDialog(false)
+    }
     const handleConfirm= async ()=>{
         var data1=JSON.stringify({
-            "Username":profesorNou.Username.toString(),
-            "Nume":profesorNou.Nume.toString(),
-            "Prenume":profesorNou.Prenume.toString(),
-            "Cnp":profesorNou.Cnp.toString(),
+            "Username":profesorNou.Username,
+            "Nume":profesorNou.Nume,
+            "Prenume":profesorNou.Prenume,
+            "Cnp":profesorNou.Cnp,
             "TipUtilizator":"profesor",
-            "Mail":profesorNou.Mail.toString(),
-            "Password":profesorNou.Password.toString(),
-            "Grad":profesorNou.Grad.toString(),
+            "Mail":profesorNou.Mail,
+            "Password":profesorNou.Password,
+            "Grad":profesorNou.Grad,
             "IdDepartament":profesorNou.IdDepartament,
-            "Site":profesorNou.Site.toString(),
+            "Site":profesorNou.Site,
         });
-
+        setLoading(true);
         var axios = require('axios');
-        var data2 = JSON.stringify({
-            "Username":"andreica23",
-            "Prenume":"profesor",
-            "Nume":"profesor",
-            "TipUtilizator":"profesor",
-            "Mail":"anca@math.ro",
-            "Password":"profesor",
-            "Grad":"profesor",
-            "Cnp":"1299291391213",
-            "IdDepartament":1,
-            "Site":"ancagrad.com"
-        });
-        console.log(data1)
-        console.log(data2);
         var config = {
             method: 'post',
             url: 'http://localhost:4000/admin/registerProfesor',
@@ -177,26 +186,25 @@ const CreareContProf = () =>{
 
         axios(config)
             .then(function (response) {
+                timer.current = window.setTimeout(() => {
+                    setLoading(false);
+                    setOpen(false);
+                    setConfirmDialog(true)
+                    setSucces(true);
+                }, 1500);
                 console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
+                timer.current=window.setTimeout(()=>{
+                    setLoading(false);
+                    setOpen(false);
+                    setConfirmDialog(true)
+                    setSucces(false);
+                    setErrorMsg(error.response.data.message);
+                },1000);
                 console.log(error.response);
             });
 
-
-        //const Token=`Bearer ${User.token}`;
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': Token,
-        //     },
-        //     body: JSON.stringify(data),
-        // };
-        // fetch(CreareContURL, requestOptions)
-        //     .then(response => response.json())
-        //     .then(data => console.log(data));
-        setOpen(false);
     }
     const onChangeUsername= (e) =>{
         setUsername(e.target.value);
@@ -366,8 +374,40 @@ const CreareContProf = () =>{
                         <Button onClick={handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={handleConfirm} color="primary">
-                            Confirm
+                        <div>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                color="primary"
+                                disabled={loading}
+                                onClick={handleConfirm}
+                            >
+                                <text>Confirm</text>
+                                {loading && <CircularProgress size={30} className={classes.buttonProgress} />}
+                            </Button>
+                        </div>
+                    </DialogActions>
+                </Dialog>
+            </div>
+            <div>
+                <Dialog
+                    open={confirmDialog}
+                    TransitionComponent={TransitionDialog}
+                    keepMounted
+                    onClose={handleCloseResponse}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">{"Message"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            {succes && <h2>Cont creat cu succes</h2>}
+                            {!succes && <h2>{errorMsg}</h2>}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseResponse} color="primary">
+                            Cancel
                         </Button>
                     </DialogActions>
                 </Dialog>

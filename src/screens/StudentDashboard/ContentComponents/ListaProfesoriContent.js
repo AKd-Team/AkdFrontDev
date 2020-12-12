@@ -8,9 +8,9 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import axios from "axios";
 
 const columns: Columns = [
-    { field: 'nume', headerName: 'Nume', width: 170, headerClassName: 'theme-header' },
-    { field: 'prenume', headerName: 'Prenume', width: 180, headerClassName: 'theme-header' },
-    { field: 'grad', headerName: 'Grad', width: 230,headerClassName: 'theme-header' },
+    {field: 'nume', headerName: 'Nume', width: 170, headerClassName: 'theme-header'},
+    {field: 'prenume', headerName: 'Prenume', width: 180, headerClassName: 'theme-header'},
+    {field: 'grad', headerName: 'Grad', width: 230, headerClassName: 'theme-header'},
     {
         field: 'mail',
         headerName: 'E-mail',
@@ -25,13 +25,13 @@ const columns: Columns = [
         sortable: false,
         headerClassName: 'theme-header onHover',
     },
-    { field: 'facultate', headerName: 'Facultate', width: 280 , headerClassName: 'theme-header'},
-    { field: 'departament', headerName: 'Departament', width: 150 , headerClassName: 'theme-header'},
+    {field: 'facultate', headerName: 'Facultate', width: 280, headerClassName: 'theme-header'},
+    {field: 'departament', headerName: 'Departament', width: 150, headerClassName: 'theme-header'},
 ];
 
 const useStyles = makeStyles((theme) => ({
-    root:{
-        justifyContent:'center',
+    root: {
+        justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         '& .theme-header': {
@@ -40,47 +40,47 @@ const useStyles = makeStyles((theme) => ({
             fontSize: 14,
         }
     },
-    form:{
+    form: {
         marginTop: 40,
         marginLeft: 30,
-        marginRight:30,
-        marginBottom:30,
-        justifyContent:'center',
+        marginRight: 30,
+        marginBottom: 30,
+        justifyContent: 'center',
         alignItems: 'center',
         verticalAlign: "middle"
     },
-    bttnGroup:{
+    bttnGroup: {
         marginLeft: 'auto',
-        marginRight:'auto',
-        justifyContent:'center',
+        marginRight: 'auto',
+        justifyContent: 'center',
         alignItems: 'center',
         height: 40,
         marginTop: 20
     },
-    header:{
-        marginTop:30,
-        marginBottom:40,
-        textAlign:'center'
+    header: {
+        marginTop: 30,
+        marginBottom: 40,
+        textAlign: 'center'
     },
-    tabel:{
+    tabel: {
         width: '90%',
         maxWidth: 1502,
-        marginLeft:'auto',
-        marginRight:'auto'
+        marginLeft: 'auto',
+        marginRight: 'auto'
     }
 }));
 
 function CustomLoadingOverlay() {
     return (
         <GridOverlay>
-            <div style={{ position: 'absolute', top: 0, width: '100%' }}>
-                <LinearProgress />
+            <div style={{position: 'absolute', top: 0, width: '100%'}}>
+                <LinearProgress/>
             </div>
         </GridOverlay>
     );
 }
 
-const ListaProfesoriContent = ( ) => {
+const ListaProfesoriContent = () => {
     const timer = React.useRef();
     const history = useHistory();
     const User = JSON.parse(localStorage.getItem("user"));
@@ -88,24 +88,22 @@ const ListaProfesoriContent = ( ) => {
     const [departamente, setDepartamente] = useState([]);
     const [facultati, setFacultati] = useState([]);
     const [profesori, setProfesori] = useState([]);
-    const [date,setDate]=useState([]);
+    const [date, setDate] = useState([]);
 
-    const [profesoriFiltrati,setProfesoriFiltrati]= useState([]);
+    const [profesoriFiltrati, setProfesoriFiltrati] = useState([]);
     const [departamentSelectat, setDepartament] = useState('');
     const [facultateSelectata, setFacultate] = useState('');
 
     const [loading, setLoading] = useState(true);
     const classes = useStyles();
 
-    if(User!=null){
-        if(User.Type==="student"){
+    if (User != null) {
+        if (User.Type === "student") {
 
-        }
-        else {
+        } else {
             history.push(`/${User.Type}dash/${User.Type}`);
         }
-    }
-    else{
+    } else {
         history.push("/");
     }
 
@@ -130,14 +128,18 @@ const ListaProfesoriContent = ( ) => {
                 const listaFacultati = [];
                 setDate(response.data)
                 response.data.forEach((facultate) => {
-                    listaFacultati.push({ key: facultate.numeFacultate, text: facultate.numeFacultate, value:facultate.numeFacultate })
+                    listaFacultati.push({
+                        key: facultate.numeFacultate,
+                        text: facultate.numeFacultate,
+                        value: facultate.numeFacultate
+                    })
                 });
                 setFacultati(listaFacultati);
             })
             .catch((error) => {
                 console.log(error);
             });
-    },[])
+    }, [])
 
     //request profesori
     useEffect(() => {
@@ -147,8 +149,8 @@ const ListaProfesoriContent = ( ) => {
             }
         })
             .then((response) => {
-                let listaProfesori=[];
-                response.data.forEach((profesor)=>{
+                let listaProfesori = [];
+                response.data.forEach((profesor) => {
                     listaProfesori.push(
                         {
                             id: profesor.id,
@@ -160,7 +162,7 @@ const ListaProfesoriContent = ( ) => {
                             mail: profesor.mail,
                             grad: profesor.grad,
                             departament: profesor.departament,
-                            facultate:profesor.facultate,
+                            facultate: profesor.facultate,
                             site: profesor.site
                         });
                 });
@@ -170,44 +172,46 @@ const ListaProfesoriContent = ( ) => {
             .catch((error) => {
                 console.log(error);
             });
-    },[])
+    }, [])
 
     //lista departamente la alegerea facultatii
     useEffect(() => {
-        if(facultateSelectata!== '' && departamentSelectat==='')
-        {
-            let listaDepartamente=[];
+        console.log(facultateSelectata);
+        if (facultateSelectata !== '' && departamentSelectat === '') {
+            let listaDepartamente = [];
 
-            const findFacultate=(element => element.numeFacultate===facultateSelectata)
-            const found=date.findIndex(findFacultate)
+            const findFacultate = (element => element.numeFacultate === facultateSelectata)
+            const found = date.findIndex(findFacultate)
             //console.log(date[found]);
-            for(let i=0;i<date[found].departamente.length;i++)
-            {
-                listaDepartamente.push({key:i,text:date[found].departamente[i],value:date[found].departamente[i]})
+            for (let i = 0; i < date[found].departamente.length; i++) {
+                listaDepartamente.push({key: i, text: date[found].departamente[i], value: date[found].departamente[i]})
             }
             setDepartamente(listaDepartamente);
         }
-    },[facultateSelectata])
+        if (facultateSelectata === '') {
+            setProfesoriFiltrati(profesori);
+        }
+    }, [facultateSelectata])
 
     //filter useEffect
     useEffect(() => {
-        let listaProfesori=profesori.filter((profesor)=> FilterOptions(profesor));
+        let listaProfesori = profesori.filter((profesor) => FilterOptions(profesor));
         setProfesoriFiltrati(listaProfesori);
-    },[facultateSelectata,departamentSelectat])
+    }, [facultateSelectata, departamentSelectat])
 
     const FilterOptions = (profesor) => {
-        if(facultateSelectata!== '' && departamentSelectat==='')
-            return profesor.facultate == facultateSelectata;
+        if (facultateSelectata !== '' && departamentSelectat === '')
+            return profesor.facultate === facultateSelectata;
 
-        if(facultateSelectata!== '' && departamentSelectat!=='')
-            return profesor.facultate == facultateSelectata && profesor.departament == departamentSelectat;
+        if (facultateSelectata !== '' && departamentSelectat !== '')
+            return profesor.facultate === facultateSelectata && profesor.departament === departamentSelectat;
     }
 
-    const onChangeFacultate = (e,{value})=>{
+    const onChangeFacultate = (e, {value}) => {
         setFacultate(value)
     }
 
-    const onChangeDepartament = (e,{value})=>{
+    const onChangeDepartament = (e, {value}) => {
         setDepartament(value)
     }
 
@@ -245,7 +249,7 @@ const ListaProfesoriContent = ( ) => {
                     </Form.Group>
 
                 </Form>
-                <div className={classes.tabel} style={{height:((Math.max(profesoriFiltrati.length+1,5))*52.8)}}>
+                <div className={classes.tabel} style={{height: ((Math.max(profesoriFiltrati.length + 1, 5)) * 52.8)}}>
                     <DataGrid
                         components={{
                             loadingOverlay: CustomLoadingOverlay,

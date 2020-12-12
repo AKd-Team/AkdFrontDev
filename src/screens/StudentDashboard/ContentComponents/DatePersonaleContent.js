@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import axios from "axios";
 import {makeStyles} from "@material-ui/core/styles";
+import Fade from 'react-reveal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -95,6 +96,7 @@ const DatePersonaleContent=()=>{
 
     return(
         <div>
+            <Fade bottom cascade>
             <div className={styles.divColor}>
                 <p className={styles.DPtext}>  <text className={styles.infoText}> Nume, prenume:</text> <br></br>  {personalData.nume} {personalData.prenume}</p> </div>
             <div className={styles.divColor}>
@@ -115,6 +117,7 @@ const DatePersonaleContent=()=>{
                 <p className={styles.DPtext}>  <text className={styles.infoText}> Grupa:  </text> <br></br> {personalData.grupa}</p> </div>
             <div className={styles.divColor}>
                 <p className={styles.DPtext}>  <text className={styles.infoText}> Semigrupa:  </text> <br></br> {personalData.semigrupa}</p> </div>
+            </Fade>
         </div>
     );
 };

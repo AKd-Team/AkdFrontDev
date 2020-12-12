@@ -1,9 +1,10 @@
-import React ,{useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import {Frame,Page,Scroll,Stack} from 'framer';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button} from "@material-ui/core";
 import Anunturi from "./HomeComponents/Anunturi";
+import getAnunturi from "../Helpers/AnunturiScraper";
+import rp from "request-promise";
 const useStyles = makeStyles((theme) => ({
     root:{
         width: '100%',
@@ -14,6 +15,9 @@ const HomeContent = () =>{
     const history=useHistory();
     const [crtAnunt,setCrtAnunt]=useState(1);
     const User=JSON.parse(localStorage.getItem("user"));
+    useEffect(()=>{
+       getAnunturi()
+    },[])
     var HomeText;
     if(User!=null){
         if(User.Type==="student"){
