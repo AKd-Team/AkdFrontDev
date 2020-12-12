@@ -31,7 +31,7 @@ const LoginScreen = (props) =>{
     const User=JSON.parse(localStorage.getItem("user"));
     useEffect(()=>{
         if(User!=null){
-            history.push(`/${User.Type}dash/${User.Type}`)
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`)
         }
     },[]);
     const s=styles();
