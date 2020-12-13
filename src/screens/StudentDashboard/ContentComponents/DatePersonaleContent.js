@@ -32,7 +32,18 @@ const useStyles = makeStyles((theme) => ({
 const DatePersonaleContent=()=>{
     const history=useHistory();
     const User=JSON.parse(localStorage.getItem("user"));
-
+    var id;
+    if(User!=null){
+        if(User.tipUtilizator==="student"){
+            id=User.id;
+        }
+        else {
+            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
+        }
+    }
+    else{
+        history.push("/");
+    }
     const [personalData, setPersonalData]=useState({
 
         nume:"",
@@ -50,7 +61,7 @@ const DatePersonaleContent=()=>{
 
         });
 
-        const id=User.id;
+
         const styles=useStyles();
 
         useEffect(()=>{
@@ -82,17 +93,7 @@ const DatePersonaleContent=()=>{
                 });
     },[])
 
-    if(User!=null){
-        if(User.tipUtilizator==="student"){
 
-        }
-        else {
-            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
-        }
-    }
-    else{
-        history.push("/");
-    }
 
     return(
         <div>
