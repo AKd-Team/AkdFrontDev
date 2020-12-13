@@ -116,7 +116,7 @@ const ListaProfesoriContent = () => {
             }
         })
             .then((response) => {
-                const listaFacultati = [];
+                let listaFacultati = [];
                 setDate(response.data)
                 response.data.forEach((facultate) => {
                     listaFacultati.push({
@@ -218,7 +218,7 @@ const ListaProfesoriContent = () => {
         <div className={classes.root}>
             <Transition.Fade bottom cascade>
                 <div className={classes.header}>
-                    <h2>Lista personal didactic</h2>
+                    <h2>Lista profesori</h2>
                     <Divider/>
                 </div>
                 <Form className={classes.form}>
@@ -260,7 +260,7 @@ const ListaProfesoriContent = () => {
                         hideFooter={true}
                         rows={profesoriFiltrati}
                         columns={columns}
-                        pageSize={profesori.length}
+                        pageSize={profesoriFiltrati.length}
                     />
                 </div>
             </Transition.Fade>
