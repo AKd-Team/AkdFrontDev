@@ -12,12 +12,6 @@ const columns: Columns = [
     {field: 'prenume', headerName: 'Prenume', width: 180, headerClassName: 'theme-header'},
     {field: 'grupa', headerName: 'Grupa', width: 100, headerClassName: 'theme-header'},
     {field: 'semigrupa', headerName: 'Semigrupa', width: 125, headerClassName: 'theme-header'},
-    {
-        field: 'mail',
-        headerName: 'E-mail',
-        width: 240,
-        headerClassName: 'theme-header'
-    },
     {field: 'specializare', headerName: 'Specializare', width: 280, headerClassName: 'theme-header'},
     {field: 'facultate', headerName: 'Facultate', width: 280, headerClassName: 'theme-header'},
 ];
@@ -57,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
     tabel: {
         width: '90%',
-        maxWidth: 1375,
+        maxWidth: 1135,
         marginLeft: 'auto',
         marginRight: 'auto'
     }
@@ -82,7 +76,9 @@ const ListaStudenti = ( ) =>{
     const [loading, setLoading] = useState(true);
     const [materii,setMaterii]=useState([]);
     const [studentiMaterie,setStudentiMaterie]=useState([]);
-    const [materieSelectata,setMaterie]=useState('');
+    const [cheieMaterie,setCheieMaterie]=useState(-1);
+
+    const [dateMaterii,setDateMaterii]=useState([]);
 
     if(User!=null){
         if(User.tipUtilizator==="profesor"){
@@ -98,21 +94,21 @@ const ListaStudenti = ( ) =>{
 
     //request materii ale unui profesor
     useEffect(() => {
-        axios.get("http://localhost:4000/profesor/"+`${User.id}`, {
+        axios.get("http://localhost:4000/profesor/"+`${User.id}`+"/materii/", {
             headers: {
                 'Authorization': `token ${User.token}`
             }
         })
             .then((response) => {
                 let listaMaterii = [];
+                setDateMaterii(response.data);
                 response.data.forEach((materie) => {
                     listaMaterii.push({
                         key: materie.idMaterie,
-                        text: materie.numeMaterie,
-                        value: materie.numeMaterie
+                        text: materie.nume,
+                        value: materie.nume
                     })
                 });
-                console.log(listaMaterii);
                 setMaterii(listaMaterii);
             })
             .catch((error) => {
@@ -123,7 +119,7 @@ const ListaStudenti = ( ) =>{
     //request studenti de la o anumita materie
     useEffect(() => {
         timer.current = window.setTimeout(async () => {
-            axios.get("http://localhost:4000/profesor/"+`${User.id}`+"/materii/"+`${materieSelectata.key}`, {
+            axios.get("http://localhost:4000/profesor/"+`${User.id}`+"/materii/"+`${cheieMaterie}`, {
                 headers: {
                     'Authorization': `token ${User.token}`
                 }
@@ -133,6 +129,7 @@ const ListaStudenti = ( ) =>{
                     response.data.forEach((student) => {
                         listaStudenti.push(
                             {
+                                id: student.idStudent,
                                 nume: student.nume,
                                 prenume: student.prenume,
                                 grupa: student.grupa,
@@ -142,7 +139,6 @@ const ListaStudenti = ( ) =>{
                                 facultate: student.facultate,
                             });
                     });
-                    console.log(listaStudenti);
                     setStudentiMaterie(listaStudenti);
                     setLoading(false);
                 })
@@ -153,10 +149,17 @@ const ListaStudenti = ( ) =>{
         return () => {
             clearTimeout(timer.current);
         };
-    }, [materieSelectata])
+    }, [cheieMaterie])
 
     const onChangeMaterie = (e, {value}) => {
-        setMaterie(value)
+        for(let i=0;i<dateMaterii.length;i++)
+        {
+            if(dateMaterii[i].nume==value)
+            {
+                setCheieMaterie(dateMaterii[i].idMaterie)
+                return;
+            }
+        }
     }
 
     return (
