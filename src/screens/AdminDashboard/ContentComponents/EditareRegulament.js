@@ -2,8 +2,7 @@ import React, {useEffect, useState, useRef} from "react";
 import {useHistory} from "react-router";
 import axios from "axios";
 import {makeStyles} from "@material-ui/core/styles"
-import DeleteIcon from '@material-ui/icons/Delete';
-import {gsap} from "gsap";
+import AlertDialog from "./AlertDialog";
 
 const useStyles = makeStyles((theme) => ({
     divColor: {
@@ -30,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 15
     },
     icons: {
+
         textAlign: 'right',
         color: '#004276'
     }
@@ -39,19 +39,10 @@ const EditareRegulament = props => {
     const history = useHistory();
     const User = JSON.parse(localStorage.getItem("user"));
     const [regulament, setRegulament] = useState([])
-    const [deleteResponse, setDeleteResponse] = useState("");
-
-
-    const [isOpen, setOpenState]=useState(false);
-
-
-
-    const deleteRef = useRef(null);
-    const deleteTween = useRef(null);
-
 
     const idSpecializare = User.idSpecializare;
     const styles = useStyles();
+
 
 
     const getReguli = async () => {
@@ -76,26 +67,26 @@ const EditareRegulament = props => {
             });
     }
 
-    const deleteRegula = (id) => {
-        const reguli = regulament.filter(regula => regula.idRegulament !== id)
-        setRegulament(reguli);
-    }
-
     async function deleteRegulaRequest(id) {
         const res = await axios.delete("http://localhost:4000/admin/deleteRegula/" + id, {
             headers: {
                 'Authorization': `token ${User.token}`
             }
         });
-        deleteRegula(id);
         console.log(res.status);
-        setDeleteResponse(res.status);
-    }
 
-    useEffect(() => {
+        /*if(res.status===200)
+            alert('Regula a fost stearsa!')*/
         getReguli();
 
-      /*  setRegulament([
+    }
+
+
+    useEffect(() => {
+
+        getReguli();
+
+       /* setRegulament([
             {
                 idRegulament: 1,
                 titlu: "Reguli studenti",
@@ -126,16 +117,10 @@ const EditareRegulament = props => {
                 continut: "party uri in fiecare vineri cu prezenta",
                 idFacultate: null
             },
+
         ]);*/
     }, [])
 
-    useEffect(() => {
-        deleteTween.current = gsap.to(deleteRef.current, {
-            duration: 0.5,
-            //  attr: { fill: "#004276" },
-            paused: true
-        });
-    }, []);
 
     if (User != null) {
         if (User.tipUtilizator === "admin") {
@@ -152,18 +137,15 @@ const EditareRegulament = props => {
             {regulament.map(((item, index) => (
                 <div key={index} className={styles.divColor}>
                     <div className={styles.titlu}> {item.titlu}
-                        <DeleteIcon  onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) deleteRegulaRequest(item.idRegulament) }}>
 
-                        </DeleteIcon>
+                        <AlertDialog onDelete={() => deleteRegulaRequest(item.idRegulament)} ></AlertDialog>
+
                     </div>
                     <div className={styles.continut}> {item.continut}</div>
                 </div>
-
-
-            )))};
+            )))}
         </div>
     );
-
 };
 
 export default EditareRegulament;
