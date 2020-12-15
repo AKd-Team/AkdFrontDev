@@ -9,15 +9,12 @@ import Footer from './Footer';
 
 const App = () => {
     const [isAuthenticated, setisAuthenticated] = useState(false);
-    // useEffect(()=>{
-    //     localStorage.clear();
-    // },[])
     const onLogin=()=>{
         setisAuthenticated(true);
     }
 
     function onLogout() {
-        localStorage.clear();
+        localStorage.removeItem("user");
         setisAuthenticated(false);
     }
 
