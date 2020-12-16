@@ -8,25 +8,6 @@ for (let i = 1; i <= 7; i++) {
 }
 
 let weekDays=["Luni","Marti","Miercuri","Joi","Vineri"];
-async function getInitialData(id,token){
-    let initialData=[];
-    let URL=`http://localhost:4000/student/orar/${id}`;
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-    await axios.get(URL,config)
-        .then(function (response) {
-            //console.log(response.data);
-            for(let i=0;i<response.data.length;i++){
-                initialData.push(response.data[i])
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-   // console.log(initialData);
-    return initialData;
-}
 function getData(initialData){
     console.log(initialData);
     let result=[];
@@ -37,6 +18,7 @@ function getData(initialData){
             startDate:week[weekDays.indexOf(initialData[i].ziuaSaptamanii)]+"T"+initialData[i].oraInceput,
             endDate:week[weekDays.indexOf(initialData[i].ziuaSaptamanii)]+"T"+initialData[i].oraSfarsit,
         }
+        console.log(week[weekDays.indexOf(initialData[0].ziuaSaptamanii)])
         result.push(appointment);
     }
     return result;

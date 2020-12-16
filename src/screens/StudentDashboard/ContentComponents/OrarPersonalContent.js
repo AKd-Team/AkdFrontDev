@@ -29,7 +29,7 @@ const OrarPersonalContent=()=>{
         };
         await axios.get(URL,config)
             .then(function (response) {
-                //console.log(response.data);
+
                 for(let i=0;i<response.data.length;i++){
                     initialData.push(response.data[i])
                 }
@@ -39,7 +39,6 @@ const OrarPersonalContent=()=>{
             .catch(function (error) {
                 console.log(error);
             });
-        // console.log(initialData);
     }
     useEffect(()=>{
         getInitialData(User.id,User.token);
