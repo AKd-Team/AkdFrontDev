@@ -58,9 +58,9 @@ const OcupareSali = () =>{
     //     {id:5,nume:'FSEGA 500'},
     // ]
     const sesiune=[
-        {id:1,text:'Saptamana 1',value:'2021-01-13'},
-        {id:2,text:'Saptamana 2',value:'2021-01-20'},
-        {id:3,text:'Saptamana 3',value:'2021-01-27'}
+        {id:1,text:'Saptamana 1',value:'2021-01-18'},
+        {id:2,text:'Saptamana 2',value:'2021-01-25'},
+        {id:3,text:'Saptamana 3',value:'2021-02-01'}
     ]
 
     async function getSaliData(token){
