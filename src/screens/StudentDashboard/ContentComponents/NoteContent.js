@@ -79,7 +79,6 @@ const NoteContent = () =>{
     const User = JSON.parse(localStorage.getItem("user"));
 
     const [note, setNote] = useState([]);
-    const [copieNote, setCopieNote] = useState([]);
     const [noteFiltrate, setNoteFiltrate] = useState([]);
     const [aniStudiu, setAniStudiu] = useState([]);
     const [semestre, setSemestre] = useState([]);
@@ -112,7 +111,6 @@ const NoteContent = () =>{
             .then((response) => {
                 let listaNote = [];
                 let listaAniStudiu=[];
-                let listaSemestre=[];
                 let listaAniStudiuDropdown=[];
                 let listaSemestreDropdown=[];
                 let crt=0;
@@ -120,26 +118,21 @@ const NoteContent = () =>{
                     crt++;
                     listaNote.push({
                         id: crt,
-                        anStudiu: inregistrare.anStudiu,//"2018-2019"
+                        anStudiu: inregistrare.anStudiu,
                         semestruPlan: inregistrare.semestruPlan,
-                        codDisciplina: inregistrare.codDisciplina,//"MLR0011",
-                        disciplina: inregistrare.disciplina,//"Limbaje Formale si Tehnici de compilare"-nume lung de test
-                        notaSesiune: inregistrare.notaSesiune,
+                        codDisciplina: inregistrare.codDisciplina,
+                        disciplina: inregistrare.disciplina,
+                        notaSesiune: inregistrare.notaSesiune!=null?inregistrare.notaSesiune:"-",
                         notaRestanta: inregistrare.notaRestanta!=null?inregistrare.notaRestanta:"-",
-                        notaFinala: inregistrare.notaFinala,
+                        notaFinala: inregistrare.notaFinala!=null?inregistrare.notaFinala:"-",
                         nrCredite: inregistrare.nrCredite,
                         dataPromovarii: inregistrare.dataPromovarii,
                     })
                     if(!ElementulExista(inregistrare.anStudiu,listaAniStudiu)) {
                         listaAniStudiu.push(inregistrare.anStudiu);
                     }
-                    if(!ElementulExista(inregistrare.semestruPlan,listaSemestre)) {
-                        listaSemestre.push(inregistrare.semestruPlan)
-                    }
                 });
-                //sortare liste
                 listaAniStudiu.sort();
-                listaSemestre.sort();
 
                 //-----------pregatire liste dropdown
                 for(let i=0;i<listaAniStudiu.length;i++)
@@ -151,18 +144,17 @@ const NoteContent = () =>{
                     })
                 }
 
-                for(let i=0;i<listaSemestre.length;i++)
+                for(let semestru=1;semestru<=2*listaAniStudiu.length;semestru++)
                 {
                     listaSemestreDropdown.push({
-                        key: listaSemestre[i],
-                        text: listaSemestre[i],
-                        value: listaSemestre[i]
+                        key: semestru,
+                        text: semestru,
+                        value: semestru
                     })
                 }
                 //---------------------------------------
 
                 setNote(listaNote);
-                setCopieNote(listaNote);
                 setNoteFiltrate(listaNote);
                 setAniStudiu(listaAniStudiuDropdown);
                 setSemestre(listaSemestreDropdown);
@@ -189,13 +181,25 @@ const NoteContent = () =>{
         }
         return false;
     }
+    const ValidareAnSemestruSelectat = ():boolean => {
+        if(semestruSelectat===(anStudiuSelectat*2) || semestruSelectat===(anStudiuSelectat*2-1))
+            return true;
+        return false;
+    }
 
     //filter useEffect
     useEffect(() => {
-        if(anStudiuSelectat!=='' || semestruSelectat!=='')
-        {
+        if(anStudiuSelectat!=='' || semestruSelectat!=='') {
+            if((anStudiuSelectat!=='' && semestruSelectat!=='') && !ValidareAnSemestruSelectat())
+            {
+                    console.log("Anul si semstrul nu corespund! Alege din nou.");
+            }
             let listaNote = note.filter((inregistrare) => FilterOptions(inregistrare));
             setNoteFiltrate(listaNote);
+
+        }
+        else {
+            setNoteFiltrate(note);
         }
     }, [anStudiuSelectat, semestruSelectat])
 
@@ -203,33 +207,19 @@ const NoteContent = () =>{
         if (anStudiuSelectat !== '' &&  semestruSelectat === '')
             return inregistrare.anStudiu === anStudiuSelectat;
 
-        if ((anStudiuSelectat !== '' || anStudiuSelectat === '') && semestruSelectat !== '')
+        if (anStudiuSelectat !== '' && semestruSelectat !== '')
+            return (inregistrare.anStudiu === anStudiuSelectat && inregistrare.semestruPlan === semestruSelectat);
+
+        if (anStudiuSelectat === '' && semestruSelectat !== '')
             return inregistrare.semestruPlan === semestruSelectat;
     }
 
     const onChangeAnStudiu = (e, {value}) => {
-        //console.log(e);
-        //console.log(value);
-        /*if(e.target.outerText==="") {
-            setAnStudiu('')
-            setSemestru('')
-            setNoteFiltrate(copieNote);
-            console.log(noteFiltrate);
-        }
-        else*/
-            setAnStudiu(value);
+        setAnStudiu(value);
     }
 
     const onChangeSemestru = (e, {value}) => {
-        //console.log(e);
-        //console.log(value);
-        /*if(e.target.outerText==="") {
-            setSemestru('')
-            setAnStudiu('')
-            setNoteFiltrate(copieNote);
-        }
-        else*/
-            setSemestru(value);
+        setSemestru(value);
     }
 
     return (
