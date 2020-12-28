@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import DeleteIcon from '@material-ui/icons/Delete';
 import {makeStyles} from "@material-ui/core/styles";
+import {AddBox} from "@material-ui/icons";
+import CreateForm from './CreateForm'
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -20,25 +19,22 @@ const useStyles = makeStyles((theme) => ({
         color: '#004276'
     }
 }))
+const CreateDialog : React.FC = props => {
 
-
-const AlertDialog = props => {
     const [open, setOpen] = useState(false);
     const styles=useStyles();
 
     const handleClickOpen = () => {
         setOpen(true);
     };
-
     const handleClose = () => {
         setOpen(false);
-    };
-
+    }
 
     return (
         <div>
-            <div className={styles.icons}>
-            <DeleteIcon onClick={handleClickOpen}/></div>
+            <div className={styles.icons}> <AddBox onClick={handleClickOpen}/></div>
+
             <Dialog
                 open={open}
                 TransitionComponent={Transition}
@@ -48,24 +44,18 @@ const AlertDialog = props => {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogTitle
-                    id="alert-dialog-slide-title">{"Sunteti sigur ca vreti sa stergeti aceasta regula?"}</DialogTitle>
+                    id="alert-dialog-slide-title">{"Creare regula"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-
-                    </DialogContentText>
+                    <CreateForm
+                        regulaInit={props.regulaInit}
+                        handleClose={handleClose}
+                        createRegula={props.createRegula}></CreateForm>
                 </DialogContent>
 
-                <DialogActions>
-                    <Button onClick={props.onDelete} color="primary">
-                        Sterge
-                    </Button>
-                    <Button onClick={handleClose} color="secondary">
-                        Renunta
-                    </Button>
-                </DialogActions>
+
             </Dialog>
         </div>
     );
 }
 
-export default AlertDialog;
+export default CreateDialog;

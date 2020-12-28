@@ -1,8 +1,11 @@
-import React, {useEffect, useState, useRef} from "react";
+import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import axios from "axios";
-import {makeStyles} from "@material-ui/core/styles"
 import AlertDialog from "./AlertDialog";
+import EditIcon from "@material-ui/icons/Edit";
+import EditDialog from './EditDialog'
+import {makeStyles} from "@material-ui/core/styles";
+import CreateDialog from "./CreateDialog";
 
 const useStyles = makeStyles((theme) => ({
     divColor: {
@@ -29,20 +32,27 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 15
     },
     icons: {
-
         textAlign: 'right',
-        color: '#004276'
+        color: '#004276',
+        marginBottom: 5
+
     }
 }))
 
-const EditareRegulament = props => {
+const EditareRegulament = () => {
     const history = useHistory();
     const User = JSON.parse(localStorage.getItem("user"));
     const [regulament, setRegulament] = useState([])
-
+    const [open, setOpen] = useState(false);
     const idSpecializare = User.idSpecializare;
-    const styles = useStyles();
 
+    const styles = useStyles();
+    const [regula, setRegula] = useState(
+        {
+            titlu: "",
+            continut: "",
+            idFacultate: undefined
+        });
 
 
     const getReguli = async () => {
@@ -74,6 +84,7 @@ const EditareRegulament = props => {
             }
         });
         console.log(res.status);
+        setOpen(false)
 
         /*if(res.status===200)
             alert('Regula a fost stearsa!')*/
@@ -81,44 +92,46 @@ const EditareRegulament = props => {
 
     }
 
+    const handleCreateRegula = async (regula) => {
+
+        await axios.post("http://localhost:4000/admin/addRegula",
+            regula, {
+                headers: {
+                    'Authorization': `token ${User.token}`
+                }
+            }).then(() =>
+            setRegulament([...regulament, regula])
+        )
+    }
+
+    const handleEditRegula = async (regula) => {
+
+        await axios.put("http://localhost:4000/admin/updateRegula",
+            regula,
+            {
+                headers: {
+                    'Authorization': `token ${User.token}`
+                }
+            }).catch((error) => {
+            console.log(error.response)
+        })
+            .then(() =>
+                // setRegulament([...regulament.filter(r => r.idRegulament !== regula.idRegulament), regula]),
+                getReguli()
+            )
+    }
+
+    const handleOpenCreateForm = () => {
+        return {
+            titlu: "",
+            continut: "",
+            idFacultate: ""
+        }
+    }
 
     useEffect(() => {
 
         getReguli();
-
-       /* setRegulament([
-            {
-                idRegulament: 1,
-                titlu: "Reguli studenti",
-                continut: "blablablabla",
-                idFacultate: null
-            },
-            {
-                idRegulament: 2,
-                titlu: "Reguli profi",
-                continut: "nu au voie sa pice studentii",
-                idFacultate: null
-            },
-            {
-                idRegulament: 3,
-                titlu: "Reguli vacanta",
-                continut: "vacanta e tot anul",
-                idFacultate: null
-            },
-            {
-                idRegulament: 4,
-                titlu: "Reguli burse",
-                continut: "toti studentii primesc bani de cafea",
-                idFacultate: null
-            },
-            {
-                idRegulament: 5,
-                titlu: "Reguli supreme",
-                continut: "party uri in fiecare vineri cu prezenta",
-                idFacultate: null
-            },
-
-        ]);*/
     }, [])
 
 
@@ -132,14 +145,32 @@ const EditareRegulament = props => {
         history.push("/");
     }
 
+
     return (
         <div>
             {regulament.map(((item, index) => (
                 <div key={index} className={styles.divColor}>
                     <div className={styles.titlu}> {item.titlu}
 
-                        <AlertDialog onDelete={() => deleteRegulaRequest(item.idRegulament)} ></AlertDialog>
+                        <AlertDialog onDelete={() => deleteRegulaRequest(item.idRegulament)}
+                                     onClose={() => setOpen(false)}/>
+                        <div className={styles.icons}>
+                            <EditIcon onClick={() => {
+                                setRegula(item);
+                                setOpen(true)
+                            }}/>
+                        </div>
 
+
+                        <EditDialog
+                            open={open}
+                            setOpen={setOpen}
+                            selectedItem={regula}
+                            editRegula={handleEditRegula}/>
+
+                        <CreateDialog
+                            regulaInit={handleOpenCreateForm}
+                            createRegula={handleCreateRegula}/>
                     </div>
                     <div className={styles.continut}> {item.continut}</div>
                 </div>

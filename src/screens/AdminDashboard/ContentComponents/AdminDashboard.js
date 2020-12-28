@@ -4,7 +4,7 @@ import HomeContent from "./HomeContent";
 import CreareContStudent from "./CreareContStudent";
 import CreareContProf from "./CreareContProf";
 import EditareCatalog from "./EditareCatalog";
-import EditareRegulament from "./EditareRegulament";
+import EditareRegulament from "./Regulament/EditareRegulament";
 import EditareCalendar from "./EditareCalendar";
 import {Route} from "react-router";
 import {makeStyles} from "@material-ui/core/styles";
