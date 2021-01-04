@@ -73,7 +73,7 @@ const ListaStudenti = ( ) =>{
     const timer = React.useRef();
     const classes = useStyles();
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [materii,setMaterii]=useState([]);
     const [studentiMaterie,setStudentiMaterie]=useState([]);
     const [cheieMaterie,setCheieMaterie]=useState(-1);
@@ -118,7 +118,7 @@ const ListaStudenti = ( ) =>{
 
     //request studenti de la o anumita materie
     useEffect(() => {
-        timer.current = window.setTimeout(async () => {
+            setLoading(true);
             axios.get("http://localhost:4000/profesor/"+`${User.id}`+"/materii/"+`${cheieMaterie}`, {
                 headers: {
                     'Authorization': `token ${User.token}`
@@ -145,16 +145,13 @@ const ListaStudenti = ( ) =>{
                 .catch((error) => {
                     console.log(error);
                 });
-        }, 2100);
-        return () => {
-            clearTimeout(timer.current);
-        };
+
     }, [cheieMaterie])
 
     const onChangeMaterie = (e, {value}) => {
         for(let i=0;i<dateMaterii.length;i++)
         {
-            if(dateMaterii[i].nume==value)
+            if(dateMaterii[i].nume===value)
             {
                 setCheieMaterie(dateMaterii[i].idMaterie)
                 return;
