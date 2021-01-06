@@ -174,7 +174,7 @@ const NoteContent = () =>{
     const ElementulExista = (elementCautat:string,lista:[]):boolean => {
         for(let i=0;i<lista.length;i++)
         {
-            if(lista[i]==elementCautat)
+            if(lista[i]===elementCautat)
             {
                 return true;
             }
@@ -189,18 +189,18 @@ const NoteContent = () =>{
 
     //filter useEffect
     useEffect(() => {
+        console.log(note);
         if(anStudiuSelectat!=='' || semestruSelectat!=='') {
-            if((anStudiuSelectat!=='' && semestruSelectat!=='') && !ValidareAnSemestruSelectat())
+            if((anStudiuSelectat!=='' && semestruSelectat!=='') )
             {
                     console.log("Anul si semstrul nu corespund! Alege din nou.");
             }
             let listaNote = note.filter((inregistrare) => FilterOptions(inregistrare));
-            setNoteFiltrate(listaNote);
-
+            console.log(listaNote);
+            setNoteFiltrate(note.filter((inregistrare) => FilterOptions(inregistrare)));
         }
-        else {
+        if(anStudiuSelectat===''&&semestruSelectat==='')
             setNoteFiltrate(note);
-        }
     }, [anStudiuSelectat, semestruSelectat])
 
     const FilterOptions = (inregistrare) => {

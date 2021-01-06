@@ -27,14 +27,18 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         marginRight: theme.spacing(7),
         minWidth: 150,
+        marginLeft:theme.spacing(7),
     },
     selectContainer:{
         marginTop:'4%',
-        marginLeft: '4%',
+        marginLeft: '3%',
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    title:{
+        marginLeft:'4%',
+    }
 }));
 
 
@@ -154,6 +158,9 @@ const OcupareSali = () =>{
             <Fade bottom>
                 <Container fluid className={classes.selectContainer}>
                 <Grid container>
+                    <div className={classes.title}>
+                        <h1>Calendarul salilor ocupate de examene</h1>
+                    </div>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-label">Sala</InputLabel>
                         <Select

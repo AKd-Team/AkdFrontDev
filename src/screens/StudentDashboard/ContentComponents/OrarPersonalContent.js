@@ -41,6 +41,17 @@ const OrarPersonalContent=()=>{
             });
     }
     useEffect(()=>{
+        if(User!=null){
+            if(User.tipUtilizator==="student"){
+
+            }
+            else {
+                history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
+            }
+        }
+        else{
+            history.push("/");
+        }
         getInitialData(User.id,User.token);
     },[])
     const ToolbarWithLoading = withStyles(styles, { name: 'Toolbar' })(
@@ -53,17 +64,7 @@ const OrarPersonalContent=()=>{
             </div>
         ),
     );
-    if(User!=null){
-        if(User.tipUtilizator==="student"){
 
-        }
-        else {
-            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
-        }
-    }
-    else{
-        history.push("/");
-    }
     return(
     <Fade bottom>
         <Paper>

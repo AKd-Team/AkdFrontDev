@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import {makeStyles} from "@material-ui/core/styles";
 import {green} from "@material-ui/core/colors";
-import {Button, Divider, Form,Modal,Segment} from 'semantic-ui-react';
+import {Button, Divider, Form,Modal,Segment,Popup} from 'semantic-ui-react';
 import { DataGrid } from '@material-ui/data-grid';
 import axios from "axios";
 import rowsCreator from "../Helpers/rowsCreator";
@@ -54,8 +54,12 @@ const useStyles = makeStyles((theme) => ({
 const NoteContent = () =>{
     const classes=useStyles();
     const history=useHistory();
+    const timeoutLength = 2000;
+    const [error,setError]=useState(false);
+    const [openError,setOpenError]=useState(false);
     const [materii,setMaterii]=useState([]);
     const [loading,setLoading]=useState(false);
+    const [loadingStud,setLoadingStud]=useState(false);
     const [materie,setMaterie]=useState('');
     const [student,setStudent]=useState();
     const [idStudent,setidStudent]=useState();
@@ -98,8 +102,21 @@ const NoteContent = () =>{
         {key:1,text:'Sesiune',value:'Sesiune'},
         {key:2,text:'Restanta',value:'Restanta'},
     ]
+    const timer = React.useRef();
     const onOpen=()=>{
-        setOpen(true);
+        console.log(error);
+        if(!error){
+            setOpen(true);
+        }
+        else {
+            setOpenError(true);
+            timer.current = window.setTimeout(() => {
+                setOpenError(false)
+            }, timeoutLength);
+        }
+        return () => {
+            clearTimeout(timer.current);
+        };
     }
     const onClose=()=>{
         setOpen(false);
@@ -120,7 +137,7 @@ const NoteContent = () =>{
                         text: materie.nume,
                         value: materie.nume
                     })
-                    console.log(materie.idMaterie);
+                    //console.log(materie.idMaterie);
                     setLoading(false);
                 });
                 setMaterii(listaMaterii);
@@ -129,6 +146,17 @@ const NoteContent = () =>{
                 console.log(error);
             });
     }
+    useEffect(()=>{
+        if(materie===''||student===''||nota===''||tipulNotei===''){
+            setError(true);
+            console.log("S-a ajuns pe true")
+        }
+        if(materie!==''&&student!==''&&nota!==''&&tipulNotei!==''){
+            console.log("S-a ajuns pe false")
+            setError(false);
+        }
+
+    },[student,nota,tipulNotei])
     useEffect(()=>{
         const User=JSON.parse(localStorage.getItem("user"));
         if(User!=null){
@@ -145,6 +173,7 @@ const NoteContent = () =>{
         getMaterii(User);
     },[])
     const getStudenti = async (User) =>{
+        setLoadingStud(true);
         await axios.get("http://localhost:4000/profesor/"+`${User.id}`+"/materii/"+`${cheieMaterie}`, {
             headers: {
                 'Authorization': `token ${User.token}`
@@ -162,8 +191,9 @@ const NoteContent = () =>{
                             value: student.idStudent
                         });
                 });
-                console.log(listaStudenti);
+                //console.log(listaStudenti);
                 setStudentiMaterie(listaStudenti);
+                setLoadingStud(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -177,9 +207,6 @@ const NoteContent = () =>{
         }
         else setisMaterie(true);
     },[materie])
-    useEffect(()=>{
-        console.log(student);
-    },[student])
     const onChangeMaterie =(e,{value})=>{
 
         setMaterie(value);
@@ -203,9 +230,7 @@ const NoteContent = () =>{
             }
         }
     }
-    useEffect(()=>{
-        console.log(student);
-    },[student])
+
     const onChangeTipulNotei= (e,{value})=>{
         setTipulNotei(value);
     }
@@ -228,23 +253,9 @@ const NoteContent = () =>{
                         required={true}
                     />
                 </Form.Group>
-                {/*<Form.Group widths='equal'>*/}
-                {/*    <Form.Dropdown*/}
-                {/*        label='Student'*/}
-                {/*        clearable*/}
-                {/*        fluid*/}
-                {/*        selection*/}
-                {/*        search*/}
-                {/*        options={studentiMaterie}*/}
-                {/*        disabled={isMaterie}*/}
-                {/*        onChange={onChangeStudent}*/}
-                {/*        placeholder='Alegeti studentul'*/}
-                {/*        required={true}*/}
-                {/*    />*/}
-                {/*</Form.Group>*/}
             </Form>
             <div className={classes.grid}>
-                <DataGrid loading={loading} columns={columns} rows={rows}
+                <DataGrid loading={loadingStud} columns={columns} rows={rows}
                           onSelectionChange={(newSelection) => {
                     setStudent(newSelection.rowIds);
                 }}/>
@@ -273,11 +284,16 @@ const NoteContent = () =>{
                         placeholder='Alegeti tipul notei'
                         required={true}
                     />
+                    <Popup
+                        trigger={<Button content="Submit" disabled={isMaterie} onClick={onOpen}/>}
+                        content={`Va rugam alegeti toate campurile inainte de submit `}
+                        on='click'
+                        open={openError}
+                        position='right'
+                    />
                 </Form.Group>
                 <Form.Group widths='equal'>
-                    <Form.Button disabled={isMaterie} onClick={onOpen}>
-                        Submit
-                    </Form.Button>
+
                 </Form.Group>
             </Form>
 
@@ -292,6 +308,7 @@ const NoteContent = () =>{
                         <h4>Materia: {materie}</h4>
                         <h4>Studentul cu id-ul : {student}</h4>
                         <h4>Nota : {nota}</h4>
+                        <h4>Tipul notei :{tipulNotei}</h4>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>

@@ -47,7 +47,17 @@ const RegulamentContent = () =>{
     const styles=useStyles();
 
     useEffect(()=>{
+        if(User!=null){
+            if(User.tipUtilizator==="student"){
 
+            }
+            else {
+                history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
+            }
+        }
+        else{
+            history.push("/");
+        }
         axios.get("http://localhost:4000/student/regulament/"+idSpecializare,{
             headers: {
                 'Authorization': `token ${User.token}`
@@ -66,28 +76,23 @@ const RegulamentContent = () =>{
             });
     },[])
 
-    console.log(regulament);
-    if(User!=null){
-        if(User.tipUtilizator==="student"){
+    //console.log(regulament);
 
-        }
-        else {
-            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
-        }
-    }
-    else{
-        history.push("/");
-    }
 
 
         return (
             <div>
+                <Fade bottom cascade>
+
+                    <div>
                 {regulament.map(((item) => (
                     <div key={item.idRegulament} className={styles.divColor}>
                         <p className={styles.titlu}> {item.titlu} </p>
                         <p className={styles.continut}> {item.continut}</p>
                     </div>
                 )))}
+                    </div>
+                </Fade>
             </div>
         );
 
