@@ -3,6 +3,8 @@ import {useHistory} from "react-router";
 import axios from "axios";
 import {Button} from "semantic-ui-react"
 import type {OptiuneModel} from "./OptiuneModel";
+import TabelOptiuni from "./TabelOptiuni";
+import {Fragment} from "semantic-ui-react"
 
 
 const EvaluariProfesori=()=>{
@@ -36,9 +38,11 @@ const EvaluariProfesori=()=>{
                 numeMaterie: response.data[index].numeMaterie,
                 anDeStudiu: response.data[index].anDeStudiu,
                 anCalendaristic: response.data[index].anCaledaristic,
-                curs: response.data[index].curs,
-                seminar: response.data[index].seminar,
-                laborator: response.data[index].laborator
+                deEvaluat : {
+                    curs: response.data[index].curs,
+                    seminar: response.data[index].seminar,
+                    laborator: response.data[index].laborator
+                }
             })));
             console.log(response.data);
         })
@@ -63,9 +67,10 @@ const EvaluariProfesori=()=>{
     // }
 
     return(
-        <div>
-            <Button onClick={() => see()}/>
-        </div>
+        <React.Fragment>
+            <div>Evaluare Profesori</div>
+            <TabelOptiuni optiuni={optiuni}/>
+        </React.Fragment>
     );
 };
 

@@ -3,7 +3,7 @@ import NavBar from "../NavigationComponents/NavBar";
 import HomeContent from "./HomeContent";
 import ContractContent from "./ContractContent";
 import DatePersonaleContent from "./DatePersonaleContent";
-import EvaluariProfesori from "./EvaluariProfesori";
+import EvaluariProfesori from "./HomeComponents/Evaluari/EvaluariProfesori";
 import ListaProfesoriContent from "./ListaProfesoriContent";
 import NoteContent from "./NoteContent";
 import OrarPersonalContent from "./OrarPersonalContent";
