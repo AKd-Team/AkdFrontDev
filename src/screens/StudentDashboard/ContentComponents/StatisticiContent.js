@@ -16,6 +16,7 @@ import {CircularProgress, Select} from "@material-ui/core";
 import Input from "@material-ui/core/Input";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import axios from "axios";
 const useStyles = makeStyles((theme) => ({
     root:{
         justifyContent:'center',
@@ -43,75 +44,24 @@ const useStyles = makeStyles((theme) => ({
 const StatisticiContent = () =>{
     const history=useHistory();
     const classes=useStyles();
-    const materii=[
+    const [materii,setMaterii]=useState([]);
+    const materiiMock=[
         {id:1,text:'Inteligenta Artificiala',value:'Inteligenta Artificiala'},
-        {id:2,text:'MPP',value:'MPP'},
-        {id:3,text:'MAP',value:'MAP'},
-        {id:4,text:'Algoritmi si programare',value:'Algoritmi si programare'},
-        {id:5,text:'Not selected',value:'null'}
+        {id:2,text:'Not selected',value:'null'}
     ]
 
     const data={
-        "Inteligenta Artificiala": [
-            { nota: "1", studenti: 50 },
-            { nota: "2", studenti: 100 },
-            { nota: "3", studenti: 30 },
-            { nota: "4", studenti: 107 },
-            { nota: "5", studenti: 47 },
-            { nota: "6", studenti: 72 },
-            { nota: "7", studenti: 98 },
-            { nota: "8", studenti: 110 },
-            { nota: "9", studenti: 54},
-            { nota: "10", studenti: 30 },
-
-        ],
-        "MPP": [
-            { nota: "1", studenti: 50 },
-            { nota: "2", studenti: 100 },
-            { nota: "3", studenti: 30 },
-            { nota: "4", studenti: 107 },
-            { nota: "5", studenti: 95 },
-            { nota: "6", studenti: 157 },
-            { nota: "7", studenti: 49 },
-            { nota: "8", studenti: 120 },
-            { nota: "9", studenti: 83},
-            { nota: "10", studenti: 129 },
-        ],
-        "MAP": [
-            { nota: "1", studenti: 50 },
-            { nota: "2", studenti: 100 },
-            { nota: "3", studenti: 30 },
-            { nota: "4", studenti: 107 },
-            { nota: "5", studenti: 95 },
-            { nota: "6", studenti: 157 },
-            { nota: "7", studenti: 49 },
-            { nota: "8", studenti: 120 },
-            { nota: "9", studenti: 83},
-            { nota: "10", studenti: 129 },
-        ],
-        "Algoritmi si programare": [
-            { nota: "1", studenti: 50 },
-            { nota: "2", studenti: 100 },
-            { nota: "3", studenti: 30 },
-            { nota: "4", studenti: 107 },
-            { nota: "5", studenti: 95 },
-            { nota: "6", studenti: 157 },
-            { nota: "7", studenti: 49 },
-            { nota: "8", studenti: 120 },
-            { nota: "9", studenti: 83},
-            { nota: "10", studenti: 129 },
-        ],
         "null":[
-            { nota: "1", studenti: 0 },
-            { nota: "2", studenti: 0 },
-            { nota: "3", studenti: 0 },
-            { nota: "4", studenti: 0 },
-            { nota: "5", studenti: 0 },
-            { nota: "6", studenti:0 },
-            { nota: "7", studenti: 0 },
-            { nota: "8", studenti: 0 },
-            { nota: "9", studenti: 0},
-            { nota: "10", studenti: 0 },
+            { nota: "1", Nrstudenti: 0 },
+            { nota: "2", Nrstudenti: 0 },
+            { nota: "3", Nrstudenti: 0 },
+            { nota: "4", Nrstudenti: 0 },
+            { nota: "5", Nrstudenti: 0 },
+            { nota: "6", Nrstudenti:0 },
+            { nota: "7", Nrstudenti: 0 },
+            { nota: "8", Nrstudenti: 0 },
+            { nota: "9", Nrstudenti: 0},
+            { nota: "10",Nrstudenti: 0 },
         ]
     };
     const onChangeMateria = (e)=>{
@@ -137,20 +87,73 @@ const StatisticiContent = () =>{
     ,[])
     const timer = React.useRef();
     useEffect(()=>{
+        console.log(materia)
         if(materia==='null'){
             setStats(data[materia]);
         }
         else {
             setLoading(true);
-            timer.current = window.setTimeout(() => {
-                setStats(data[materia]);
-                setLoading(false);
-            }, 1500);
+            timer.current = window.setTimeout(async () => {
+                await axios.get("http://localhost:4000/student/materii/statistici"+`${materia}`, {
+                    headers: {
+                        'Authorization': `token ${User.token}`
+                    }
+                })
+                    .then((response) => {
+                        let data = [];
+                        response.data.forEach((stats) => {
+                            data.push({
+                                nota: stats.nota,
+                                Nrstudenti: stats.Nrstudenti,
+                            })
+                        });
+                        console.log(data);
+                        setStats(data);
+                        setLoading(false);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }, 1000);
         }
         return () => {
             clearTimeout(timer.current);
         };
     },[materia])
+    useEffect(()=>{
+        setLoading(true);
+        axios.get("http://localhost:4000/student/materii/"+`${User.id}`, {
+            headers: {
+                'Authorization': `token ${User.token}`
+            }
+        })
+            .then((response) => {
+                let listaMaterii = [];
+                response.data.forEach((materie) => {
+                    listaMaterii.push({
+                        key: materie.idMaterie,
+                        text: materie.nume,
+                        value: materie.idMaterie,
+                    })
+                });
+                console.log(listaMaterii);
+                let max;
+                if(listaMaterii.length!==0)
+                     max = listaMaterii.reduce((prev, current) => (prev.key > current.key) ? prev : current);
+                else max=1;
+                listaMaterii.push({
+                    key: max,
+                    text: 'Not selected',
+                    value: 'null',
+                })
+                setLoading(false);
+                setMaterii(listaMaterii);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    },[])
     return(
         <div className={classes.root}>
             <Grid container spacing={3}>
@@ -171,7 +174,7 @@ const StatisticiContent = () =>{
                                 input={<Input />}
                             >
                                 {materii.map((materie) => (
-                                    <MenuItem key={materie.id} value={materie.value}>
+                                    <MenuItem key={materie.key} value={materie.value}>
                                         {materie.text}
                                     </MenuItem>
                                 ))}
@@ -191,17 +194,17 @@ const StatisticiContent = () =>{
                         data={stats}
                     >
 
-                        <ValueScale name="studenti" />
+                        <ValueScale name="Nrstudenti" />
 
 
                         <ArgumentAxis />
-                        <ValueAxis scaleName="studenti" showGrid={false} showLine showTicks />
+                        <ValueAxis scaleName="Nrstudenti" showGrid={false} showLine showTicks />
 
                         <BarSeries
                            name="Studentii care au avut nota respectiva"
-                           valueField="studenti"
+                           valueField="Nrstudenti"
                            argumentField="nota"
-                           scaleName="studenti"
+                           scaleName="Nrstudenti"
                      />
 
                         <Animation />

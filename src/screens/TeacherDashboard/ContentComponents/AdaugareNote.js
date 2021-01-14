@@ -174,7 +174,7 @@ const NoteContent = () =>{
     },[])
     const getStudenti = async (User) =>{
         setLoadingStud(true);
-        await axios.get("http://localhost:4000/profesor/"+`${User.id}`+"/materii/"+`${cheieMaterie}`, {
+        await axios.get("http://localhost:4000/profesor/StudFaraNote/"+`${cheieMaterie}`, {
             headers: {
                 'Authorization': `token ${User.token}`
             }
