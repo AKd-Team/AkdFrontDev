@@ -7,13 +7,13 @@ import ListaStudenti from "./ContentComponents/ListaStudenti";
 import OcupareSali from "./ContentComponents/OcupareSali";
 import ProgramareExamen from "./ContentComponents/ProgramareExamen";
 import AdaugareNote from "./ContentComponents/AdaugareNote";
-import Evaluari from "./ContentComponents/Evaluari";
+import Evaluari from "./ContentComponents/VizualizareEvaluari/Evaluari";
 import Statistici from "./ContentComponents/Statistici";
 import {Route} from "react-router";
 import {makeStyles} from "@material-ui/core/styles";
 import {motion} from "framer-motion";
 import Logo from "../../files/images/ubbLogo2.png";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root:{
         display: 'flex',
         justifyContent: 'center',
