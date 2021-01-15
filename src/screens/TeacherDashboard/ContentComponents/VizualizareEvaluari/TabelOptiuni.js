@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {DataGrid, GridOverlay} from "@material-ui/data-grid";
 import {makeStyles} from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+
 const useStyles = makeStyles(() => ({
     root: {
         justifyContent: 'center',
@@ -23,13 +24,6 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-// const columns: Columns = [
-//     {field: 'numeMaterie', headerName: 'Disciplina', width: 95, headerClassName: 'theme-header centerHeader'},
-//     {field: 'anDeStudiu', headerName: 'An studiu', width: 120, headerClassName: 'theme-header'},
-//     {field: 'anCalendaristic', headerName: 'An', width: 120, headerClassName: 'theme-header'}
-// ];
-
-
 function CustomLoadingOverlay() {
     return (
         <GridOverlay>
@@ -40,38 +34,40 @@ function CustomLoadingOverlay() {
     );
 }
 
-const TabelOptiuni = props =>{
+const TabelOptiuni = props => {
     const timer = React.useRef();
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
 
     const columns = [
-        { field: 'id', headerName: 'Nr.Crt.', width: 98, headerClassName: 'theme-header' },
-        { field: 'criteriu', headerName: 'Criteriu', width: 700, headerClassName: 'theme-header' },
-        { field: 'medie', headerName: 'Nota medie evaluari', width: 200, headerClassName: 'theme-header' },
+        {field: 'id', headerName: 'Nr.Crt.', width: 98, headerClassName: 'theme-header'},
+        {field: 'criteriu', headerName: 'Criteriu', width: 700, headerClassName: 'theme-header'},
+        {field: 'medie', headerName: 'Nota medie evaluari', width: 200, headerClassName: 'theme-header'},
     ];
 
-    useEffect(() =>{
-        timer.current = window.setTimeout(async () => {setLoading(false)}, 2100)
+    useEffect(() => {
+            timer.current = window.setTimeout(async () => {
+                setLoading(false)
+            }, 2100)
         },
         []
     )
 
-    return(
+    return (
         <div className={classes.root}>
-        <div className={classes.tabel} style={{height: ((Math.max(props.date.length + 1, 7)) * 52.8)}}>
-            <DataGrid
-                components={{
-                    loadingOverlay: CustomLoadingOverlay,
-                }}
-                loading={loading}
-                hideFooterPagination={true}
-                hideFooterSelectedRowCount={true}
-                hideFooterRowCount={true}
-                hideFooter={true}
-                rows={props.date}
-                columns={columns}
-            />
+            <div className={classes.tabel} style={{height: ((Math.max(props.date.length + 1, 7)) * 52.8)}}>
+                <DataGrid
+                    components={{
+                        loadingOverlay: CustomLoadingOverlay,
+                    }}
+                    loading={loading}
+                    hideFooterPagination={true}
+                    hideFooterSelectedRowCount={true}
+                    hideFooterRowCount={true}
+                    hideFooter={true}
+                    rows={props.date}
+                    columns={columns}
+                />
 
             </div>
         </div>

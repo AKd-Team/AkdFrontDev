@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, {useState} from "react";
 import {useHistory} from "react-router";
 import axios from "axios";
 import useDeepCompareEffect from "use-deep-compare-effect";
@@ -6,6 +6,7 @@ import * as Transition from "react-reveal";
 import {Divider, Form} from "semantic-ui-react";
 import {makeStyles} from "@material-ui/core/styles";
 import TabelOptiuni from "./TabelOptiuni";
+
 const useStyles = makeStyles(() => ({
     root: {
         justifyContent: 'center',
@@ -32,7 +33,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',
         verticalAlign: "middle",
-        zIndex: 'auto'
+        zIndex: "auto"
     },
     header: {
         marginTop: 30,
@@ -42,45 +43,43 @@ const useStyles = makeStyles(() => ({
 
 }));
 
-const Evaluari=()=>{
-    const history=useHistory();
-    const User=JSON.parse(localStorage.getItem("user"));
+const Evaluari = () => {
+    const history = useHistory();
+    const User = JSON.parse(localStorage.getItem("user"));
     const id = User.id;
     const [materii, setMaterii] = useState([]);
     const [materieSelectata, setMaterieSelectata] = useState('Materie');
-    const styles=useStyles();
+    const styles = useStyles();
     const [listaCriterii, setListaCriterii] = useState([]);
     const [medii, setMedii] = useState([]);
     const [dateTabel, setDateTabel] = useState([]);
     const [optMaterii, setOptMaterii] = useState([{
-            key: "Alegere materie",
-            text: "Alegere materie",
-            value: "Alegere materie",
+        key: "Alegere materie",
+        text: "Alegere materie",
+        value: "Alegere materie",
     }]);
 
-    if(User!=null){
-        if(User.tipUtilizator==="profesor"){
+    if (User != null) {
+        if (User.tipUtilizator === "profesor") {
 
-        }
-        else {
+        } else {
             history.push(`/${User.tipUtilizator}dash/${User.tipUtilizatore}`);
         }
-    }
-    else{
+    } else {
         history.push("/");
     }
 
     const getMaterii = async () => {
-        await axios.get("http://localhost:4000/profesor/"+id+"/materii",
+        await axios.get("http://localhost:4000/profesor/" + id + "/materii",
             {
-                            headers: {
-                                'Authorization': `token ${User.token}`
-                            }
+                headers: {
+                    'Authorization': `token ${User.token}`
+                }
             }).then((response) => {
-                        setMaterii(new Array(response.data.length).fill().map((value, index) => ({
-                            idMaterie: response.data[index].idMaterie,
-                            numeMaterie: response.data[index].nume,
-                        })));
+            setMaterii(new Array(response.data.length).fill().map((value, index) => ({
+                idMaterie: response.data[index].idMaterie,
+                numeMaterie: response.data[index].nume,
+            })));
             console.log(response.data);
         }).catch(function (error) {
             console.log(error);
@@ -88,7 +87,7 @@ const Evaluari=()=>{
     }
 
     const getEvaluari = async (obj) => {
-        await axios.get("http://localhost:4000/profesor/rezultateEvaluare/"+obj.idMaterie+"/"+id, {
+        await axios.get("http://localhost:4000/profesor/rezultateEvaluare/" + obj.idMaterie + "/" + id, {
             headers: {
                 'Authorization': `token ${User.token}`
             }
@@ -124,11 +123,11 @@ const Evaluari=()=>{
         else return obj;
     }
 
-    function dateTabelFunc(){
+    function dateTabelFunc() {
         const array = [];
-        for(var index=0; index<listaCriterii.length; index++){
+        for (var index = 0; index < listaCriterii.length; index++) {
             array.push({
-                id: index+1,
+                id: index + 1,
                 criteriu: listaCriterii[index],
                 medie: medii[index]
             })
@@ -137,32 +136,33 @@ const Evaluari=()=>{
     }
 
     useDeepCompareEffect(() => {
-            getMaterii().then(() =>{
-                setOptMaterii(optiuniArray());
-                console.log(optMaterii);
-            });
+        getMaterii().then(() => {
+            setOptMaterii(optiuniArray());
+            console.log(optMaterii);
+        });
 
     }, [optMaterii])
 
     useDeepCompareEffect(() => {
         console.log(materieSelectata);
         const obj = findMaterie(materieSelectata);
-        if(obj.length > 0)
-        {
+        if (obj.length > 0) {
             getEvaluari(obj[0]);
         }
-        if(listaCriterii.length > 0){
+        if (listaCriterii.length > 0) {
             setDateTabel(dateTabelFunc());
             console.log(dateTabel);
+        }
+        if (materieSelectata === '') {
+            setDateTabel([]);
         }
     }, [materieSelectata, dateTabel, listaCriterii, medii])
 
 
-        const onChangeMaterie = (e, {value}) => {
-           setMaterieSelectata(value);
+    const onChangeMaterie = (e, {value}) => {
+        setMaterieSelectata(value);
 
-        }
-
+    }
 
     return (
         <div className={styles.root}>
@@ -173,19 +173,19 @@ const Evaluari=()=>{
                 </div>
 
                 <Form className={styles.form}>
-                    <Form.Group widths='equal'>
-                        <Form.Dropdown
-                            style={{width: '100%', zIndex: 6}}
-                            label='Discipline:'
-                            clearable={true}
-                            fluid
-                            selection
-                            options={optMaterii}
-                            placeholder='Alegeti disciplina'
-                            required={false}
-                            onChange={onChangeMaterie}
-                        />
-                    </Form.Group>
+
+                    <Form.Dropdown
+                        label='Discipline:'
+                        clearable={true}
+                        fluid
+                        upward
+                        selection
+                        options={optMaterii}
+                        placeholder='Alegeti disciplina'
+                        required={false}
+                        onChange={onChangeMaterie}
+                    />
+
                 </Form>
                 <TabelOptiuni date={dateTabel}/>
 
