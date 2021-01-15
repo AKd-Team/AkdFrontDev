@@ -5,6 +5,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import * as Transition from "react-reveal";
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import ReviewDisciplina from "./ReviewDisciplina";
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -25,20 +26,24 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'center'
     },
     form: {
-        marginTop: 40,
+        marginTop: 70,
         marginLeft: 30,
         marginRight: 30,
         marginBottom: 30,
         justifyContent: 'center',
         alignItems: 'center',
         verticalAlign: "middle",
-        zIndex: 'auto'
+        zIndex: 10
     },
     header: {
         marginTop: 30,
         marginBottom: 40,
         textAlign: 'center'
     },
+    sendBtn:{
+        marginTop: 15,
+        marginBottom: 25
+    }
 
 }));
 
@@ -53,9 +58,9 @@ const EvaluariProfesori = () => {
     const [profesoriLaborator, setProfesoriLaborator] = useState([])
     const [profesoriSeminar, setProfesoriSeminar] = useState([])
     const [forma, setForma] = useState([{
-        key: "Curs",
-        text: "Curs",
-        value: "Curs",
+        key: "Optiune",
+        text: "Optiune",
+        value: "Optiune",
     }]);
     const [profiActuali, setProfiActuali] = useState([]);
     const [formaSelect, setFormaSelect] = useState('');
@@ -80,6 +85,8 @@ const EvaluariProfesori = () => {
         text: "Alegere profesor",
         value: "Alegere profesor",
     }]);
+    const arrayNote = [];
+
 
     const getOptiuni = async () => {
         await axios.get("http://localhost:4000/student/optiuniReview/" + idStudent, {
@@ -96,7 +103,6 @@ const EvaluariProfesori = () => {
                 seminar: response.data[index].seminar,
                 laborator: response.data[index].laborator
             })));
-            console.log(response.data);
         })
             .catch(function (error) {
 
@@ -131,7 +137,6 @@ const EvaluariProfesori = () => {
                 idCriteriu: response.data[index].idCriteriu,
                 descriere: response.data[index].descriere
             })));
-            console.log(response.data);
         })
             .catch(function (error) {
                 console.log(error);
@@ -148,7 +153,51 @@ const EvaluariProfesori = () => {
             }
         }).then((response) => {
             setExistaEvaluarea(response.data);
-            console.log(response.data);
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    function stergeRepetari(){
+
+        for(var i=0; i<arrayNote.length; i++)
+        {
+            for(var j=i+1; j<arrayNote.length; j++)
+            {
+                if(arrayNote[i].idCrit ===arrayNote[j].idCrit){
+                    arrayNote.splice(i, 1);
+                }
+            }
+        }
+    }
+
+    function note() {
+        if (criterii.length > 0 && arrayNote.length > 0) {
+            const arrayN = [];
+            const arrayCrit = [];
+            stergeRepetari();
+            arrayNote.sort(function (a, b) {
+                return a.idCrit - b.idCrit
+            });
+            console.log(arrayNote);
+            arrayNote.forEach((el) => {
+                arrayN.push(parseInt(el.nota));
+                arrayCrit.push(el.idCrit);
+            })
+            return {arrayN, arrayCrit};
+        }
+    }
+
+    const trimiteNote = async (review) => {
+
+        await axios.post("http://localhost:4000/student/adaugareReview",
+            review,
+            {
+                headers: {
+                    'Authorization': `token ${User.token}`
+                }
+            }).then((response) => {
+                console.log(response.data);
         })
             .catch(function (error) {
                 console.log(error);
@@ -240,13 +289,11 @@ const EvaluariProfesori = () => {
 
     useDeepCompareEffect(() => {
         const obj = findDisciplina(disciplinaSelect);
-        console.log(obj);
         setFormaInvatamant(obj);
         if(obj.length > 0) {
             if(obj[0].curs===true || formaSelect==="Curs"){
                 getProfesori("Curs", obj[0].idMaterie)
                     .then(() => {
-                        console.log(responseData);
                         setProfesoriCurs(responseData);
                     })
             }
@@ -254,21 +301,17 @@ const EvaluariProfesori = () => {
             if(formaSelect==="Laborator" && obj[0].laborator===true){
                 getProfesori("Laborator", obj[0].idMaterie)
                     .then(() => {
-                        console.log(responseData);
                         setProfesoriLaborator(responseData);
                     })
             }
              if(formaSelect==="Seminar" && obj[0].seminar === true){
                  getProfesori("Seminar", obj[0].idMaterie)
                       .then(() => {
-                                console.log(responseData);
                                 setProfesoriSeminar(responseData);
                             })
                     }
         }
         setProfiActuali(getProfiAfisare());
-        console.log(getProfiAfisare())
-        console.log(profiActuali);
     }, [discipline, disciplinaSelect, profesoriCurs, profesoriLaborator, formaSelect])
 
     useEffect(() => {
@@ -285,7 +328,6 @@ const EvaluariProfesori = () => {
                     })
             })
             setProfiForm(array);
-            console.log(profiForm);
         }
     }, [profiActuali, setProfiForm])
 
@@ -301,11 +343,13 @@ const EvaluariProfesori = () => {
     const onChangeProfesor = (e, {value}) => {
         setProfesorSelect(value);
     }
+    useEffect(() => {
+        if(disciplinaSelect === '' || profesorSelect === '' || formaSelect === '')
+            setExistaEvaluarea(false);
+    }, [disciplinaSelect, profesorSelect, formaSelect])
 
     useEffect( () => {
         const objProf = findProfesor(profesorSelect);
-        console.log(profesorSelect)
-        console.log(objProf)
         const objDisciplina = findDisciplina(disciplinaSelect);
         if(objProf.length > 0 && objDisciplina.length > 0 )
         {
@@ -316,19 +360,39 @@ const EvaluariProfesori = () => {
                 AnDeStudiu: objDisciplina[0].anDeStudiu,
                 AnCalendaristic: objDisciplina[0].anCalendaristic
             }
-            console.log(profesorSelect)
-            console.log("obj")
-            console.log(obj);
-
             getExistaEvaluarea(obj).then(() => {
-                console.log(existaEvaluarea);
-                getCriterii().then(() => {
-                    console.log(criterii);
-                })
+                getCriterii();
             })
         }
+
     },[profesorSelect, existaEvaluarea, disciplinaSelect])
 
+
+
+    function sendReview()
+    {
+        if(existaEvaluarea === true) return toast("Evaluarea acestei discipline a mai fost facuta!");
+        const obj = note();
+        if(obj === undefined && existaEvaluarea === false) return toast("Evaluarea nu a fost completata!");
+        if(obj !== undefined && existaEvaluarea === false){
+            const prof = findProfesor(profesorSelect);
+            const materie = findDisciplina(disciplinaSelect);
+
+            const review = {
+                IdProfesor: prof[0].idProfesor,
+                IdMaterie: materie[0].idMaterie,
+                IdStudent: User.id,
+                AnDeStudiu: materie[0].anDeStudiu,
+                AnCalendaristic: materie[0].anCalendaristic,
+                Criterii: obj.arrayCrit,
+                Note: obj.arrayN
+            }
+            trimiteNote(review);
+
+            return toast("Evaluarea a fost trimisa cu succes!");
+        }
+
+    }
 
     return (
         <div className={styles.root}>
@@ -341,7 +405,6 @@ const EvaluariProfesori = () => {
                 <Form className={styles.form}>
                     <Form.Group widths='equal'>
                         <Form.Dropdown
-                            style={{width: '100%', zIndex: 6}}
                             label='Discipline:'
                             clearable={true}
                             fluid
@@ -352,7 +415,6 @@ const EvaluariProfesori = () => {
                             onChange={onChangeDisciplina}
                         />
                         <Form.Dropdown
-                            style={{width: '100%', zIndex: 6}}
                             label='Forma:'
                             clearable={true}
                             fluid
@@ -363,7 +425,6 @@ const EvaluariProfesori = () => {
                             onChange={onChangeForma}
                         />
                         <Form.Dropdown
-                            style={{width: '100%', zIndex: 6}}
                             label='Profesor:'
                             clearable={true}
                             fluid
@@ -376,9 +437,9 @@ const EvaluariProfesori = () => {
                     </Form.Group>
                 </Form>
                 <div>
-                    {profesorSelect !== '' && <ReviewDisciplina criterii={criterii}/> }
+                    {existaEvaluarea === true && <h2 className={styles.titlu}>Evaluarea a mai fost facuta!</h2>}
+                    {formaSelect !== '' && profesorSelect !== '' && existaEvaluarea === false && <ReviewDisciplina criterii={criterii} arrayNote={arrayNote} sendReview={sendReview} />}
                 </div>
-
             </Transition.Fade>
         </div>
     );

@@ -8,8 +8,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import {Segment, GridColumn} from 'semantic-ui-react'
 import * as Transition from "react-reveal";
-import map from 'lodash/map';
-import startCase from 'lodash/startCase';
 
 const useStyles2 = makeStyles({
     root:{
@@ -93,11 +91,11 @@ const  StyledRadio = ({ id, handleChange, name, form}) => {
     );
 }
 
-const SegmentCriteriu=({criteriu})=>{
+const SegmentCriteriu=({criteriu, idCriteriu, arrayNote})=>{
 
     const classes2=useStyles2();
     const [form, setForm] = useState({
-        nota: ''
+        nota: '', id:''
     });
 
     const handleChange = (e) => {
@@ -105,7 +103,10 @@ const SegmentCriteriu=({criteriu})=>{
         setForm((prevFormValues) => ({
             ...prevFormValues,
             [name]: type === 'checkbox' ? checked : value,
+            idCrit : idCriteriu
+
         }));
+        arrayNote.push({nota: value, idCrit: idCriteriu});
     };
 
 
@@ -113,12 +114,6 @@ const SegmentCriteriu=({criteriu})=>{
 
          <Transition.Fade bottom cascade>
                  <Segment raised style={{marginLeft:'20%',marginRight:'20%', marginBottom:'0.5%'}} className={classes2.root}>
-                     {map(form, (val, key) => (
-                         <div key={key}>
-                             {`${startCase(key)}: `}
-                             {`${val}`}
-                         </div>
-                     ))}
                      <GridColumn className={classes2.crit}> {criteriu.descriere} </GridColumn>
                     <GridColumn className={classes2.radioBtns}>
                         <FormControl >
