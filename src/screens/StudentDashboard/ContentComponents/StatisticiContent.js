@@ -62,6 +62,7 @@ const StatisticiContent = () =>{
             { nota: "8", Nrstudenti: 0 },
             { nota: "9", Nrstudenti: 0},
             { nota: "10",Nrstudenti: 0 },
+            {nota:"10,5",Nrstudenti:0},
         ]
     };
     const onChangeMateria = (e)=>{
@@ -94,7 +95,7 @@ const StatisticiContent = () =>{
         else {
             setLoading(true);
             timer.current = window.setTimeout(async () => {
-                await axios.get("http://localhost:4000/student/materii/statistici"+`${materia}`, {
+                await axios.get("http://localhost:4000/student/materii/statistici/"+`${materia}`, {
                     headers: {
                         'Authorization': `token ${User.token}`
                     }
@@ -107,6 +108,10 @@ const StatisticiContent = () =>{
                                 Nrstudenti: stats.nrStudenti,
                             })
                         });
+                        data.push({
+                            nota:10.5,
+                            Nrstudenti:0,
+                        })
                         console.log(data);
                         setStats(data);
                         setLoading(false);
@@ -195,7 +200,6 @@ const StatisticiContent = () =>{
                     >
 
                         <ValueScale name="Nrstudenti" />
-
 
                         <ArgumentAxis />
                         <ValueAxis scaleName="Nrstudenti" showGrid={false} showLine showTicks />

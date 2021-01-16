@@ -55,8 +55,9 @@ const OrarPersonalContent=()=>{
         else{
             history.push("/");
         }
-        let data=getData(initialData);
-        setScheduleData(data);
+        // let data=getData(initialData);
+        // setScheduleData(data);
+        getInitialData(User.id,User.token);
     },[])
     const ToolbarWithLoading = withStyles(styles, { name: 'Toolbar' })(
         ({ children, classes, ...restProps }) => (
@@ -71,6 +72,9 @@ const OrarPersonalContent=()=>{
 
     return(
     <Fade bottom>
+        <div>
+            <h1>Orar personalizat pentru {User.nume} {User.prenume}</h1>
+        </div>
         <Paper>
             <Scheduler
                 height={660}
