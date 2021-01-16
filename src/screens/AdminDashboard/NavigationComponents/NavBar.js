@@ -8,7 +8,7 @@ import {motion} from "framer-motion";
 const NavBar = (props) =>{
     return(
         <Slide top>
-        <Menu fluid widths={6} >
+        <Menu fluid widths={5} >
             <Menu.Item>
                 <motion.div
                     whileHover={{ scale: 1.4 }}
@@ -71,24 +71,7 @@ const NavBar = (props) =>{
                 </Link>
                 </motion.div>
             </Menu.Item>
-            <Menu.Item>
-                <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                >
-                <Link to="/admindash/editare-calendar">
-                    <Button
-                        className="root"
-                        aria-controls="customized-menu"
-                        aria-haspopup="true"
-                        color="primary"
-                    >
-                        <i className="big calendar alternate icon"></i>
-                        Editare calendar
-                    </Button>
-                </Link>
-                </motion.div>
-            </Menu.Item>
+
             <Menu.Item>
                 <motion.div
                     whileHover={{ scale: 1.2 }}

@@ -61,16 +61,17 @@ const Statistici = () =>{
     },[])
     const data={
         "null":[
-            { nota: "1", Nrstudenti: 0 },
-            { nota: "2", Nrstudenti: 0 },
-            { nota: "3", Nrstudenti: 0 },
-            { nota: "4", Nrstudenti: 0 },
-            { nota: "5", Nrstudenti: 0 },
-            { nota: "6", Nrstudenti:0 },
-            { nota: "7", Nrstudenti: 0 },
-            { nota: "8", Nrstudenti: 0 },
-            { nota: "9", Nrstudenti: 0},
-            { nota: "10",Nrstudenti: 0 },
+            { nota: "1", numar: 0 },
+            { nota: "2", numar: 0 },
+            { nota: "3", numar: 0 },
+            { nota: "4", numar: 0 },
+            { nota: "5", numar: 0 },
+            { nota: "6", numar: 0 },
+            { nota: "7", numar: 0 },
+            { nota: "8", numar: 0 },
+            { nota: "9", numar: 0},
+            { nota: "10",numar: 0 },
+            {nota:"10,5",numar:0},
         ]
     };
     const onChangeMateria = (e)=>{
@@ -88,31 +89,67 @@ const Statistici = () =>{
         else {
             setLoading(true);
             timer.current = window.setTimeout(async () => {
-                await axios.get("http://localhost:4000/profesor/materii/statistici/"+`${materia}`, {
+                // await axios.get("http://localhost:4000/profesor/materii/statistici/"+`${materia}`, {
+                //     headers: {
+                //         'Authorization': `token ${User.token}`
+                //     }
+                // })
+                //     .then((response) => {
+                //         let data = [];
+                //         response.data.forEach((stats) => {
+                //             if(stats.Nrstudenti===undefined){
+                //                 console.log("S-a ajuns aici pentru nota"+stats.nota+stats.Nrstudenti);
+                //                 data.push({
+                //                     nota: stats.nota,
+                //                     Nrstudenti: 0,
+                //                 })
+                //             }
+                //
+                //             else data.push({
+                //                 nota: stats.nota,
+                //                 Nrstudenti: stats.Nrstudenti,
+                //             })
+                //         });
+                //         console.log(data);
+                //         setStats(data);
+                //         setLoading(false);
+                //     })
+                //     .catch((error) => {
+                //         console.log(error);
+                //     });
+                var axios = require('axios');
+                var data1 = '';
+
+                var config = {
+                    method: 'get',
+                    url:`http://localhost:4000/profesor/materii/statistici/${materia}`,
                     headers: {
-                        'Authorization': `token ${User.token}`
-                    }
-                })
-                    .then((response) => {
+                        'Authorization': `Bearer ${User.token}`
+                    },
+                    data : data1
+                };
+                console.log(config.url);
+                axios(config)
+                    .then(function (response) {
                         let data = [];
                         response.data.forEach((stats) => {
-                            if(stats.Nrstudenti===undefined)
-                                 data.push({
-                                    nota: stats.nota,
-                                    Nrstudenti: 0,
-                                })
-                            else data.push({
+                             data.push({
                                 nota: stats.nota,
-                                Nrstudenti: stats.Nrstudenti,
+                                numar: stats.nrStudenti,
                             })
                         });
+                        data.push({
+                            nota:10.5,
+                            numar:0,
+                        })
                         console.log(data);
                         setStats(data);
                         setLoading(false);
                     })
-                    .catch((error) => {
+                    .catch(function (error) {
                         console.log(error);
                     });
+
             }, 1000);
         }
         return () => {
@@ -193,17 +230,16 @@ const Statistici = () =>{
                             data={stats}
                         >
 
-                            <ValueScale name="Nrstudenti" />
-
+                            <ValueScale name="numar" />
 
                             <ArgumentAxis />
-                            <ValueAxis scaleName="Nrstudenti" showGrid={false} showLine showTicks />
+                            <ValueAxis scaleName="numar" showGrid={false} showLine showTicks />
 
                             <BarSeries
                                 name="Studentii care au avut nota respectiva"
-                                valueField="Nrstudenti"
+                                valueField="numar"
                                 argumentField="nota"
-                                scaleName="Nrstudenti"
+                                scaleName="numar"
                             />
 
                             <Animation />

@@ -104,7 +104,7 @@ const StatisticiContent = () =>{
                         response.data.forEach((stats) => {
                             data.push({
                                 nota: stats.nota,
-                                Nrstudenti: stats.Nrstudenti,
+                                Nrstudenti: stats.nrStudenti,
                             })
                         });
                         console.log(data);
@@ -205,7 +205,7 @@ const StatisticiContent = () =>{
                            valueField="Nrstudenti"
                            argumentField="nota"
                            scaleName="Nrstudenti"
-                     />
+                        />
 
                         <Animation />
 

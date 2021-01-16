@@ -93,7 +93,7 @@ const EditareRegulament = () => {
     }
 
     const handleCreateRegula = async (regula) => {
-
+        console.log(regula);
         await axios.post("http://localhost:4000/admin/addRegula",
             regula, {
                 headers: {
@@ -105,20 +105,45 @@ const EditareRegulament = () => {
     }
 
     const handleEditRegula = async (regula) => {
+        var axios = require('axios');
+        var data = JSON.stringify({
+            "IdRegula":regula.idRegulament,
+            "Titlu":regula.titlu,
+            "Continut":regula.continut,
+            "IdFacultate":regula.idFacultate,
+        });
 
-        await axios.put("http://localhost:4000/admin/updateRegula",
-            regula,
-            {
-                headers: {
-                    'Authorization': `token ${User.token}`
-                }
-            }).catch((error) => {
-            console.log(error.response)
-        })
-            .then(() =>
-                // setRegulament([...regulament.filter(r => r.idRegulament !== regula.idRegulament), regula]),
-                getReguli()
-            )
+        var config = {
+            method: 'put',
+            url: 'http://localhost:4000/admin/updateRegula',
+            headers: {
+                'Authorization': `Bearer ${User.token}`,
+                'Content-Type': 'application/json'
+            },
+            data : data
+        };
+        console.log(data);
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+                getReguli();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        // await axios.put("http://localhost:4000/admin/updateRegula",
+        //     regula,
+        //     {
+        //         headers: {
+        //             'Authorization': `token ${User.token}`
+        //         }
+        //     }).catch((error) => {
+        //     console.log(error.response)
+        // })
+        //     .then(() =>
+        //         // setRegulament([...regulament.filter(r => r.idRegulament !== regula.idRegulament), regula]),
+        //         getReguli()
+        //     )
     }
 
     const handleOpenCreateForm = () => {
@@ -130,22 +155,18 @@ const EditareRegulament = () => {
     }
 
     useEffect(() => {
+        if (User != null) {
+            if (User.tipUtilizator === "admin") {
+
+            } else {
+                history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
+            }
+        } else {
+            history.push("/");
+        }
 
         getReguli();
     }, [])
-
-
-    if (User != null) {
-        if (User.tipUtilizator === "admin") {
-
-        } else {
-            history.push(`/${User.tipUtilizator}dash/${User.tipUtilizator}`);
-        }
-    } else {
-        history.push("/");
-    }
-
-
     return (
         <div>
             {regulament.map(((item, index) => (
@@ -160,7 +181,6 @@ const EditareRegulament = () => {
                                 setOpen(true)
                             }}/>
                         </div>
-
 
                         <EditDialog
                             open={open}

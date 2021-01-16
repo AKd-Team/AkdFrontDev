@@ -161,7 +161,6 @@ const Evaluari = () => {
 
     const onChangeMaterie = (e, {value}) => {
         setMaterieSelectata(value);
-
     }
 
     return (

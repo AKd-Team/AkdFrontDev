@@ -6,6 +6,7 @@ import {Button, Divider, Form,Modal,Segment,Popup} from 'semantic-ui-react';
 import { DataGrid } from '@material-ui/data-grid';
 import axios from "axios";
 import rowsCreator from "../Helpers/rowsCreator";
+import {CircularProgress} from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
     root:{
         justifyContent:'center',
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
     },
     form1:{
-        marginTop: 100,
+        marginTop: 40,
         marginLeft: 70,
         marginRight:70,
         justifyContent:'center',
@@ -34,6 +35,13 @@ const useStyles = makeStyles((theme) => ({
         justifyContent:'center',
         alignItems: 'center'
     },
+    fabProgress: {
+        color: green[500],
+        position: 'absolute',
+        top: -6,
+        left: -6,
+        zIndex: 1,
+    },
     buttonProgress: {
         color: green[500],
         position: 'absolute',
@@ -49,12 +57,19 @@ const useStyles = makeStyles((theme) => ({
         width:'90%',
         marginLeft: 70,
         marginRight:70,
+    },
+    title:{
+        alignContent:'center',
+        marginTop:'4%',
+        marginLeft:'10%',
+
     }
 }));
 const NoteContent = () =>{
     const classes=useStyles();
     const history=useHistory();
     const timeoutLength = 2000;
+    const User=JSON.parse(localStorage.getItem("user"));
     const [error,setError]=useState(false);
     const [openError,setOpenError]=useState(false);
     const [materii,setMaterii]=useState([]);
@@ -157,8 +172,8 @@ const NoteContent = () =>{
         }
 
     },[student,nota,tipulNotei])
+
     useEffect(()=>{
-        const User=JSON.parse(localStorage.getItem("user"));
         if(User!=null){
             if(User.tipUtilizator==="profesor"){
 
@@ -191,7 +206,6 @@ const NoteContent = () =>{
                             value: student.idStudent
                         });
                 });
-                //console.log(listaStudenti);
                 setStudentiMaterie(listaStudenti);
                 setLoadingStud(false);
             })
@@ -199,13 +213,17 @@ const NoteContent = () =>{
                 console.log(error);
             });
     }
+
     useEffect(()=>{
-        const User=JSON.parse(localStorage.getItem("user"));
         if(materie!==''){
             getStudenti(User);
             setisMaterie(false);
         }
-        else setisMaterie(true);
+        else {
+            setisMaterie(true);
+            setStudentiMaterie([]);
+            setRows(rowsCreator([]))
+        }
     },[materie])
     const onChangeMaterie =(e,{value})=>{
 
@@ -219,7 +237,11 @@ const NoteContent = () =>{
             }
         }
     }
-    const onChangeStudent =(e,{value})=>{
+    useEffect(()=>{
+       console.log(student);
+       console.log(idStudent);
+    },[student,idStudent])
+    const onChangeStudent =(value)=>{
         setidStudent(value);
         for(let i=0;i<dateStudenti.length;i++)
         {
@@ -237,8 +259,46 @@ const NoteContent = () =>{
     const onChangeNota= (e,{value})=>{
         setNota(value);
     }
+    const onSubmit = async () =>{
+        setLoading(true);
+        var axios = require('axios');
+        let tip;
+        tip = tipulNotei === "Restanta";
+        var data = JSON.stringify({
+            "IdStudent":parseInt(idStudent, 10),
+            "IdMaterie":cheieMaterie,
+            "Nota":nota,
+            "Restanta":tip,
+        });
+        console.log(data);
+        var config = {
+            method: 'put',
+            url: 'http://localhost:4000/profesor/AdaugareNote',
+            headers: {
+                'Authorization': `Bearer ${User.token}`,
+                'Content-Type': 'application/json'
+            },
+            data : data
+        };
+
+        await axios(config)
+            .then(function (response) {
+                getStudenti(User);
+                setLoading(false);
+                setOpen(false);
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                setLoading(false);
+                console.log(error);
+            });
+
+    }
     return(
         <div className={classes.root} >
+            <div className={classes.title}>
+                <h1>Adaugare note</h1>
+            </div>
             <Form className={classes.form1} loading={loading} >
                 <Form.Group widths='equal'>
                     <Form.Dropdown
@@ -257,7 +317,15 @@ const NoteContent = () =>{
             <div className={classes.grid}>
                 <DataGrid loading={loadingStud} columns={columns} rows={rows}
                           onSelectionChange={(newSelection) => {
-                    setStudent(newSelection.rowIds);
+                    setidStudent(newSelection.rowIds[0]);
+                    const id=newSelection.rowIds[0];
+                    for(let i=0;i<dateStudenti.length;i++)
+                    {
+                        if(dateStudenti[i].idStudent==id)
+                        {
+                            setStudent(dateStudenti[i].nume+" "+dateStudenti[i].prenume+" "+dateStudenti[i].grupa)
+                        }
+                    }
                 }}/>
             </div>
             <Form className={classes.form2}>
@@ -293,10 +361,8 @@ const NoteContent = () =>{
                     />
                 </Form.Group>
                 <Form.Group widths='equal'>
-
                 </Form.Group>
             </Form>
-
             <Modal
                 onClose={() => setOpen(false)}
                 onOpen={() => setOpen(true)}
@@ -312,6 +378,7 @@ const NoteContent = () =>{
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
+                    {loading && <CircularProgress size={68} className={classes.fabProgress}/>}
                     <Button color='black' onClick={onClose}>
                        Cancel
                     </Button>
@@ -319,8 +386,8 @@ const NoteContent = () =>{
                         content="Confirm"
                         labelPosition='right'
                         icon='checkmark'
-                        onClick={onClose}
-                        positive
+                        onClick={onSubmit}
+                        positive={!loading}
                     />
                 </Modal.Actions>
             </Modal>

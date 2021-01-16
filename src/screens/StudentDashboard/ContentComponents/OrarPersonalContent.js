@@ -40,6 +40,9 @@ const OrarPersonalContent=()=>{
                 console.log(error);
             });
     }
+    const initialData=[
+        {titlu:'RPA Curs',formatie:'332',numeProfesor:'Camelia',numeSala:'Online',ziuaSaptamanii:'Miercuri',oraInceput:'08:00'}
+    ]
     useEffect(()=>{
         if(User!=null){
             if(User.tipUtilizator==="student"){
@@ -52,7 +55,8 @@ const OrarPersonalContent=()=>{
         else{
             history.push("/");
         }
-        getInitialData(User.id,User.token);
+        let data=getData(initialData);
+        setScheduleData(data);
     },[])
     const ToolbarWithLoading = withStyles(styles, { name: 'Toolbar' })(
         ({ children, classes, ...restProps }) => (

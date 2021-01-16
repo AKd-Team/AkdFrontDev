@@ -66,6 +66,7 @@ const OrarExamene = () =>{
                 setScheduleData(getData(ExameneData));
             })
             .catch(function (error) {
+                setLoading(false);
                 console.log(error);
             });
     }

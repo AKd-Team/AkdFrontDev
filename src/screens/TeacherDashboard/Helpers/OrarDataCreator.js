@@ -13,7 +13,7 @@ function getData(initialData){
     for(let i=0;i<initialData.length;i++){
         let appointment={
             id:i,
-            title: initialData[i].titlu+" "+initialData[i].formatie+" "+initialData[i].numeProfesor+" "+initialData[i].numeSala,
+            title: initialData[i].numeMaterie+" "+initialData[i].formatie+" "+initialData[i].numeSala+" "+initialData[i].frecventa,
             startDate:week[weekDays.indexOf(initialData[i].ziuaSaptamanii)]+"T"+initialData[i].oraInceput,
             endDate:week[weekDays.indexOf(initialData[i].ziuaSaptamanii)]+"T"+initialData[i].oraSfarsit,
         }
