@@ -1,19 +1,20 @@
 import React, {useState} from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Form} from 'semantic-ui-react'
+import Button from '@material-ui/core/Button';
 import IRegula from './Models/ModelRegula'
 
 const CreateForm : React.FC = props => {
 
 
-    const [regula, setRegula] =useState(props.regulaInit);
+    const [regula, setRegula] = useState(props.regulaInit);
 
     const handleSubmit = () => {
         if(regula.idFacultate === NaN)
             regula.idFacultate = null;
         else
-            regula.idFacultate = parseInt(regula.idFacultate, 10);
+            regula.idFacultate = parseInt(regula.idFacultate);
         console.log(regula)
-
+        window.location.reload()
         props.createRegula(regula)
     }
 
@@ -39,17 +40,17 @@ const CreateForm : React.FC = props => {
                     />
 
                 <Button
-                    //loading={submitting}
+                    style={{marginRight:5}}
                     onClick={props.handleClose}
-                    floated='right'
-                    positive
+                    variant={"contained"}
+                    color="primary"
                     type='submit'
-                    content='Salveaza' />
+                     > Salveaza</Button>
                 <Button
                     onClick={props.handleClose}
-                    floated='right'
-                    type='button'
-                    content='Renunta' />
+                    variant={"contained"}
+                    color="secondary"
+                    >Renunta</Button>
 
             </Form>
         </div>

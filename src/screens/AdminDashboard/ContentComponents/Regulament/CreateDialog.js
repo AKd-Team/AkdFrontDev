@@ -12,17 +12,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     icons: {
 
         textAlign: 'right',
         color: '#004276'
     }
 }))
-const CreateDialog : React.FC = props => {
+const CreateDialog: React.FC = props => {
 
     const [open, setOpen] = useState(false);
-    const styles=useStyles();
+    const styles = useStyles();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -33,7 +33,7 @@ const CreateDialog : React.FC = props => {
 
     return (
         <div>
-            <div className={styles.icons}> <AddBox onClick={handleClickOpen}/></div>
+            <div className={styles.icons}><AddBox onClick={handleClickOpen}/></div>
 
             <Dialog
                 open={open}
@@ -49,7 +49,7 @@ const CreateDialog : React.FC = props => {
                     <CreateForm
                         regulaInit={props.regulaInit}
                         handleClose={handleClose}
-                        createRegula={props.createRegula}></CreateForm>
+                        createRegula={props.createRegula}/>
                 </DialogContent>
 
 

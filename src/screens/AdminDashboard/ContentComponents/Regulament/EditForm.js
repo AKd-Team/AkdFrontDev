@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import { Form, Button } from 'semantic-ui-react'
-//import type {IRegula} from "./Models/ModelRegula";
+import {Form} from 'semantic-ui-react'
+import Button from '@material-ui/core/Button';
 
-const FormComponent : React.FC = (props) => {
-   // console.log(props.selected)
-    const [regula, setRegula] =useState({idRegulament: -1, titlu: "", continut: "", idFacultate: -1})
+const EditForm: React.FC = (props) => {
+    const [regula, setRegula] = useState({idRegulament: -1, titlu: "", continut: "", idFacultate: -1})
 
-    useEffect(()=>{
+    useEffect(() => {
         setRegula(props.selected)
         console.log(regula)
-    },[props.selected])
+    }, [props.selected])
 
 
     const handleSubmit = () => {
@@ -18,34 +17,44 @@ const FormComponent : React.FC = (props) => {
         props.editRegula(regula);
     }
 
-    return(
+    return (
         <div>
             <Form onSubmit={handleSubmit}>
                 <Form.Input
                     placeholder='Titlu'
-                    onChange={(e) => { setRegula({...regula, titlu: e.target.value}); console.log(regula.titlu)}}
-                    value={regula.titlu} />
+                    onChange={(e) => {
+                        setRegula({...regula, titlu: e.target.value});
+                        console.log(regula.titlu)
+                    }}
+                    value={regula.titlu}/>
                 <Form.TextArea
-                    rows={2}
+                    rows={10}
                     placeholder='Continut'
-                    onChange={ (e) => {setRegula({...regula, continut: e.target.value}); console.log(regula.continut)}}
+                    onChange={(e) => {
+                        setRegula({...regula, continut: e.target.value});
+                        console.log(regula.continut)
+                    }}
                     value={regula.continut}
                 />
                 <Button
+                    style={{marginRight: 5}}
                     onClick={() => props.setOpen(false)}
                     floated='right'
-                    positive
+                    color="primary"
                     type='submit'
-                    content='Salveaza' />
+                    variant={"contained"}>
+                    Salveaza</Button>
                 <Button
                     onClick={() => props.setOpen(false)}
+                    variant={"contained"}
                     floated='right'
                     type='button'
-                    content='Renunta' />
-
+                    color="secondary">
+                    Renunta </Button>
             </Form>
+
         </div>
     );
 
 }
-export default FormComponent;
+export default EditForm;

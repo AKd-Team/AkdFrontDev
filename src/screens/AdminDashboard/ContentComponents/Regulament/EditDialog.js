@@ -3,13 +3,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import FormComponent from "./EditForm";
+import EditForm from "./EditForm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const EditDialog : React.FC = props => {
+const EditDialog: React.FC = props => {
     return (
         <div>
 
@@ -24,10 +24,11 @@ const EditDialog : React.FC = props => {
                 <DialogTitle
                     id="alert-dialog-slide-title">{"Editare regula"}</DialogTitle>
                 <DialogContent>
-                <FormComponent
-                    setOpen={props.setOpen}
-                    selected={props.selectedItem}
-                    editRegula={props.editRegula} />
+
+                    <EditForm
+                        setOpen={props.setOpen}
+                        selected={props.selectedItem}
+                        editRegula={props.editRegula}/>
                 </DialogContent>
             </Dialog>
         </div>

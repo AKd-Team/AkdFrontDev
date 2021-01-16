@@ -6,8 +6,21 @@ import EditIcon from "@material-ui/icons/Edit";
 import EditDialog from './EditDialog'
 import {makeStyles} from "@material-ui/core/styles";
 import CreateDialog from "./CreateDialog";
+import {Divider, Segment} from 'semantic-ui-react'
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(() => ({
+    root: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
+    header: {
+        marginTop: 30,
+        marginBottom: 40,
+        textAlign: 'center'
+    },
+
     divColor: {
         backgroundColor: '#E7EDF8',
         paddingBottom: '2%',
@@ -78,22 +91,16 @@ const EditareRegulament = () => {
     }
 
     async function deleteRegulaRequest(id) {
-        const res = await axios.delete("http://localhost:4000/admin/deleteRegula/" + id, {
+        await axios.delete("http://localhost:4000/admin/deleteRegula/" + id, {
             headers: {
                 'Authorization': `token ${User.token}`
             }
         });
-        console.log(res.status);
         setOpen(false)
-
-        /*if(res.status===200)
-            alert('Regula a fost stearsa!')*/
         getReguli();
-
     }
 
     const handleCreateRegula = async (regula) => {
-        console.log(regula);
         await axios.post("http://localhost:4000/admin/addRegula",
             regula, {
                 headers: {
@@ -107,10 +114,10 @@ const EditareRegulament = () => {
     const handleEditRegula = async (regula) => {
         var axios = require('axios');
         var data = JSON.stringify({
-            "IdRegula":regula.idRegulament,
-            "Titlu":regula.titlu,
-            "Continut":regula.continut,
-            "IdFacultate":regula.idFacultate,
+            "IdRegula": regula.idRegulament,
+            "Titlu": regula.titlu,
+            "Continut": regula.continut,
+            "IdFacultate": regula.idFacultate,
         });
 
         var config = {
@@ -120,7 +127,7 @@ const EditareRegulament = () => {
                 'Authorization': `Bearer ${User.token}`,
                 'Content-Type': 'application/json'
             },
-            data : data
+            data: data
         };
         console.log(data);
         axios(config)
@@ -131,19 +138,6 @@ const EditareRegulament = () => {
             .catch(function (error) {
                 console.log(error);
             });
-        // await axios.put("http://localhost:4000/admin/updateRegula",
-        //     regula,
-        //     {
-        //         headers: {
-        //             'Authorization': `token ${User.token}`
-        //         }
-        //     }).catch((error) => {
-        //     console.log(error.response)
-        // })
-        //     .then(() =>
-        //         // setRegulament([...regulament.filter(r => r.idRegulament !== regula.idRegulament), regula]),
-        //         getReguli()
-        //     )
     }
 
     const handleOpenCreateForm = () => {
@@ -167,10 +161,16 @@ const EditareRegulament = () => {
 
         getReguli();
     }, [])
+
     return (
-        <div>
+        <div className={styles.root}>
+            <div className={styles.header}>
+                <h2>Regulament</h2>
+                <Divider/>
+            </div>
             {regulament.map(((item, index) => (
-                <div key={index} className={styles.divColor}>
+                <Segment color='blue' raised style={{marginTop: '1%', marginLeft: '20%', marginRight: '20%'}}
+                         key={index}>
                     <div className={styles.titlu}> {item.titlu}
 
                         <AlertDialog onDelete={() => deleteRegulaRequest(item.idRegulament)}
@@ -193,7 +193,7 @@ const EditareRegulament = () => {
                             createRegula={handleCreateRegula}/>
                     </div>
                     <div className={styles.continut}> {item.continut}</div>
-                </div>
+                </Segment>
             )))}
         </div>
     );
